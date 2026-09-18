@@ -1,0 +1,166 @@
+{
+ "core_slope": {
+  "I": -0.3016,
+  "II": -0.3137,
+  "lo": {
+   "I": -0.3487,
+   "II": -0.3597
+  },
+  "hi": {
+   "I": -0.2272,
+   "II": -0.2757
+  },
+  "source": "directional_analysis/output/results/main_slopes.csv"
+ },
+ "reference_slope": {
+  "I": -0.0375,
+  "II": -0.0205,
+  "lo": {
+   "I": -0.0522,
+   "II": -0.0407
+  },
+  "hi": {
+   "I": -0.0143,
+   "II": -0.0013
+  },
+  "source": "directional_analysis/output/results/main_slopes.csv"
+ },
+ "width_scan_range": {
+  "lo": -0.6187,
+  "hi": -0.1216,
+  "source": "directional_analysis/output/results/w2d_scan.csv"
+ },
+ "isotropic": {
+  "slope_mean": {
+   "I": -0.0002,
+   "II": -0.0004
+  },
+  "slope_sd": {
+   "I": 0.0017,
+   "II": 0.0017
+  },
+  "level": {
+   "I": 46.6823,
+   "II": 46.8709
+  },
+  "n_seeds": 40,
+  "source": "computed W1 (lib/isotropic.py), seeds 124000-124039, slope fitted over the seven nominal band centres -- identical to isotropic.json"
+ },
+ "table_I": {
+  "I": {
+   "live_time_d": 73.1319,
+   "tracks": 8543471,
+   "fiducial": 24461,
+   "core": 1429,
+   "guard": 2869,
+   "reference": 20163,
+   "period_min": null,
+   "inclination_deg": null,
+   "coverage_start": "2024-01-11",
+   "coverage_end": "2024-10-18",
+   "span_days": 282.0,
+   "polygon_altitude_km": 600.0
+  },
+  "II": {
+   "live_time_d": 96.094,
+   "tracks": 21942149,
+   "fiducial": 43313,
+   "core": 7836,
+   "guard": 12443,
+   "reference": 23034,
+   "period_min": null,
+   "inclination_deg": null,
+   "coverage_start": "2025-02-18",
+   "coverage_end": "2026-04-17",
+   "span_days": 423.2,
+   "polygon_altitude_km": 1175.0
+  },
+  "source": "directional_analysis/output/results/table1_*.csv",
+  "_note": "polygon_altitude_km is the altitude the AP9 contour was evaluated at, NOT the orbit's mean altitude; the article quotes 613 km for phase I and 1175 km for phase II."
+ },
+ "fractions": {
+  "core_pct": {
+   "I": 5.84,
+   "II": 18.09
+  },
+  "guard_pct": {
+   "I": 11.73,
+   "II": 28.73
+  },
+  "source": "directional_analysis/output/results/table1_fiducial.csv"
+ },
+ "core_live_time_h": {
+  "I": 1.1976,
+  "II": 3.6312,
+  "source": "directional_analysis/output/results/table1_exposure.csv"
+ },
+ "floors_deg": {
+  "proton": {
+   "I": 11.35,
+   "II": 10.8
+  },
+  "electron": {
+   "I": 2.62,
+   "II": 2.84
+  },
+  "heavy ion": {
+   "I": 53.35,
+   "II": 58.33
+  },
+  "source": "directional_analysis/output/results/response_floors.csv"
+ },
+ "ceiling_deg": {
+  "edge": 85.9375,
+  "diagonal": 87.125,
+  "source": "computed W1 (config geometry)"
+ },
+ "exposure": {
+  "cadence_s": 64,
+  "nominal_tacq_s": 25,
+  "duty_cycle_pct": {
+   "I": 35.33,
+   "II": 30.3
+  },
+  "source": "directional_analysis/output/results/table1_exposure.csv"
+ },
+ "shield": {
+  "al_mm": 5,
+  "e_threshold_MeV": 3,
+  "p_threshold_MeV": [
+   30,
+   50
+  ],
+  "source": "article, Sec. II"
+ },
+ "sensor": {
+  "d_um": 500.0,
+  "p_um": 55.0,
+  "pixels": 128,
+  "bias_V": 200,
+  "threshold_keV": 5,
+  "source": "article, Sec. II / config.py"
+ },
+ "predictions": {
+  "isotropic_level_deg": {
+   "I": 46.6787,
+   "II": 46.8675
+  },
+  "field_aligned": "beta = 90 - absI",
+  "mirroring": "beta = degrees(arccos(0.7071 * cos(radians(absI))))",
+  "source": "article, Sec. IV"
+ },
+ "definitions": {
+  "w2d_max": 1.8,
+  "occ_max": 32,
+  "size_min": 2,
+  "guard_band_deg": 10.0,
+  "min_n_per_band": 30,
+  "min_bands": 4,
+  "min_i_span_deg": 18.0,
+  "bootstrap_b": 1000,
+  "contour_level": 0.003,
+  "contour_energy_MeV": 10.0,
+  "wrap_antimeridian": true,
+  "source": "directional_analysis/config.py"
+ }
+}

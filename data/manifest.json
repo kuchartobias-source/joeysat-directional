@@ -1,0 +1,212 @@
+{
+ "generated": "2026-09-18 09:35",
+ "git_commit": null,
+ "cache": "data_cache.parquet",
+ "package": "directional_analysis (run_all.py)",
+ "definition": {
+  "w2d_max": 1.8,
+  "occ_max": 32,
+  "size_min": 2,
+  "guard_band_deg": 10.0,
+  "min_n_per_band": 30,
+  "min_bands": 4,
+  "min_i_span_deg": 18.0,
+  "bootstrap_b": 1000,
+  "i_edges": [
+   24.0,
+   30.0,
+   36.0,
+   42.0,
+   48.0,
+   54.0,
+   60.0,
+   66.0
+  ],
+  "contour_level": 0.003,
+  "contour_energy_MeV": 10.0,
+  "wrap_antimeridian": true,
+  "phase_polygons": {
+   "I": "saa_polygon_ap9_600km.json",
+   "II": "saa_polygon_ap9_1175km.json"
+  }
+ },
+ "axes": {
+  "n_records": 4680,
+  "w2d_axis": [
+   1.2,
+   1.4,
+   1.6,
+   1.8,
+   2.0,
+   2.2,
+   2.4,
+   2.6,
+   2.8,
+   3.0,
+   3.2,
+   3.4,
+   3.6,
+   3.8,
+   4.0,
+   4.2,
+   4.4,
+   4.6,
+   4.8,
+   5.0,
+   5.2,
+   5.4,
+   5.6,
+   5.8,
+   6.0,
+   "none"
+  ],
+  "b_axis": [
+   0,
+   2,
+   5,
+   8,
+   10,
+   12,
+   15,
+   20,
+   25,
+   30
+  ],
+  "occ_axis": [
+   12,
+   16,
+   24,
+   32,
+   48,
+   64,
+   96,
+   128,
+   "none"
+  ],
+  "phases": [
+   "I",
+   "II"
+  ],
+  "contour_level": 0.003
+ },
+ "seeds": {
+  "main_core": 8711,
+  "main_ref": 8712,
+  "let": 8760,
+  "isotropic_seeds": "124000..124039"
+ },
+ "grid_statistics": {
+  "I": {
+   "n_records": 2340,
+   "core_fit_null": 857,
+   "reference_fit_null": 11,
+   "core_slope_positive": 0,
+   "core_slope_positive_keys": [],
+   "core_interval_contains_zero": 0,
+   "core_interval_contains_zero_keys": [],
+   "core_slope_min": -0.7691,
+   "core_slope_min_key": "1.2|10|none|I",
+   "core_slope_max": -0.0671,
+   "core_slope_max_key": "1.4|0|32|I"
+  },
+  "II": {
+   "n_records": 2340,
+   "core_fit_null": 362,
+   "reference_fit_null": 35,
+   "core_slope_positive": 3,
+   "core_slope_positive_keys": [
+    "1.4|20|32|II",
+    "1.6|20|24|II",
+    "1.8|20|24|II"
+   ],
+   "core_interval_contains_zero": 10,
+   "core_interval_contains_zero_keys": [
+    "1.2|2|32|II",
+    "1.4|15|32|II",
+    "1.4|20|32|II",
+    "1.4|25|32|II",
+    "1.4|30|64|II",
+    "1.6|20|24|II",
+    "1.6|30|32|II",
+    "1.8|20|24|II",
+    "1.8|25|24|II",
+    "1.8|30|32|II"
+   ],
+   "core_slope_min": -0.885,
+   "core_slope_min_key": "none|25|16|II",
+   "core_slope_max": 0.082,
+   "core_slope_max_key": "1.8|20|24|II"
+  }
+ },
+ "checks": {
+  "check1": true,
+  "check2": true,
+  "check3": true,
+  "check4": true,
+  "check9": true,
+  "check10": true
+ },
+ "note": "One phase-II cluster sits exactly on the W2D < 1.8 boundary: it stores as 1.79999995 in float32, so whether it passes depends on where the comparison happens. The nominal count 43313 uses the extraction's own 'fid' arrays, which is the article's number.",
+ "file_sizes": [
+  {
+   "file": "explorer_grid.json",
+   "raw": 4812503,
+   "gzip": 733336
+  },
+  {
+   "file": "figures.json",
+   "raw": 7616,
+   "gzip": 2002
+  },
+  {
+   "file": "isotropic.json",
+   "raw": 927,
+   "gzip": 347
+  },
+  {
+   "file": "manifest.json",
+   "raw": 2795,
+   "gzip": 1018
+  },
+  {
+   "file": "map_common.json",
+   "raw": 32194,
+   "gzip": 10742
+  },
+  {
+   "file": "map_phase_I.json",
+   "raw": 1500209,
+   "gzip": 310300
+  },
+  {
+   "file": "map_phase_II.json",
+   "raw": 1492477,
+   "gzip": 327538
+  },
+  {
+   "file": "ops.json",
+   "raw": 40672,
+   "gzip": 7291
+  },
+  {
+   "file": "profiles_full.json",
+   "raw": 3529,
+   "gzip": 1490
+  },
+  {
+   "file": "scans.json",
+   "raw": 72334,
+   "gzip": 12526
+  },
+  {
+   "file": "site_numbers.json",
+   "raw": 3655,
+   "gzip": 1263
+  },
+  {
+   "file": "data.js",
+   "raw": 7969388,
+   "gzip": 1408908
+  }
+ ]
+}
