@@ -38,17 +38,33 @@ a{color:var(--white)}
 .note{font-size:14px;color:var(--grey);border-left:2px solid var(--orange);padding:2px 10px;margin:6px 0 20px}
 .sub{color:var(--beige-d);font-size:17px;margin:0 0 14px;max-width:62em}
 .map{background:#0B0C1B;border:1px solid rgba(255,252,250,.12);border-radius:3px;padding:6px 6px 8px}
-.mapfoot{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:10px 18px;align-items:end;margin:8px 4px 0}
-@media (max-width:640px){.mapfoot{grid-template-columns:1fr}}
-.cbar{font-size:12px;color:var(--beige-d)}
-.cbar .g{height:10px;background:linear-gradient(90deg,#2E2118,#B79068 55%,#FFDBB5);margin:4px 0 2px}
-.cbar .t{display:flex;justify-content:space-between}
-.cbar .cmap{display:flex;gap:10px;align-items:center;margin-top:8px}
-.cbar .cmap .seg button{padding:3px 9px;font-size:12px}
+/* map: canvas with a vertical colour bar at its right, controls in one row below */
+.maprow{display:grid;grid-template-columns:minmax(0,1fr) 66px;gap:8px;align-items:stretch}
+.vbar{position:relative;font-size:12px;color:var(--beige-d)}
+.vbar .vg{position:absolute;top:8px;bottom:36px;left:0;width:10px;background:linear-gradient(to top,#440154,#414487,#2a788e,#22a884,#7ad151,#fde725)}
+.vbar .vt{position:absolute;left:14px;transform:translateY(-50%)}
+.vbar .vt-hi{top:8px}.vbar .vt-mid{top:calc(50% - 14px)}.vbar .vt-lo{bottom:36px;transform:translateY(50%)}
+.vbar .vlab{position:absolute;left:50px;bottom:36px;transform-origin:left bottom;transform:rotate(-90deg) translate(0,0);white-space:nowrap;width:0}
+.mapctl2{display:flex;flex-wrap:wrap;gap:10px 28px;align-items:end;margin:10px 4px 0}
+.mapctl2 .ctl{display:flex;flex-direction:column;gap:4px}
+.mapctl2 .ctl.gb{flex:1 1 320px}
+.mapctl2 .name{color:var(--beige-d);font-size:13px}
+.mapctl2 output{display:block;min-height:1.4em;white-space:nowrap;color:var(--white);font-weight:600;font-size:14px}
+.mapctl2 .gb input[type=range]{margin-top:2px}
+@media (max-width:640px){
+  .maprow{grid-template-columns:1fr;gap:4px}
+  .vbar{height:48px}
+  .vbar .vg{top:22px;bottom:auto;left:0;right:0;width:auto;height:10px;background:linear-gradient(90deg,#440154,#414487,#2a788e,#22a884,#7ad151,#fde725)}
+  .vbar .vlab{position:static;transform:none;width:auto;display:block}
+  .vbar .vt{top:auto;bottom:0;transform:none}
+  .vbar .vt-lo{left:0}.vbar .vt-mid{left:50%;transform:translateX(-50%)}.vbar .vt-hi{left:auto;right:0}
+  .mapctl2 .ctl.gb{flex-basis:100%}
+}
 .mapctl{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;align-items:center;min-width:0}
 .mapctl .name{color:var(--beige-d);font-size:14px}
 .mapctl output{display:block;min-height:1.4em;white-space:nowrap;color:var(--white);font-weight:600;font-size:14px}
 .mapctl .seg{justify-self:start}
+.panel .seg{border-color:#6a7075}.panel .seg button{color:var(--ink)}.panel .seg button+button{border-left-color:#6a7075}.panel .seg button[aria-pressed=true]{background:var(--ink);color:var(--beige-l)}
 .cap{color:var(--grey);font-size:14px;margin:12px 4px 0}
 .seg{display:inline-flex;border:1px solid var(--beige-d);border-radius:2px;overflow:hidden}
 .seg button{background:transparent;border:0;padding:5px 12px;font:inherit;font-size:14px;color:var(--beige-l);cursor:pointer}
@@ -72,8 +88,8 @@ svg{width:100%;height:auto;display:block}
 /* explorer */
 .lead{max-width:62em;margin:0 0 16px}
 .controls{display:grid;grid-template-columns:repeat(3,1fr);gap:0 20px;padding:0 16px 14px;align-items:start}
-.toprow{grid-column:1/-1;display:grid;grid-template-columns:1fr auto auto;gap:24px;align-items:end;padding-top:12px;border-bottom:1px solid rgba(255,252,250,.10);padding-bottom:12px}
-.toprow .btn{margin:0;width:auto;padding:9px 18px}
+.toprow{grid-column:1/-1;display:grid;grid-template-columns:1fr auto auto;gap:24px;align-items:end;padding-top:18px;border-bottom:1px solid rgba(255,252,250,.10);padding-bottom:14px}
+.toprow .btn{margin:0 6px 0 0;width:auto;padding:9px 18px}
 .toprow .phasectl{margin:0}
 .livebar{padding:0}
 .controls>.tried{grid-column:1/-1}
@@ -87,7 +103,8 @@ svg{width:100%;height:auto;display:block}
 .control output{color:var(--beige-d);font-size:14px;text-align:right}
 .ticks{display:flex;justify-content:space-between;font-size:12px;color:var(--grey);margin-top:-2px}
 .mini{margin-top:6px}
-.btn{margin-top:14px;width:100%;padding:9px;font:inherit;font-weight:600;font-size:16px;background:var(--orange);border:0;border-radius:2px;color:var(--ink);cursor:pointer;box-shadow:0 0 28px rgba(255,157,0,.22),0 2px 4px rgba(255,161,0,.45)}
+.control .mini+input[type=range]{margin-top:8px}
+.btn{margin:14px 0 6px;width:100%;padding:9px;font:inherit;font-weight:600;font-size:16px;background:var(--orange);border:0;border-radius:2px;color:var(--ink);cursor:pointer;position:relative;z-index:1;box-shadow:0 0 0 3px rgba(254,177,97,.18),0 0 26px 4px rgba(255,157,0,.32)}
 .btn:hover{filter:brightness(1.04)}
 .tried{margin:10px 0 0;font-size:14px;color:var(--grey)}
 .out{display:grid;gap:14px;min-width:0;margin-top:14px}
@@ -120,7 +137,10 @@ svg{width:100%;height:auto;display:block}
 /* two- and three-column text blocks */
 .two{display:grid;grid-template-columns:2fr 3fr;gap:24px;align-items:start}
 .two.rev{grid-template-columns:3fr 2fr}
-.opsrow{display:grid;grid-template-columns:1fr 2fr;gap:12px;align-items:start;margin-top:6px}
+@media (max-width:760px){.two.rev{grid-template-columns:1fr}.two.rev>:first-child{order:2}}
+.opsrow{display:grid;grid-template-columns:2fr 1fr;gap:12px;align-items:stretch;margin-top:6px}
+.opsbar{display:flex;flex-direction:column}
+.opsbar svg{flex:1;height:100%}
 @media (max-width:760px){.opsrow{grid-template-columns:1fr}}
 .two.eq{grid-template-columns:1fr 1fr}
 .three{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:start}
@@ -129,7 +149,7 @@ svg{width:100%;height:auto;display:block}
 .def p{margin:0}
 .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:12px}
 .gallery{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
-.tile p{font-size:13px;color:#4a4f55;margin:6px 6px 4px}
+.tile p,.tile h3{display:none}
 .tile a{display:block}
 .tile img{margin-top:4px}
 ul.plain{margin:0;padding-left:1.1em}
@@ -138,13 +158,38 @@ ul.plain li{margin:0 0 6px}
 .geopanel .control .name,.geopanel .control output{color:var(--ink)}
 .geopanel .val{display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:10px;margin-top:8px}
 .geopanel .val .k{font-size:22px;display:block;color:var(--ink);min-height:1.25em;white-space:nowrap}
-.geopanel .val .lab{font-size:13px;color:#6a7075}
+.geopanel .val .lab{font-size:13px;color:#6a7075;display:block;line-height:1.3;white-space:nowrap}
+.geopanel .control{margin-top:6px}
+.geopanel .val{margin-top:4px}
 .small{font-size:14px;color:var(--beige-d)}
 .lightbox{position:fixed;inset:0;z-index:50;background:rgba(3,4,23,.9);display:grid;place-items:center;padding:20px;cursor:zoom-out}
 .lightbox[hidden]{display:none}
 .lightbox img{max-width:min(96vw,1400px);max-height:84vh;width:auto;height:auto;background:var(--beige-l);padding:10px;border-radius:3px}
-.lightbox p{color:var(--beige-d);max-width:60em;text-align:center}
+.lightbox p{color:var(--beige-d);max-width:60em;text-align:left;margin:10px auto 0}
+.lightbox .lbin{max-width:min(96vw,1400px)}
+.lightbox h3{color:var(--orange);font-family:Magistral,Figtree,sans-serif;font-size:20px;margin:0 0 8px}
+.lightbox img{margin:0 auto}
 .tile img{cursor:zoom-in}
+.dock{position:fixed;left:0;right:0;z-index:40;background:rgba(3,4,23,.88);border-radius:0}
+.dock[hidden]{display:none}
+.dockbody{max-width:1120px;margin:0 auto;padding:8px 18px 10px;display:grid;grid-template-columns:auto 1fr 1fr 1fr auto;gap:8px 20px;align-items:end}
+.dock .ctl{display:flex;flex-direction:column;gap:2px}
+.dock .name{font-size:12px;color:var(--beige-d);white-space:nowrap}
+.dock .name output{color:var(--white);font-weight:600;margin-left:6px}
+.dock .seg button{padding:4px 10px;font-size:13px}
+.dock input[type=range]{margin:0;height:24px}
+.dock .btn{margin:0;width:auto;padding:7px 14px;font-size:14px;box-shadow:0 0 0 2px rgba(254,177,97,.18),0 0 18px 2px rgba(255,157,0,.28)}
+.dockbtn{display:none}
+@media (min-width:861px){.dock{top:0;border-bottom:1px solid rgba(255,252,250,.14)}}
+@media (max-width:860px){
+  .dock{bottom:0;border-top:1px solid rgba(255,252,250,.14)}
+  .dockbtn{display:block;width:100%;padding:9px;font:inherit;font-weight:600;background:transparent;border:0;color:var(--orange);cursor:pointer}
+  .dockbtn::after{content:" \25B4";}
+  .dock[aria-expanded=true] .dockbtn::after{content:" \25BE";}
+  .dockbody{display:none;grid-template-columns:1fr;gap:10px;padding:0 16px 14px}
+  .dock.open .dockbody{display:grid}
+  .dock .btn{width:100%}
+}
 footer{margin-top:44px;padding-top:14px;border-top:1px solid rgba(255,252,250,.12);color:var(--grey);font-size:14px}
 button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
 </style>
@@ -161,19 +206,15 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
   <h1>Proton arrival directions in low Earth orbit, from a single layer of silicon</h1>
   <p class="sub">MiniPIX Space with a Timepix3 sensor on OneWeb JoeySat, 613 and 1175 km. Inside the South Atlantic Anomaly the elevation angle of protons follows the local magnetic field; outside it does not.</p>
   <div class="map">
-    <div id="map"></div>
-    <div class="mapfoot">
-      <div class="cbar"><span>median proton elevation angle per 5° cell [deg]</span><div class="g" id="cbar"></div><div class="t"><span>36</span><span>52</span><span>68</span></div><div class="cmap"><span>layers</span><div class="seg" id="seg-layers" role="group" aria-label="Map layers"><button type="button" data-v="iso" aria-pressed="true">|I| isolines</button><button type="button" data-v="counts" aria-pressed="true">coverage</button></div></div></div>
-      <div class="mapctl">
-        <span class="name">Phase</span>
-        <div class="seg" id="seg-map" role="group" aria-label="Map phase"><button type="button" data-v="I" aria-pressed="true">I, 613 km</button><button type="button" data-v="II" aria-pressed="false">II, 1175 km</button></div>
-        <span class="name">Population</span>
-        <div class="seg" id="seg-pop" role="group" aria-label="Map population"><button type="button" data-v="all" aria-pressed="true">all protons</button><button type="button" data-v="fid" aria-pressed="false">fiducial selection</button></div>
-        <span class="name">Projection</span>
-        <div class="seg" id="seg-proj" role="group" aria-label="Map projection"><button type="button" data-v="eqc" aria-pressed="true">equirectangular</button><button type="button" data-v="ee" aria-pressed="false">Equal Earth</button></div>
-        <label class="name" for="h-b">Guard band</label>
-        <div><output id="o-hb" for="h-b"></output><input type="range" id="h-b" min="0" max="9" step="1" aria-label="Guard band width"></div>
-      </div>
+    <div class="maprow">
+      <div id="map"></div>
+      <div class="vbar"><span class="vlab">median proton elevation angle per 5° cell [deg]</span><div class="vg" id="cbar"></div><span class="vt vt-hi">68</span><span class="vt vt-mid">52</span><span class="vt vt-lo">36</span></div>
+    </div>
+    <div class="mapctl2">
+      <div class="ctl"><span class="name">Phase</span><div class="seg" id="seg-map" role="group" aria-label="Map phase"><button type="button" data-v="I" aria-pressed="true">I, 613 km</button><button type="button" data-v="II" aria-pressed="false">II, 1175 km</button></div></div>
+      <div class="ctl"><span class="name">Population</span><div class="seg" id="seg-pop" role="group" aria-label="Map population"><button type="button" data-v="all" aria-pressed="true">all protons</button><button type="button" data-v="fid" aria-pressed="false">fiducial selection</button></div></div>
+      <div class="ctl"><span class="name">Layers</span><div class="seg" id="seg-layers" role="group" aria-label="Map layers"><button type="button" data-v="iso" aria-pressed="true">|I| isolines</button></div></div>
+      <div class="ctl gb"><label class="name" for="h-b">Guard band</label><div><output id="o-hb" for="h-b"></output><input type="range" class="sl-b" id="h-b" min="0" max="9" step="1" aria-label="Guard band width"></div></div>
     </div>
     <p class="cap" id="mapcap"></p>
   </div>
@@ -199,21 +240,22 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
     </div>
     <div class="control">
       <div class="row"><label class="name" for="s-w2d">Cluster width</label><output id="o-w2d" for="s-w2d"></output></div>
-      <input type="range" id="s-w2d" min="0" max="25" step="1" aria-label="Cluster width limit">
-      <div class="ticks"><span>1.2 px</span><span>no limit</span></div>
       <div class="panel mini" id="st-w2d"></div>
+      <input type="range" class="sl-w2d" id="s-w2d" min="0" max="25" step="1" aria-label="Cluster width limit">
+      <div class="ticks"><span>1.2 px</span><span>no limit</span></div>
     </div>
     <div class="control">
       <div class="row"><label class="name" for="s-b">Guard band</label><output id="o-b" for="s-b"></output></div>
-      <input type="range" id="s-b" min="0" max="9" step="1" aria-label="Guard band width">
-      <div class="ticks"><span>0°</span><span>30°</span></div>
       <div class="panel mini" id="st-b"></div>
+      <input type="range" class="sl-b" id="s-b" min="0" max="9" step="1" aria-label="Guard band width">
+      <div class="ticks"><span>0°</span><span>30°</span></div>
     </div>
     <div class="control">
       <div class="row"><label class="name" for="s-occ">Occupancy</label><output id="o-occ" for="s-occ"></output></div>
-      <input type="range" id="s-occ" min="0" max="8" step="1" aria-label="Occupancy threshold">
-      <div class="ticks"><span>12 clusters</span><span>no threshold</span></div>
       <div class="panel mini" id="st-occ"></div>
+      <input type="range" class="sl-occ" id="s-occ" min="0" max="8" step="1" aria-label="Occupancy threshold">
+      <div class="ticks"><span>12 clusters</span><span>no threshold</span></div>
+      <div class="only-mobile"><button type="button" class="btn" id="reset2">Back to the paper's selection</button><p class="tried" id="tried2"></p></div>
     </div>
     <p class="tried only-desktop" id="tried"></p>
   </div>
@@ -221,7 +263,6 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
     <div class="readouts" id="readouts"></div>
     <div class="panels" id="panels"></div>
     <p class="legend" id="legend"></p>
-    <div class="only-mobile"><button type="button" class="btn" id="reset2">Back to the paper's selection</button><p class="tried" id="tried2"></p></div>
   </div>
 </section>
 
@@ -229,7 +270,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
   <h2>Definitions</h2>
   <div class="three">
     <div class="def"><h3>Regions</h3><p>The contour is a fixed level of the AP9 proton flux above 10 MeV, drawn separately for each altitude. <b>Core</b>: inside the contour by more than the guard-band width b. <b>Reference</b>: outside it by more than b. <b>Guard band</b>: within b of the contour on either side, excluded from the comparison.</p></div>
-    <div class="def"><h3>Profile and fit</h3><p>Median elevation angle in bins of local magnetic inclination, 6° wide from 24° to 66°, fitted with a straight line weighted by the inverse variance of the bootstrap median. The line drawn through each profile is that fit at the selection shown, one point inside the range quoted for the magnitude; the points are not connected, because the bins are independent samples and not a sequence. Bins below 30 clusters are drawn hollow and left out of the fit; a fit requires four populated bins spanning at least 18°. Slopes in degrees of elevation per degree of inclination, 68 % bootstrap intervals.</p></div>
+    <div class="def"><h3>Profile and fit</h3><p>Median elevation angle in bins of local magnetic inclination, 6° wide from 24° to 66°, fitted with a straight line weighted by the inverse variance of the bootstrap median. Bins below 30 clusters are drawn hollow and left out of the fit; a fit requires four populated bins spanning at least 18°. Slopes in degrees of elevation per degree of inclination, 68 % bootstrap intervals.</p></div>
     <div class="def"><h3>Isotropic control</h3><p>A simulated population with no preferred direction passed through the same reconstruction chain and binning. Any slope it returned would be instrumental; the paper uses it as the null for the sign of the slope, not for the level of the profile, which the simulation does not reproduce because it omits transport through the shield.</p></div>
   </div>
 </section>
@@ -245,7 +286,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
     <div class="panel geopanel">
       <div id="geom"></div>
       <div class="control"><div class="row"><label class="name" for="s-l2d">Projected track length</label><output id="o-l2d" for="s-l2d"></output></div><input type="range" id="s-l2d" min="0" max="140" step="1" value="9" aria-label="Projected track length in pixels"></div>
-      <div class="val"><div><span class="k" id="v-beta"></span><span class="lab">elevation angle β</span></div><div><span class="k" id="v-l3d"></span><span class="lab">path in silicon, µm</span></div><div><span class="k" id="v-reg"></span><span class="lab">regime</span></div></div>
+      <div class="val"><div><span class="k" id="v-beta"></span><span class="lab">angle β</span></div><div><span class="k" id="v-l3d"></span><span class="lab">path [µm]</span></div><div><span class="k" id="v-reg"></span><span class="lab">regime</span></div></div>
     </div>
   </div>
 </section>
@@ -269,8 +310,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
     <p>That is why the comparison is controlled on occupancy, the number of clusters in a frame, and not on rate: the rate is what the exposure control has already acted on. It is also why the core statistics are small. Over 73 and 96 days of live time, the core accumulated 1.2 and 3.6 hours. The map shows the median exposure per frame along the orbit: the anomaly appears as a hole in the exposure, and the outer belt as a shallower one at high latitudes.</p>
   </div>
   <div class="opsrow">
-    <div class="panel" id="ops"></div>
-    <div class="panel"><p class="small" id="opsmapcap" style="color:#4a4f55;margin:2px 4px 6px"></p><div id="opsmap"></div><div class="mapctl" style="margin:6px 4px 2px;grid-template-columns:auto auto;justify-content:start"><span class="name" style="color:#6a7075">Phase</span><div class="seg" id="seg-ops" role="group" aria-label="Exposure map phase" style="border-color:#6a7075"><button type="button" data-v="I" aria-pressed="true" style="color:#0B0C1B">I</button><button type="button" data-v="II" aria-pressed="false" style="color:#0B0C1B">II</button></div></div></div>
+    <div class="panel"><p class="small" id="opsmapcap" style="color:#4a4f55;margin:2px 4px 6px"></p><div id="opsmap"></div><div class="mapctl" style="margin:6px 4px 2px;grid-template-columns:auto auto;justify-content:start"><span class="name" style="color:#6a7075">Phase</span><div class="seg" id="seg-ops" role="group" aria-label="Exposure map phase"><button type="button" data-v="I" aria-pressed="true">I</button><button type="button" data-v="II" aria-pressed="false">II</button></div></div></div>
+    <div class="panel opsbar" id="ops"></div>
   </div>
 </section>
 
@@ -309,7 +350,17 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
 <footer>ADVACAM s.r.o. and Czech Technical University in Prague, Faculty of Nuclear Sciences and Physical Engineering. Instrument: MiniPIX Space, AdvaSpace radiation data. Satellite: OneWeb JoeySat (ONEWEB-0721, NORAD 56725). <span id="stamp"></span></footer>
 
 </div>
-<div id="lightbox" class="lightbox" hidden><img alt=""><p class="small"></p></div>
+<div id="dock" class="dock glass" hidden>
+  <button type="button" class="dockbtn only-mobile" id="docktoggle" aria-expanded="false">Selection</button>
+  <div class="dockbody">
+    <div class="ctl"><span class="name">Phase</span><div class="seg seg-phase-any" id="seg-dock" role="group" aria-label="Phase"><button type="button" data-v="I" aria-pressed="false">I</button><button type="button" data-v="II" aria-pressed="false">II</button><button type="button" data-v="both" aria-pressed="true">both</button></div></div>
+    <div class="ctl sl"><span class="name">Cluster width <output class="o-w2d"></output></span><input type="range" class="sl-w2d" min="0" max="25" step="1" aria-label="Cluster width limit"></div>
+    <div class="ctl sl"><span class="name">Guard band <output class="o-b"></output></span><input type="range" class="sl-b" min="0" max="9" step="1" aria-label="Guard band width"></div>
+    <div class="ctl sl"><span class="name">Occupancy <output class="o-occ"></output></span><input type="range" class="sl-occ" min="0" max="8" step="1" aria-label="Occupancy threshold"></div>
+    <button type="button" class="btn dockreset" id="reset3">Back to the paper's selection</button>
+  </div>
+</div>
+<div id="lightbox" class="lightbox" hidden><div class="lbin"><h3></h3><img alt=""><p class="small"></p></div></div>
 <script src="data/data.js"></script>
 <script>
 (function(){
@@ -350,7 +401,6 @@ const phaseShape=p=>p==='I'?'circle':'square';
 
 /* ---------- result cards and footer ---------- */
 (function cards(){
-  const cb=q('cbar');if(cb)cb.style.background='linear-gradient(90deg,'+VIRIDIS.join(',')+')';
   const iso=D.isotropic,sn=D.site_numbers;
   const sd=Math.max(iso.I.slope_sd,iso.II.slope_sd);
   const factor=Math.round(Math.min(Math.abs(sn.core_slope.I),Math.abs(sn.core_slope.II))/sd/10)*10;
@@ -437,7 +487,7 @@ function drawStrip(box,cfg){
 const hex2rgb=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
 function rampFn(stops,lo,hi){const st=stops.map(hex2rgb);return v=>{const t=Math.max(0,Math.min(1,(v-lo)/(hi-lo)))*(st.length-1),i=Math.min(st.length-2,Math.floor(t)),f=t-i;const c=st[i].map((a,k)=>Math.round(a+(st[i+1][k]-a)*f));return 'rgb('+c.join(',')+')';};}
 const BETA_LO=36,BETA_HI=68,betaRamp=rampFn(VIRIDIS,BETA_LO,BETA_HI);
-const mapState={phase:'I',iso:true,counts:true,proj:'eqc',pop:'all'};
+const mapState={phase:'I',iso:true,counts:false,proj:'eqc',pop:'all'};
 function layerKeyFor(obj,v){if(v==='none')return 'none';for(const k in obj){const x=Number(k);if(!isNaN(x)&&Math.abs(x-Number(v))<1e-6)return k;}return null;}
 function currentLayer(m){
   const L=m.layers,w=AX.w2d[st.wi],o=AX.occ[st.oi];
@@ -463,7 +513,7 @@ function drawPolylines(ctx,lines,P,style,width){ctx.strokeStyle=style;ctx.lineWi
 function closedRing(r){const a=r[0],b=r[r.length-1];return Math.abs(a[0])<179&&Math.abs(b[0])<179;}   /* rings cut at the seam stay open */
 function drawGraticule(ctx,P,style){ctx.strokeStyle=style;ctx.lineWidth=1;ctx.beginPath();for(let lon=-180;lon<=180;lon+=30){const pts=[];for(let la=-90;la<=90;la+=3)pts.push([lon,la]);polyline(ctx,pts,P);}for(let lat=-60;lat<=60;lat+=30){const pts=[];for(let lo=-180;lo<=180;lo+=3)pts.push([lo,lat]);polyline(ctx,pts,P);}ctx.stroke();}
 function drawGratLabels(ctx,g,fill){const FS=g.compact?17:11,STEP=(g.compact||g.proj==='ee')?60:30;ctx.font=FS+'px Figtree, sans-serif';ctx.fillStyle=fill;ctx.textAlign='center';for(let lon=-150;lon<=150;lon+=30)if(lon%STEP===0){const p=g.P(lon,-90);ctx.fillText(lon<0?(-lon)+'\u00b0W':lon===0?'0\u00b0':lon+'\u00b0E',p[0],Math.min(p[1]+FS+3,MH-3));}ctx.textAlign='right';for(let lat=-60;lat<=60;lat+=30)if(lat%STEP===0){const p=g.P(-180,lat);ctx.fillText(lat<0?(-lat)+'\u00b0S':lat===0?'0\u00b0':lat+'\u00b0N',p[0]-3,p[1]+FS/3);}}
-function hatchPattern(ctx){const c=document.createElement('canvas');c.width=8;c.height=8;const g=c.getContext('2d');g.fillStyle='rgba(255,252,250,0.10)';g.fillRect(0,0,8,8);g.strokeStyle='rgba(255,252,250,0.85)';g.lineWidth=1.3;g.beginPath();g.moveTo(0,8);g.lineTo(8,0);g.moveTo(-2,2);g.lineTo(2,-2);g.moveTo(6,10);g.lineTo(10,6);g.stroke();return ctx.createPattern(c,'repeat');}
+function hatchPattern(ctx){const c=document.createElement('canvas');c.width=8;c.height=8;const g=c.getContext('2d');g.fillStyle='rgba(255,252,250,0.10)';g.fillRect(0,0,8,8);g.strokeStyle='rgba(255,252,250,0.92)';g.lineWidth=1.6;g.beginPath();g.moveTo(0,8);g.lineTo(8,0);g.moveTo(-2,2);g.lineTo(2,-2);g.moveTo(6,10);g.lineTo(10,6);g.stroke();return ctx.createPattern(c,'repeat');}
 let baseCache={};
 function renderMapBase(g){
   const p=mapState.phase,m=D['map_phase_'+p],cur=currentLayer(m);
@@ -472,8 +522,6 @@ function renderMapBase(g){
   const dpr=Math.min(2,window.devicePixelRatio||1),c=document.createElement('canvas');c.width=MW*dpr;c.height=MH*dpr;const ctx=c.getContext('2d');ctx.scale(dpr,dpr);
   ctx.fillStyle='#0B0C1B';g.outline(ctx);ctx.fill();
   const A=m.layers.all,pd=m.proton_density;
-  if(mapState.counts){const cs=A.cell_deg;let cmax=1;A.count_2deg.forEach(r=>r.forEach(v=>{if(v>cmax&&v!==A.missing)cmax=v;}));
-    A.count_2deg.forEach((row,i)=>{const lat=A.lat0+i*cs;row.forEach((v,j)=>{if(v===A.missing||v<=0)return;const a=0.08+0.40*Math.log(1+v)/Math.log(1+cmax);ctx.fillStyle='rgba(201,189,178,'+a.toFixed(3)+')';ctx.beginPath();g.cell(ctx,A.lon0+j*cs,lat,cs);ctx.fill();});});}
   const ms=A.median_cell_deg,miss=A.missing;
   cur.lay.median_5deg.forEach((row,i)=>{const lat=A.median_lat0+i*ms;row.forEach((v,j)=>{if(v===miss||v===null)return;ctx.fillStyle=betaRamp(v/10);ctx.beginPath();g.cell(ctx,A.median_lon0+j*ms,lat,ms);ctx.fill();});});
   drawGraticule(ctx,g.P,'rgba(255,252,250,0.10)');
@@ -506,7 +554,7 @@ function renderMap(){
   const cur=currentLayer(m),A=m.layers.all;
   const nMed=cur.lay.median_5deg.reduce((a,row)=>a+row.filter(v=>v!==A.missing&&v!==null).length,0);
   const single=D.site_numbers.table_I&&D.site_numbers.table_I[p]&&D.site_numbers.table_I[p].protons?(D.site_numbers.table_I[p].protons-A.n_total):null;
-  q('mapcap').textContent='White line: the contour of the anomaly at '+ALT[p]+', a fixed level of the AP9 proton flux above 10 MeV; hatched: the guard band excluded on both sides of it, inside lies the core, outside the reference. Colour: median elevation angle of '+cur.desc+', '+fmtN(cur.n)+' clusters, per 5\u00b0 cell holding at least '+A.min_cell_n+' of them ('+fmtN(nMed)+' cells coloured); grey shading: where all protons fall, per 2\u00b0 cell.'+(mapState.pop==='all'&&single!==null?' Single-pixel clusters ('+single+' here) have no axis and are left out, which is why the total falls short of the classification count by that number.':'')+' Thin lines: |I| at 24\u00b0, 36\u00b0, 48\u00b0 and 60\u00b0; the same inclination occurs inside the anomaly and far from it, which is what makes the two regions comparable. Projection: '+(g.proj==='ee'?'Equal Earth':'equirectangular')+'; coastline data: Natural Earth.';
+  q('mapcap').textContent='White line: the contour of the anomaly at '+ALT[p]+', a fixed level of the AP9 proton flux above 10 MeV; hatched: the guard band excluded on both sides of it, inside lies the core, outside the reference. Colour: median elevation angle of '+cur.desc+', '+fmtN(cur.n)+' clusters, per 5\u00b0 cell holding at least '+A.min_cell_n+' of them ('+fmtN(nMed)+' cells coloured); cells with fewer are left dark.'+(mapState.pop==='all'&&single!==null?' Single-pixel clusters ('+single+' here) have no axis and are left out, which is why the total falls short of the classification count by that number.':'')+' Thin lines: |I| at 24\u00b0, 36\u00b0, 48\u00b0 and 60\u00b0; the same inclination occurs inside the anomaly and far from it, which is what makes the two regions comparable. Projection: '+(g.proj==='ee'?'Equal Earth':'equirectangular')+'; coastline data: Natural Earth.';
 }
 
 /* ---------- geometry explainer: slider on the projected length ---------- */
@@ -518,7 +566,7 @@ function renderGeom(){
   q('v-beta').textContent=(trunc?GEO.ceil.toFixed(1)+'\u00b0 ceiling':beta.toFixed(1)+'\u00b0');
   q('v-l3d').textContent=Math.round(L3D).toLocaleString('en-GB');
   q('v-reg').textContent=beta<GEO.floor?'at the floor':trunc?'truncated':'well reconstructed';
-  const W=420,H=232,M=14,px=(W-2*M)/GEO.win,sc=px/GEO.p,sh=GEO.d*sc,sy=44,x0=M+2*px;
+  const W=420,H=200,M=14,px=(W-2*M)/GEO.win,sc=px/GEO.p,sh=GEO.d*sc,sy=40,x0=M+2*px;
   const svg=el('svg',{viewBox:'0 0 '+W+' '+H,role:'img','aria-label':'Cross section and top view of a track of '+L+' pixels, to scale'});
   const defs=el('defs',{},svg);const cp=el('clipPath',{id:'clipA'},defs);el('rect',{x:M,y:sy-30,width:W-2*M,height:sh+42},cp);
   txt(svg,M,16,'cross section, to scale: the first '+GEO.win+' of '+SEN.pixels+' pixels, '+GEO.d+' \u00b5m of silicon',{fill:COL.ink,'font-weight':600});
@@ -550,7 +598,7 @@ function renderGeom(){
 /* ---------- three predictions against the measured core profile ---------- */
 function renderWhy(){
   const box=q('why');box.innerHTML='';
-  const W=460,H=300,L=44,R=12,T=16,B=36,X0=0,X1=90,Y0=30,Y1=92;
+  const W=460,H=372,L=44,R=12,T=16,B=36,X0=0,X1=90,Y0=30,Y1=92;
   const svg=el('svg',{viewBox:'0 0 '+W+' '+H,role:'img','aria-label':'Median elevation angle against inclination with three reference behaviours'});
   const X=v=>L+(v-X0)/(X1-X0)*(W-L-R),Y=v=>T+(Y1-v)/(Y1-Y0)*(H-T-B),cl=v=>Math.min(Y1,Math.max(Y0,v));
   for(let g=30;g<=90;g+=10){el('line',{x1:L,x2:W-R,y1:Y(g),y2:Y(g),stroke:COL.grid},svg);txt(svg,L-5,Y(g)+3.5,g,{'text-anchor':'end'});}
@@ -559,30 +607,32 @@ function renderWhy(){
   txt(svg,X(45),T+10,'fitted range of the paper, 24\u00b0 to 66\u00b0',{'text-anchor':'middle'});
   txt(svg,(L+W-R)/2,H-6,'local magnetic inclination |I| [deg]',{'text-anchor':'middle'});
   const ym=(T+H-B)/2;txt(svg,12,ym,'median elevation angle \u03b2 [deg]',{'text-anchor':'middle',transform:'rotate(-90 12 '+ym+')'});
-  el('line',{x1:X(0),y1:Y(90),x2:X(60),y2:Y(30),stroke:'#4b5560','stroke-width':1.4},svg);txt(svg,X(13),Y(86),'field-aligned: \u03b2 = 90\u00b0 \u2212 |I|',{fill:'#4b5560'});
+  el('line',{x1:X(0),y1:Y(90),x2:X(60),y2:Y(30),stroke:'#4b5560','stroke-width':1.4},svg);txt(svg,X(43),Y(49.5),'field-aligned',{fill:'#4b5560'});
   const isoL=D.isotropic.I.level;
-  el('line',{x1:X(0),x2:X(90),y1:Y(isoL),y2:Y(isoL),stroke:COL.iso,'stroke-dasharray':'2 3','stroke-width':1.4},svg);txt(svg,X(88),Y(isoL)-5,'isotropic: '+isoL.toFixed(1)+'\u00b0',{'text-anchor':'end',fill:COL.iso});
+  el('line',{x1:X(0),x2:X(90),y1:Y(isoL),y2:Y(isoL),stroke:COL.iso,'stroke-dasharray':'2 3','stroke-width':1.4},svg);txt(svg,X(88),Y(isoL)+13,'isotropic',{'text-anchor':'end',fill:COL.iso});
   const mir=[];for(let x=0;x<=90;x+=2)mir.push(X(x)+','+Y(Math.acos(0.7071*Math.cos(x*Math.PI/180))*180/Math.PI));
-  el('polyline',{points:mir.join(' '),fill:'none',stroke:'#4b5560','stroke-dasharray':'7 4','stroke-width':1.4},svg);txt(svg,X(21),Y(41.5),'locally mirroring: \u03b2 = arccos(0.707 cos |I|)',{fill:'#4b5560'});
+  el('polyline',{points:mir.join(' '),fill:'none',stroke:'#4b5560','stroke-dasharray':'7 4','stroke-width':1.4},svg);txt(svg,X(11),Y(54.5),'locally mirroring',{fill:'#4b5560'});
   PHASES.forEach(p=>{const f=D.profiles_full[p].core,col=COL[p];
     f.center.forEach((c,i)=>{if(!f.n[i]||f.n[i]<MINN||f.median[i]===null)return;const m=cl(f.median[i]),se=f.se[i]||0;el('line',{x1:X(c),x2:X(c),y1:Y(cl(m-se)),y2:Y(cl(m+se)),stroke:col,'stroke-width':1},svg);});
     f.center.forEach((c,i)=>{if(!f.n[i]||f.n[i]<MINN||f.median[i]===null)return;markerShape(svg,phaseShape(p),X(c),Y(cl(f.median[i])),col,true);});
   });
-  txt(svg,X(2),Y(33),'core protons, phase I circles, phase II squares',{fill:COL.ink});
+  const lx=X(3),ly=Y(37);el('rect',{x:lx-4,y:ly-12,width:118,height:34,fill:'#F4F0E9',stroke:'#c4bfb6','stroke-width':0.6},svg);txt(svg,lx+30,ly,'core protons',{fill:COL.ink,'font-weight':600});markerShape(svg,'circle',lx+6,ly+13,COL.I,true);txt(svg,lx+16,ly+16,'phase I',{fill:COL.ink});markerShape(svg,'square',lx+62,ly+13,COL.II,true);txt(svg,lx+72,ly+16,'phase II',{fill:COL.ink});
   box.appendChild(svg);
 }
 
 /* ---------- exposure by region and the exposure map ---------- */
 function renderOps(){
   const box=q('ops');box.innerHTML='';
-  const W=300,H=190,L=110,R=34,T=28,B=34,ex=D.site_numbers.exposure;
-  const svg=el('svg',{viewBox:'0 0 '+W+' '+H,role:'img','aria-label':'Median exposure per frame by region'});
-  txt(svg,10,15,'median exposure per frame [s]',{fill:COL.ink,'font-weight':600});
-  const X=v=>L+(Math.log10(v)-Math.log10(0.05))/(Math.log10(40)-Math.log10(0.05))*(W-L-R);
-  [0.1,1,10].forEach(v=>{el('line',{x1:X(v),x2:X(v),y1:T,y2:H-B,stroke:COL.grid},svg);txt(svg,X(v),H-B+13,v,{'text-anchor':'middle','font-size':10});});
-  const rows=[['outside the anomaly',ex.nominal_tacq_s,'#8a857c'],['inside, '+ALT.I,1.35,COL.I],['inside, '+ALT.II,0.075,COL.II]];
-  rows.forEach((r,i)=>{const y=T+8+i*38;el('rect',{x:X(0.05),y:y,width:X(r[1])-X(0.05),height:20,fill:r[2]},svg);txt(svg,L-6,y+14,r[0],{'text-anchor':'end',fill:COL.ink,'font-size':10.5});txt(svg,X(r[1])+4,y+14,r[1]+' s',{fill:COL.ink,'font-weight':600,'font-size':10.5});});
-  txt(svg,10,H-6,'cadence '+ex.cadence_s+' s, duty cycle '+Math.round(ex.duty_cycle_pct.I)+' % and '+Math.round(ex.duty_cycle_pct.II)+' %, log scale',{'font-size':10});
+  const W=300,H=420,L=52,R=12,T=30,B=74,ex=D.site_numbers.exposure;
+  const svg=el('svg',{viewBox:'0 0 '+W+' '+H,role:'img','aria-label':'Median exposure per frame by region','preserveAspectRatio':'xMidYMid meet'});
+  txt(svg,12,16,'median exposure per frame [s], log scale',{fill:COL.ink,'font-weight':600});
+  const Y=v=>H-B-(Math.log10(v)-Math.log10(0.03))/(Math.log10(40)-Math.log10(0.03))*(H-T-B);
+  [0.1,1,10].forEach(v=>{el('line',{x1:L,x2:W-R,y1:Y(v),y2:Y(v),stroke:COL.grid},svg);txt(svg,L-5,Y(v)+3.5,v,{'text-anchor':'end','font-size':10});});
+  const rows=[['outside the','anomaly',ex.nominal_tacq_s,'#8a857c'],['inside,','613 km',1.35,COL.I],['inside,','1175 km',0.075,COL.II]];
+  const cw=(W-L-R)/3;
+  rows.forEach((r,i)=>{const x=L+i*cw+cw*0.2,w=cw*0.6,y=Y(r[2]);el('rect',{x:x,y:y,width:w,height:H-B-y,fill:r[3]},svg);txt(svg,x+w/2,y-6,r[2]+' s',{'text-anchor':'middle',fill:COL.ink,'font-weight':600});txt(svg,x+w/2,H-B+16,r[0],{'text-anchor':'middle','font-size':10.5,fill:COL.ink});txt(svg,x+w/2,H-B+29,r[1],{'text-anchor':'middle','font-size':10.5,fill:COL.ink});});
+  txt(svg,W/2,H-24,'cadence '+ex.cadence_s+' s, nominal exposure '+ex.nominal_tacq_s+' s',{'text-anchor':'middle','font-size':10});
+  txt(svg,W/2,H-10,'duty cycle '+Math.round(ex.duty_cycle_pct.I)+' % and '+Math.round(ex.duty_cycle_pct.II)+' %',{'text-anchor':'middle','font-size':10});
   box.appendChild(svg);
 }
 const opsState={phase:'I'};
@@ -622,8 +672,8 @@ function renderGallery(){
   if(wb){const below2=Math.max.apply(null,['I','II'].map(p=>Math.max.apply(null,wb[p].multi_hit_pct.slice(0,2)))),cross=wb.multi_hit_crosses_50pct_band,letI=wb.I.median_let,letII=wb.II.median_let;
     CAPTIONS.w2d_limit_study=['Cluster width','Fraction of clusters containing a pixel hit more than once, the signature of an overlap, and median linear energy transfer in bands of the projected cluster width, all protons with at least two pixels, no width or occupancy cut; the fiducial limit of '+wb.fiducial_limit+' pixels is marked. Below two pixels the overlap fraction stays under '+Math.ceil(below2)+' %; it crosses 50 % in the band '+cross.I.replace('[','').replace(')','')+' pixels in both phases, while the median LET rises monotonically from '+Math.min(letI[0],letII[0]).toFixed(1)+' to over '+Math.floor(Math.min(letI[letI.length-1],letII[letII.length-1]))+' keV per \u00b5m. A wider limit therefore admits merged clusters and lower-energy protons together, which is why the width still measures a single proton track only near the limit adopted.'];}
   D.figures.figures.filter(f=>f.shown!==false).forEach(f=>{const c=CAPTIONS[f.id]||[f.title,f.caption_draft];const d=document.createElement('div');d.className='panel tile';
-    d.innerHTML='<h3>'+c[0]+'</h3><img src="figures/'+f.file+'" alt="'+c[0]+'" loading="lazy" data-cap="'+c[1].replace(/"/g,'&quot;')+'"><p>'+c[1]+'</p>';g.appendChild(d);});
-  const lb=q('lightbox');g.addEventListener('click',e=>{const im=e.target.closest('img');if(!im)return;lb.querySelector('img').src=im.src;lb.querySelector('img').alt=im.alt;lb.querySelector('p').textContent=im.dataset.cap||'';lb.hidden=false;});
+    d.innerHTML='<img src="figures/'+f.file+'" alt="'+c[0]+'" loading="lazy" data-title="'+c[0]+'" data-cap="'+c[1].replace(/"/g,'&quot;')+'">';g.appendChild(d);});
+  const lb=q('lightbox');g.addEventListener('click',e=>{const im=e.target.closest('img');if(!im)return;lb.querySelector('img').src=im.src;lb.querySelector('img').alt=im.alt;lb.querySelector('h3').textContent=im.dataset.title||'';lb.querySelector('p').textContent=im.dataset.cap||'';lb.hidden=false;});
   lb.addEventListener('click',()=>{lb.hidden=true;});document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.hidden=true;});
 }
 
@@ -637,9 +687,10 @@ const tried=new Set();
 const GSTAT=(()=>{const o={fits:0,pos:0,sig:0};for(const k in G){const f=G[k].core.fit;if(!f)continue;o.fits++;if(f.slope>0){o.pos++;if(f.lo>0)o.sig++;}}return o;})();
 function render(){
   const w=AX.w2d[st.wi],b=AX.b[st.bi],o=AX.occ[st.oi];
-  q('o-w2d').textContent=w==='none'?'no width limit':'W2D below '+Number(w).toFixed(1)+' px';
-  q('o-b').textContent=b===0?'none, contour only':'\u00b1'+b+'\u00b0 around the contour';
-  q('o-occ').textContent=o==='none'?'no threshold':'below '+o+' per frame';
+  const tw=w==='none'?'no width limit':'W2D below '+Number(w).toFixed(1)+' px',tb=b===0?'none, contour only':'\u00b1'+b+'\u00b0 around the contour',to=o==='none'?'no threshold':'below '+o+' per frame';
+  q('o-w2d').textContent=tw;q('o-b').textContent=tb;q('o-occ').textContent=to;
+  document.querySelectorAll('.o-w2d').forEach(e=>e.textContent=w==='none'?'none':'< '+Number(w).toFixed(1)+' px');document.querySelectorAll('.o-b').forEach(e=>e.textContent='\u00b1'+b+'\u00b0');document.querySelectorAll('.o-occ').forEach(e=>e.textContent=o==='none'?'none':'< '+o);
+  document.querySelectorAll('.sl-w2d').forEach(e=>{if(+e.value!==st.wi)e.value=st.wi;});document.querySelectorAll('.sl-b').forEach(e=>{if(+e.value!==st.bi)e.value=st.bi;});document.querySelectorAll('.sl-occ').forEach(e=>{if(+e.value!==st.oi)e.value=st.oi;});
   const phases=st.phase==='both'?PHASES:[st.phase];
   q('livebar').innerHTML=phases.map(p=>{const f=G[key(w,b,o,p)].core.fit;return '<span><small>'+p+'</small>'+(f?fmtS(f.slope):'no fit')+'</span>';}).join('');
   const ro=q('readouts'),pa=q('panels');ro.innerHTML='';pa.innerHTML='';
@@ -650,7 +701,7 @@ function render(){
     drawProfile(box,rec);binRow(box,rec.core);pa.appendChild(box);
   });
   tried.add(fmtW(w)+'|'+b+'|'+o);
-  const tt='Selections tried: '+tried.size+' of '+(AX.w2d.length*AX.b.length*AX.occ.length)+'. Across the whole grid the core slope is positive in '+GSTAT.pos+' of '+fmtN(GSTAT.fits)+' fits and significantly positive in '+GSTAT.sig+'; the '+GSTAT.pos+' positive values all sit at the limit of fittability with intervals that include zero.';
+  const nsel=AX.w2d.length*AX.b.length*AX.occ.length;const tt='Selections tried: '+tried.size+' of '+fmtN(nsel)+'. The grid holds '+fmtN(nsel)+' selections for each phase, '+fmtN(2*nsel)+' fits in all, of which '+fmtN(GSTAT.fits)+' met the fitting rule; the core slope is positive in '+GSTAT.pos+' of those and significantly positive in '+GSTAT.sig+', the '+GSTAT.pos+' positive values all sitting at the limit of fittability with intervals that include zero.';
   q('tried').textContent=tt;q('tried2').textContent=tt;
   const num=AX.w2d.filter(v=>v!=='none'),numO=AX.occ.filter(v=>v!=='none');
   const coreSeries=(axis,mk)=>phases.map(p=>({phase:p,pts:axis.map(v=>{const f=G[mk(v,p)].core.fit;return f?{x:v,y:f.slope,lo:f.lo,hi:f.hi}:null;}).filter(Boolean)}));
@@ -661,24 +712,32 @@ function render(){
 }
 
 /* ---------- events ---------- */
-q('s-w2d').max=AX.w2d.length-1;q('s-b').max=AX.b.length-1;q('h-b').max=AX.b.length-1;q('s-occ').max=AX.occ.length-1;
-q('s-w2d').value=st.wi;q('s-b').value=st.bi;q('s-occ').value=st.oi;q('h-b').value=st.bi;
-q('s-w2d').addEventListener('input',e=>{st.wi=+e.target.value;render();});
-q('s-b').addEventListener('input',e=>{st.bi=+e.target.value;q('h-b').value=st.bi;render();});
-q('h-b').addEventListener('input',e=>{st.bi=+e.target.value;q('s-b').value=st.bi;render();});
-q('s-occ').addEventListener('input',e=>{st.oi=+e.target.value;render();});
-function seg(id,fn){q(id).addEventListener('click',e=>{const bt=e.target.closest('button');if(!bt)return;q(id).querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===bt?'true':'false'));fn(bt.dataset.v);});}
-seg('seg-phase',v=>{st.phase=v;render();});
-seg('seg-map',v=>{mapState.phase=v;renderMap();});
-seg('seg-proj',v=>{mapState.proj=v;renderMap();renderOpsMap();});
-seg('seg-pop',v=>{mapState.pop=v;renderMap();});
+document.querySelectorAll('.sl-w2d').forEach(e=>{e.max=AX.w2d.length-1;e.value=st.wi;e.addEventListener('input',ev=>{st.wi=+ev.target.value;render();});});
+document.querySelectorAll('.sl-b').forEach(e=>{e.max=AX.b.length-1;e.value=st.bi;e.addEventListener('input',ev=>{st.bi=+ev.target.value;render();});});
+document.querySelectorAll('.sl-occ').forEach(e=>{e.max=AX.occ.length-1;e.value=st.oi;e.addEventListener('input',ev=>{st.oi=+ev.target.value;render();});});
+function pressSeg(id,v){const sg=q(id);if(!sg)return;sg.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===v?'true':'false'));}
+function setPhase(v){st.phase=v;if(v!=='both')mapState.phase=v;pressSeg('seg-phase',v);pressSeg('seg-dock',v);pressSeg('seg-map',mapState.phase);render();}
+function seg(id,fn){const sg=q(id);if(!sg)return;sg.addEventListener('click',e=>{const bt=e.target.closest('button');if(!bt)return;sg.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===bt?'true':'false'));fn(bt.dataset.v);});}
+seg('seg-phase',setPhase);seg('seg-dock',setPhase);seg('seg-map',setPhase);
 seg('seg-ops',v=>{opsState.phase=v;renderOpsMap();});
+seg('seg-pop',v=>{mapState.pop=v;renderMap();});
 q('seg-layers').addEventListener('click',e=>{const bt=e.target.closest('button');if(!bt)return;const on=bt.getAttribute('aria-pressed')!=='true';bt.setAttribute('aria-pressed',on?'true':'false');mapState[bt.dataset.v]=on;renderMap();});
-const doReset=()=>{st.wi=NOMINAL.w2d;st.bi=NOMINAL.b;st.oi=NOMINAL.occ;q('s-w2d').value=st.wi;q('s-b').value=st.bi;q('s-occ').value=st.oi;q('h-b').value=st.bi;render();};
-q('reset').addEventListener('click',doReset);q('reset2').addEventListener('click',doReset);
+const doReset=()=>{st.wi=NOMINAL.w2d;st.bi=NOMINAL.b;st.oi=NOMINAL.occ;render();};
+['reset','reset2','reset3'].forEach(id=>{const e=q(id);if(e)e.addEventListener('click',doReset);});
 q('s-l2d').addEventListener('input',renderGeom);
-let rt=null;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{baseCache={};renderMap();},200);});
-render();renderLegend();renderGeom();renderWhy();renderOps();renderOpsMap();renderGallery();
+let rt=null;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{baseCache={};renderMap();updateDock();},200);});
+/* control dock: visible while the map or the explorer is on screen and their own controls are not */
+const dock=q('dock');
+function updateDock(){
+  const mapEl=document.querySelector('.map'),ctl=document.querySelector('.mapctl2'),ex=q('explorer');if(!mapEl||!ex)return;
+  const y=window.scrollY,vh=window.innerHeight,mobile=window.innerWidth<=860;
+  const ctlBottom=ctl.getBoundingClientRect().bottom+y,exBottom=ex.getBoundingClientRect().bottom+y;
+  const show=mobile?(y+vh>mapEl.getBoundingClientRect().top+y+200&&y<exBottom-vh*0.3):(y>ctlBottom-60&&y<exBottom-vh*0.5);
+  dock.hidden=!show;
+}
+q('docktoggle').addEventListener('click',()=>{const open=!dock.classList.contains('open');dock.classList.toggle('open',open);dock.setAttribute('aria-expanded',open?'true':'false');q('docktoggle').setAttribute('aria-expanded',open?'true':'false');});
+let dt=null;window.addEventListener('scroll',()=>{if(dt)return;dt=requestAnimationFrame(()=>{dt=null;updateDock();});},{passive:true});
+render();renderLegend();renderGeom();renderWhy();renderOps();renderOpsMap();renderGallery();updateDock();
 })();
 
 </script>
