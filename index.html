@@ -42,21 +42,45 @@ a{color:var(--white)}
 #map canvas{position:relative;z-index:1}
 .maphint{position:absolute;inset:0;display:grid;place-items:center;margin:0;color:var(--beige-d);font-size:14px;text-align:center;z-index:0}
 .mapfull{margin:6px 0 0;width:100%;padding:7px;background:rgba(201,189,178,.14);border:1px solid rgba(255,252,250,.18);border-radius:2px;color:var(--beige-l);font:inherit;font-size:13px;cursor:pointer}
-#artscreen{position:fixed;inset:0;z-index:60;background:rgba(3,4,23,.97);overflow:auto;padding:22px 18px 30px;opacity:0;transition:opacity .16s ease}
+#artscreen{position:fixed;inset:0;z-index:60;background:rgba(3,4,23,.97);overflow:hidden;display:grid;align-items:center;padding:20px 22px;opacity:0;transition:opacity .16s ease}
 #artscreen[hidden]{display:none}
 #artscreen.shown{opacity:1}
-#artscreen .asbody{max-width:1120px;margin:0 auto;transform:scale(.97);transition:transform .18s ease}
+#artscreen .asbody{max-width:1180px;width:100%;margin:0 auto;max-height:calc(100vh - 40px);overflow:auto;transform:scale(.97);transition:transform .18s ease}
 #artscreen.shown .asbody{transform:scale(1)}
 #artscreen .art{border:0;background:none;padding:0}
 #artscreen .art .artbody{grid-template-rows:1fr}
-#artscreen .close{display:block;margin:14px auto 0;background:none;border:0;color:var(--orange);font:inherit;cursor:pointer;padding:8px 14px}
+.xclose{position:fixed;top:10px;right:12px;z-index:70;width:40px;height:40px;display:grid;place-items:center;background:rgba(3,4,23,.6);border:1px solid rgba(255,252,250,.22);border-radius:50%;color:var(--beige-l);font-size:24px;line-height:1;cursor:pointer;padding:0}
+.xclose:hover{color:var(--orange);border-color:var(--orange)}
 #artscreen .chev{display:none}
 @media (min-width:861px){
-  #artscreen #geometry{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:26px;align-items:start}
+  #artscreen #geometry{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:24px;align-items:center}
+  #artscreen #geometry .artbody{font-size:14.5px;align-self:center}
+  #artscreen #geometry .artbody .two,#artscreen #geometry .artbody .two.eq{grid-template-columns:minmax(0,1fr);gap:0}
+  #artscreen #geometry .artbody p{margin-bottom:8px}
+  #artscreen #geometry .artbody .num{font-size:19px}
   #artscreen #geometry .arthead{grid-column:1/-1;cursor:default}
   #artscreen #geometry .geopanel{margin:0}
-  #artscreen .art .two,#artscreen .art .two.eq,#artscreen .art .two.rev{grid-template-columns:1fr}
+  #artscreen .art .two,#artscreen .art .two.eq{grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);align-items:center;gap:26px}
+  #artscreen .art .two.rev{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);align-items:center;gap:26px}
+  #artscreen #instrument .opscol{align-content:center}
+  #artscreen #definitions .three{align-items:center}
   #artscreen .artbody{padding-bottom:0}
+  #artscreen .arthead{cursor:default;padding:6px 0 10px}
+  #artscreen #definitions .artbody{align-content:center}
+  #artscreen #definitions{align-self:center}
+  #artscreen .three{gap:26px}
+  #artscreen #geom svg{max-height:30vh}
+  #artscreen #geometry .cluex{grid-template-columns:96px minmax(0,1fr);min-height:0;gap:10px}
+  #artscreen #geometry .cluex img{width:96px;height:96px}
+  #artscreen #geometry .cluex p{font-size:11.5px}
+  #artscreen #geometry .val .k{font-size:18px}
+  #artscreen #geometry .geopanel{padding:8px 12px 10px}
+  #artscreen #why svg{max-height:62vh}
+  #artscreen .opscol{gap:10px}
+  #artscreen #opsmap canvas{max-height:44vh;width:100%;height:auto}
+  #artscreen #ops svg{max-height:16vh}
+  #artscreen #opsmapcap{font-size:13px}
+  #artscreen .cluex{margin:6px 0 0}
 }
 #artscreen .cluex{grid-template-columns:130px minmax(0,1fr);min-height:0}
 #artscreen .cluex img{width:130px;height:130px}
@@ -76,7 +100,7 @@ a{color:var(--white)}
 #mapscreen .msctl .name{font-size:13px;color:var(--beige-d);min-width:9em}
 #mapscreen .msctl .row{gap:14px}
 @media (min-width:861px){#mapscreen{padding:18px}#mapscreen .msctl{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 30px}#mapscreen .msctl .close{grid-column:2;justify-self:end}}
-#mapscreen .close{justify-self:end;background:none;border:0;color:var(--orange);font:inherit;cursor:pointer;padding:4px 8px}
+
 /* map: canvas with a vertical colour bar at its right, controls in one row below */
 .maprow{display:grid;grid-template-columns:minmax(0,1fr) 66px;gap:8px;align-items:stretch}
 .vbar{position:relative;font-size:12px;color:var(--beige-d)}
@@ -256,7 +280,7 @@ svg{width:100%;height:auto;display:block}
 @media (max-width:760px){.two.rev{grid-template-columns:1fr}.two.rev>:first-child{order:2}}
 .opscol{display:grid;gap:10px;align-content:start}
 .opscol .panel{padding:6px 6px 4px}
-#opsmap canvas{max-height:230px}
+#opsmap canvas{width:100%;height:auto;max-height:230px;object-fit:contain}
 @media (max-width:760px){.opsrow{grid-template-columns:1fr}}
 .two.eq{grid-template-columns:1fr 1fr}
 .three{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:start}
@@ -289,7 +313,8 @@ svg{width:100%;height:auto;display:block}
 .tile img{margin-top:4px}
 ul.plain{margin:0;padding-left:1.1em}
 ul.plain li{margin:0 0 6px}
-.geopanel{padding:6px 10px 8px;margin:0 0 10px}
+.geopanel{padding:6px 10px 10px;margin:0 0 10px}
+@media (max-width:760px){.geopanel .val{min-height:3.6em}.geopanel .val .k{min-height:1.4em}}
 .geopanel .control{margin-top:4px}
 .geopanel .val .k{font-size:19px}
 .geopanel .val .lab{font-size:12px}
@@ -549,9 +574,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
     <button type="button" class="btn dockreset" id="reset3">Back to the paper's selection</button>
   </div>
 </div>
-<div id="artscreen" hidden><div class="asbody"></div><button type="button" class="close" id="artclose">Close</button></div>
+<div id="artscreen" hidden><button type="button" class="xclose" id="artclose" aria-label="Close">×</button><div class="asbody"></div></div>
 <div id="panelscreen" hidden><div class="psbox"></div></div>
-<div id="mapscreen" hidden><div class="rotwrap" id="mapscreenbox"></div><div class="msctl"><div class="row"><span class="name">Phase</span><div class="seg" id="seg-ms" role="group" aria-label="Phase"><button type="button" data-v="I" aria-pressed="false">I</button><button type="button" data-v="II" aria-pressed="false">II</button><button type="button" data-v="both" aria-pressed="true">both</button></div></div><div class="row"><span class="name">Population</span><div class="seg" id="seg-pop2" role="group" aria-label="Population"><button type="button" data-v="all" aria-pressed="true">all protons</button><button type="button" data-v="fid" aria-pressed="false">fiducial</button></div><div class="seg tiny" id="seg-layers2" role="group" aria-label="Layers"><button type="button" data-v="iso" aria-pressed="true">|I| isolines</button></div></div><div class="row"><span class="name">Guard band <output class="o-b"></output></span><input type="range" class="sl-b" min="0" max="9" step="1" style="flex:1" aria-label="Guard band"></div><div class="row"><span class="name">Cluster width <output class="o-w2d"></output></span><input type="range" class="sl-w2d" min="0" max="25" step="1" style="flex:1" aria-label="Cluster width"></div><div class="row"><span class="name">Occupancy <output class="o-occ"></output></span><input type="range" class="sl-occ" min="0" max="8" step="1" style="flex:1" aria-label="Occupancy"></div><button type="button" class="close" id="mapscreenclose">Close</button></div></div>
+<div id="mapscreen" hidden><button type="button" class="xclose" id="mapscreenclose" aria-label="Close">×</button><div class="rotwrap" id="mapscreenbox"></div><div class="msctl"><div class="row"><span class="name">Phase</span><div class="seg" id="seg-ms" role="group" aria-label="Phase"><button type="button" data-v="I" aria-pressed="false">I</button><button type="button" data-v="II" aria-pressed="false">II</button><button type="button" data-v="both" aria-pressed="true">both</button></div></div><div class="row"><span class="name">Population</span><div class="seg" id="seg-pop2" role="group" aria-label="Population"><button type="button" data-v="all" aria-pressed="true">all protons</button><button type="button" data-v="fid" aria-pressed="false">fiducial</button></div><div class="seg tiny" id="seg-layers2" role="group" aria-label="Layers"><button type="button" data-v="iso" aria-pressed="true">|I| isolines</button></div></div><div class="row"><span class="name">Guard band <output class="o-b"></output></span><input type="range" class="sl-b" min="0" max="9" step="1" style="flex:1" aria-label="Guard band"></div><div class="row"><span class="name">Cluster width <output class="o-w2d"></output></span><input type="range" class="sl-w2d" min="0" max="25" step="1" style="flex:1" aria-label="Cluster width"></div><div class="row"><span class="name">Occupancy <output class="o-occ"></output></span><input type="range" class="sl-occ" min="0" max="8" step="1" style="flex:1" aria-label="Occupancy"></div></div></div>
 <div id="lightbox" class="lightbox" hidden><div class="lbin"><img alt=""><div class="lbtext"><h3></h3><p class="small"></p></div></div></div>
 <script src="data/core.js"></script>
 <script>
@@ -917,16 +942,19 @@ function renderGallery(){
 function glyph(col,dash,shape){let m='';if(shape==='circle')m='<circle cx="22" cy="7" r="4" fill="'+col+'"/>';else if(shape==='square')m='<rect x="18.5" y="3.5" width="7" height="7" fill="'+col+'"/>';else m='<polygon points="22,2.5 17.8,10.2 26.2,10.2" fill="'+col+'"/>';return '<svg class="gl" viewBox="0 0 44 14" width="44" height="14" aria-hidden="true"><line x1="2" y1="7" x2="42" y2="7" stroke="'+col+'" stroke-width="2"'+(dash?' stroke-dasharray="'+dash+'"':'')+'/>'+m+'</svg>';}
 function lockScroll(on){document.documentElement.style.overflow=on?'hidden':'';document.body.style.overflow=on?'hidden':'';}
 let panelOpenIdx=null;
+let dockOpenedByPanel=false;
 function openPanel(panel){
   const ps=q('panelscreen'),dock=q('dock');if(!ps)return;
   panelOpenIdx=Array.prototype.indexOf.call(panel.parentNode.children,panel);
-  if(dock){dock.classList.remove('away');dock.classList.add('open');dock.hidden=false;const tg=q('docktoggle');if(tg)tg.setAttribute('aria-expanded','true');}
+  if(dock){dockOpenedByPanel=!dock.classList.contains('open');dock.classList.remove('away');dock.classList.add('open');dock.hidden=false;const tg=q('docktoggle');if(tg)tg.setAttribute('aria-expanded','true');}
   ps.hidden=false;syncPanelScreen();lockScroll(true);
   requestAnimationFrame(()=>{ps.style.bottom=(dock?dock.getBoundingClientRect().height:0)+'px';ps.classList.add('shown');});
 }
 function closePanelScreen(){
-  const ps=q('panelscreen');if(!ps||ps.hidden)return;
+  const ps=q('panelscreen'),dock=q('dock');if(!ps||ps.hidden)return;
   ps.classList.remove('shown');lockScroll(false);panelOpenIdx=null;
+  if(dockOpenedByPanel&&dock){dock.classList.remove('open');const tg=q('docktoggle');if(tg)tg.setAttribute('aria-expanded','false');}
+  dockOpenedByPanel=false;
   setTimeout(()=>{ps.hidden=true;},180);
 }
 function syncPanelScreen(){
@@ -1035,8 +1063,8 @@ if('IntersectionObserver' in window){
     head.setAttribute('aria-expanded','false');
     head.addEventListener('click',()=>{if(as.hidden)openArt(a);});
   });
-  q('artclose').addEventListener('click',closeArt);
-  as.addEventListener('click',e=>{if(e.target.closest('input,button,select,textarea,label,.seg,a'))return;closeArt();});
+  q('artclose').addEventListener('click',e=>{e.stopPropagation();closeArt();});
+  as.addEventListener('click',e=>{if(e.target.closest('input,button,select,textarea,label,.seg,a,.panel,svg,canvas,img'))return;closeArt();});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!as.hidden)closeArt();});
 })();
 /* control dock: visible while the map or the explorer is on screen and their own controls are not */
