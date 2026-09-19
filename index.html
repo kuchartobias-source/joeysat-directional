@@ -87,12 +87,27 @@ svg{width:100%;height:auto;display:block}
 .card p{font-size:14px;color:var(--beige-l);margin:8px 0 0}
 /* explorer */
 .lead{max-width:62em;margin:0 0 16px}
-.controls{display:grid;grid-template-columns:repeat(3,1fr);gap:0 20px;padding:0 16px 14px;align-items:start}
+/* central hub: one control bar under the map, sticky while the explorer is on screen */
+.hubzone{position:relative}
+.hub{position:sticky;top:0;z-index:30;margin:14px 0 0;border-radius:3px;transition:background-color .18s ease,box-shadow .18s ease,border-color .18s ease}
+.hub.stuck{background:rgba(3,4,23,.94);border-color:rgba(255,252,250,.20);box-shadow:0 8px 26px rgba(0,0,0,.5)}
+.hubin{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:auto auto 1fr 1fr 1fr auto;gap:8px 22px;align-items:end;padding:10px 16px 12px}
+.hub .ctl{display:flex;flex-direction:column;gap:3px;min-width:0}
+.hub .seg{align-self:start}
+.hub .name{font-size:12px;color:var(--beige-d);white-space:nowrap}
+.hub .name output{color:var(--white);font-weight:600;margin-left:6px}
+.hub .seg button{padding:4px 11px;font-size:13px}
+.hub input[type=range]{margin:0;height:24px}
+.hub .livebar .lab{font-size:11px}
+.hub .livebar .num{font-size:20px}
+.hub .btn{margin:0;width:auto;padding:8px 16px;font-size:14px;align-self:center}
+@media (max-width:860px){.hub{display:none}}
+.controls{display:grid;grid-template-columns:repeat(3,1fr);gap:0 20px;padding:14px 16px 14px;align-items:start}
 .toprow{grid-column:1/-1;display:grid;grid-template-columns:1fr auto auto;gap:24px;align-items:end;padding-top:18px;border-bottom:1px solid rgba(255,252,250,.10);padding-bottom:14px}
 .toprow .btn{margin:0 6px 0 0;width:auto;padding:9px 18px}
 .toprow .phasectl{margin:0}
 .livebar{padding:0}
-.controls>.tried{grid-column:1/-1}
+.controls>.tried{grid-column:1/-1;margin-top:10px}
 .livebar .lab{display:block;font-size:12px;color:var(--beige-d)}
 .livebar .num{font-size:24px;line-height:1.1}
 .livebar .num span{margin-right:14px;white-space:nowrap}
@@ -174,13 +189,14 @@ ul.plain li{margin:0 0 6px}
 .dock[hidden]{display:none}
 .dockbody{max-width:1120px;margin:0 auto;padding:8px 18px 10px;display:grid;grid-template-columns:auto 1fr 1fr 1fr auto;gap:8px 20px;align-items:end}
 .dock .ctl{display:flex;flex-direction:column;gap:2px}
+.dock .seg{align-self:start}
 .dock .name{font-size:12px;color:var(--beige-d);white-space:nowrap}
 .dock .name output{color:var(--white);font-weight:600;margin-left:6px}
 .dock .seg button{padding:4px 10px;font-size:13px}
 .dock input[type=range]{margin:0;height:24px}
 .dock .btn{margin:0;width:auto;padding:7px 14px;font-size:14px;box-shadow:0 0 0 2px rgba(254,177,97,.18),0 0 18px 2px rgba(255,157,0,.28)}
 .dockbtn{display:none}
-@media (min-width:861px){.dock{top:0;border-bottom:1px solid rgba(255,252,250,.14)}}
+@media (min-width:861px){.dock{display:none}}
 @media (max-width:860px){
   .dock{bottom:0;border-top:1px solid rgba(255,252,250,.14)}
   .dockbtn{display:block;width:100%;padding:9px;font:inherit;font-weight:600;background:transparent;border:0;color:var(--orange);cursor:pointer}
@@ -211,53 +227,49 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
       <div class="vbar"><span class="vlab">median proton elevation angle per 5° cell [deg]</span><div class="vg" id="cbar"></div><span class="vt vt-hi">68</span><span class="vt vt-mid">52</span><span class="vt vt-lo">36</span></div>
     </div>
     <div class="mapctl2">
-      <div class="ctl"><span class="name">Phase</span><div class="seg" id="seg-map" role="group" aria-label="Map phase"><button type="button" data-v="I" aria-pressed="true">I, 613 km</button><button type="button" data-v="II" aria-pressed="false">II, 1175 km</button></div></div>
       <div class="ctl"><span class="name">Population</span><div class="seg" id="seg-pop" role="group" aria-label="Map population"><button type="button" data-v="all" aria-pressed="true">all protons</button><button type="button" data-v="fid" aria-pressed="false">fiducial selection</button></div></div>
       <div class="ctl"><span class="name">Layers</span><div class="seg" id="seg-layers" role="group" aria-label="Map layers"><button type="button" data-v="iso" aria-pressed="true">|I| isolines</button></div></div>
-      <div class="ctl gb"><label class="name" for="h-b">Guard band</label><div><output id="o-hb" for="h-b"></output><input type="range" class="sl-b" id="h-b" min="0" max="9" step="1" aria-label="Guard band width"></div></div>
     </div>
     <p class="cap" id="mapcap"></p>
   </div>
+
+</div>
+
+<div class="hubzone">
+<div class="hub glass" id="hub">
+  <div class="hubin">
+    <div class="livebar"><span class="lab">core slope, deg per deg</span><div class="num" id="livebar"></div></div>
+    <div class="ctl"><span class="name">Phase</span><div class="seg" id="seg-phase" role="group" aria-label="Phase"><button type="button" data-v="I" aria-pressed="false">I</button><button type="button" data-v="II" aria-pressed="false">II</button><button type="button" data-v="both" aria-pressed="true">both</button></div></div>
+    <div class="ctl sl"><span class="name">Cluster width <output class="o-w2d"></output></span><input type="range" class="sl-w2d" min="0" max="25" step="1" aria-label="Cluster width limit"></div>
+    <div class="ctl sl"><span class="name">Guard band <output class="o-b"></output></span><input type="range" class="sl-b" min="0" max="9" step="1" aria-label="Guard band width"></div>
+    <div class="ctl sl"><span class="name">Occupancy <output class="o-occ"></output></span><input type="range" class="sl-occ" min="0" max="8" step="1" aria-label="Occupancy threshold"></div>
+    <button type="button" class="btn" id="reset">Back to the paper's selection</button>
+  </div>
+</div>
 
   <div class="cards">
     <div class="card glass"><span class="lab">Sign of the dependence</span><span class="k">negative in both phases</span><p>The median elevation angle of protons in the core falls with the local magnetic inclination, under every selection, control variable, spectral band and time interval examined.</p></div>
     <div class="card glass"><span class="lab">Isotropic control</span><span class="k">consistent with zero</span><p id="card-iso"></p></div>
     <div class="card glass"><span class="lab">Magnitude, deg per deg</span><span class="k" id="card-mag"></span><p>The size follows the cluster-width limit and shows no plateau at any limit that retains single tracks, so the paper reports the existence and sign of the signature, not a calibrated slope.</p></div>
   </div>
-</div>
 
 <section id="explorer">
   <h2>Selection explorer</h2>
   <p class="lead">Every point in the scans is a full re-analysis at that selection, 4680 fits in all; nothing is interpolated and the sliders stop only where a fit was run. The scan under each slider gives the fitted core slope along that axis, the panels below the profile it is fitted to. Reference and isotropic control are shown at the same selection.</p>
   <div class="controls glass">
-    <div class="toprow">
-      <div class="livebar"><span class="lab">core slope for this selection, deg per deg</span><div class="num" id="livebar"></div></div>
-      <div class="control phasectl">
-        <div class="row"><span class="name">Phase</span></div>
-        <div class="seg" id="seg-phase" role="group" aria-label="Phase"><button type="button" data-v="I" aria-pressed="false">I</button><button type="button" data-v="II" aria-pressed="false">II</button><button type="button" data-v="both" aria-pressed="true">both</button></div>
-      </div>
-      <button type="button" class="btn only-desktop" id="reset">Back to the paper's selection</button>
-    </div>
     <div class="control">
-      <div class="row"><label class="name" for="s-w2d">Cluster width</label><output id="o-w2d" for="s-w2d"></output></div>
+      <div class="row"><span class="name">Cluster width</span><output id="o-w2d"></output></div>
       <div class="panel mini" id="st-w2d"></div>
-      <input type="range" class="sl-w2d" id="s-w2d" min="0" max="25" step="1" aria-label="Cluster width limit">
-      <div class="ticks"><span>1.2 px</span><span>no limit</span></div>
     </div>
     <div class="control">
-      <div class="row"><label class="name" for="s-b">Guard band</label><output id="o-b" for="s-b"></output></div>
+      <div class="row"><span class="name">Guard band</span><output id="o-b"></output></div>
       <div class="panel mini" id="st-b"></div>
-      <input type="range" class="sl-b" id="s-b" min="0" max="9" step="1" aria-label="Guard band width">
-      <div class="ticks"><span>0°</span><span>30°</span></div>
     </div>
     <div class="control">
-      <div class="row"><label class="name" for="s-occ">Occupancy</label><output id="o-occ" for="s-occ"></output></div>
+      <div class="row"><span class="name">Occupancy</span><output id="o-occ"></output></div>
       <div class="panel mini" id="st-occ"></div>
-      <input type="range" class="sl-occ" id="s-occ" min="0" max="8" step="1" aria-label="Occupancy threshold">
-      <div class="ticks"><span>12 clusters</span><span>no threshold</span></div>
-      <div class="only-mobile"><button type="button" class="btn" id="reset2">Back to the paper's selection</button><p class="tried" id="tried2"></p></div>
     </div>
-    <p class="tried only-desktop" id="tried"></p>
+    <p class="tried" id="tried"></p>
   </div>
   <div class="out">
     <div class="readouts" id="readouts"></div>
@@ -265,6 +277,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
     <p class="legend" id="legend"></p>
   </div>
 </section>
+</div>
 
 <section>
   <h2>Definitions</h2>
@@ -358,6 +371,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
     <div class="ctl sl"><span class="name">Guard band <output class="o-b"></output></span><input type="range" class="sl-b" min="0" max="9" step="1" aria-label="Guard band width"></div>
     <div class="ctl sl"><span class="name">Occupancy <output class="o-occ"></output></span><input type="range" class="sl-occ" min="0" max="8" step="1" aria-label="Occupancy threshold"></div>
     <button type="button" class="btn dockreset" id="reset3">Back to the paper's selection</button>
+    <p class="tried" id="tried2"></p>
   </div>
 </div>
 <div id="lightbox" class="lightbox" hidden><div class="lbin"><h3></h3><img alt=""><p class="small"></p></div></div>
@@ -550,11 +564,10 @@ function renderMap(){
   let pc=g.P(cx,cy);ctx.textAlign='center';ctx.font='600 '+FL+'px Figtree, sans-serif';ctx.fillStyle='#FFFCFA';ctx.fillText('core',pc[0],pc[1]+FL/3);
   pc=g.P(-150,64);ctx.textAlign='left';ctx.fillText('reference',pc[0],pc[1]);
   pc=g.P(cx,Math.min(85,top+b+3));ctx.textAlign='center';ctx.font='600 '+FS+'px Figtree, sans-serif';ctx.fillText(b?'guard band \u00b1'+b+'\u00b0, excluded':'no guard band',pc[0],pc[1]-4);
-  const o=q('o-hb');if(o)o.textContent=b?'\u00b1'+b+'\u00b0 around the contour':'none, contour only';
   const cur=currentLayer(m),A=m.layers.all;
   const nMed=cur.lay.median_5deg.reduce((a,row)=>a+row.filter(v=>v!==A.missing&&v!==null).length,0);
   const single=D.site_numbers.table_I&&D.site_numbers.table_I[p]&&D.site_numbers.table_I[p].protons?(D.site_numbers.table_I[p].protons-A.n_total):null;
-  q('mapcap').textContent='White line: the contour of the anomaly at '+ALT[p]+', a fixed level of the AP9 proton flux above 10 MeV; hatched: the guard band excluded on both sides of it, inside lies the core, outside the reference. Colour: median elevation angle of '+cur.desc+', '+fmtN(cur.n)+' clusters, per 5\u00b0 cell holding at least '+A.min_cell_n+' of them ('+fmtN(nMed)+' cells coloured); cells with fewer are left dark.'+(mapState.pop==='all'&&single!==null?' Single-pixel clusters ('+single+' here) have no axis and are left out, which is why the total falls short of the classification count by that number.':'')+' Thin lines: |I| at 24\u00b0, 36\u00b0, 48\u00b0 and 60\u00b0; the same inclination occurs inside the anomaly and far from it, which is what makes the two regions comparable. Projection: '+(g.proj==='ee'?'Equal Earth':'equirectangular')+'; coastline data: Natural Earth.';
+  q('mapcap').textContent='Phase '+p+', '+ALT[p]+'. White line: the contour of the anomaly, a fixed level of the AP9 proton flux above 10 MeV; hatched: the guard band excluded on both sides of it, inside lies the core, outside the reference. Colour: median elevation angle of '+cur.desc+', '+fmtN(cur.n)+' clusters, per 5\u00b0 cell holding at least '+A.min_cell_n+' of them ('+fmtN(nMed)+' cells coloured); cells with fewer are left dark.'+(mapState.pop==='all'&&single!==null?' Single-pixel clusters ('+single+' here) have no axis and are left out, which is why the total falls short of the classification count by that number.':'')+' Thin lines: |I| at 24\u00b0, 36\u00b0, 48\u00b0 and 60\u00b0; the same inclination occurs inside the anomaly and far from it, which is what makes the two regions comparable. Projection: '+(g.proj==='ee'?'Equal Earth':'equirectangular')+'; coastline data: Natural Earth.';
 }
 
 /* ---------- geometry explainer: slider on the projected length ---------- */
@@ -716,24 +729,25 @@ document.querySelectorAll('.sl-w2d').forEach(e=>{e.max=AX.w2d.length-1;e.value=s
 document.querySelectorAll('.sl-b').forEach(e=>{e.max=AX.b.length-1;e.value=st.bi;e.addEventListener('input',ev=>{st.bi=+ev.target.value;render();});});
 document.querySelectorAll('.sl-occ').forEach(e=>{e.max=AX.occ.length-1;e.value=st.oi;e.addEventListener('input',ev=>{st.oi=+ev.target.value;render();});});
 function pressSeg(id,v){const sg=q(id);if(!sg)return;sg.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===v?'true':'false'));}
-function setPhase(v){st.phase=v;if(v!=='both')mapState.phase=v;pressSeg('seg-phase',v);pressSeg('seg-dock',v);pressSeg('seg-map',mapState.phase);render();}
+function setPhase(v){st.phase=v;if(v!=='both')mapState.phase=v;pressSeg('seg-phase',v);pressSeg('seg-dock',v);render();}
 function seg(id,fn){const sg=q(id);if(!sg)return;sg.addEventListener('click',e=>{const bt=e.target.closest('button');if(!bt)return;sg.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===bt?'true':'false'));fn(bt.dataset.v);});}
-seg('seg-phase',setPhase);seg('seg-dock',setPhase);seg('seg-map',setPhase);
+seg('seg-phase',setPhase);seg('seg-dock',setPhase);
 seg('seg-ops',v=>{opsState.phase=v;renderOpsMap();});
 seg('seg-pop',v=>{mapState.pop=v;renderMap();});
 q('seg-layers').addEventListener('click',e=>{const bt=e.target.closest('button');if(!bt)return;const on=bt.getAttribute('aria-pressed')!=='true';bt.setAttribute('aria-pressed',on?'true':'false');mapState[bt.dataset.v]=on;renderMap();});
 const doReset=()=>{st.wi=NOMINAL.w2d;st.bi=NOMINAL.b;st.oi=NOMINAL.occ;render();};
-['reset','reset2','reset3'].forEach(id=>{const e=q(id);if(e)e.addEventListener('click',doReset);});
+['reset','reset3'].forEach(id=>{const e=q(id);if(e)e.addEventListener('click',doReset);});
 q('s-l2d').addEventListener('input',renderGeom);
 let rt=null;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{baseCache={};renderMap();updateDock();},200);});
 /* control dock: visible while the map or the explorer is on screen and their own controls are not */
 const dock=q('dock');
+const hub=q('hub'),hubzone=document.querySelector('.hubzone');
 function updateDock(){
-  const mapEl=document.querySelector('.map'),ctl=document.querySelector('.mapctl2'),ex=q('explorer');if(!mapEl||!ex)return;
+  if(!hubzone)return;
   const y=window.scrollY,vh=window.innerHeight,mobile=window.innerWidth<=860;
-  const ctlBottom=ctl.getBoundingClientRect().bottom+y,exBottom=ex.getBoundingClientRect().bottom+y;
-  const show=mobile?(y+vh>mapEl.getBoundingClientRect().top+y+200&&y<exBottom-vh*0.3):(y>ctlBottom-60&&y<exBottom-vh*0.5);
-  dock.hidden=!show;
+  const r=hubzone.getBoundingClientRect(),top=r.top+y,bottom=r.bottom+y;
+  if(mobile){dock.hidden=!(y+vh>top+160&&y<bottom-vh*0.25);}
+  else{dock.hidden=true;if(hub)hub.classList.toggle('stuck',hub.getBoundingClientRect().top<=0.5);}
 }
 q('docktoggle').addEventListener('click',()=>{const open=!dock.classList.contains('open');dock.classList.toggle('open',open);dock.setAttribute('aria-expanded',open?'true':'false');q('docktoggle').setAttribute('aria-expanded',open?'true':'false');});
 let dt=null;window.addEventListener('scroll',()=>{if(dt)return;dt=requestAnimationFrame(()=>{dt=null;updateDock();});},{passive:true});
