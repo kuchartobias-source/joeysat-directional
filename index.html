@@ -38,17 +38,20 @@ a{color:var(--white)}
 .note{font-size:14px;color:var(--grey);border-left:2px solid var(--orange);padding:2px 10px;margin:6px 0 20px}
 .sub{color:var(--beige-d);font-size:17px;margin:0 0 14px;max-width:62em}
 .map{background:#0B0C1B;border:1px solid rgba(255,252,250,.12);border-radius:3px;padding:6px 6px 8px}
-#map{position:relative;min-height:60px}
+#map{position:relative;min-height:60px;cursor:zoom-in}
 #map canvas{position:relative;z-index:1}
 .maphint{position:absolute;inset:0;display:grid;place-items:center;margin:0;color:var(--beige-d);font-size:14px;text-align:center;z-index:0}
 .mapfull{margin:6px 0 0;width:100%;padding:7px;background:rgba(201,189,178,.14);border:1px solid rgba(255,252,250,.18);border-radius:2px;color:var(--beige-l);font:inherit;font-size:13px;cursor:pointer}
 #mapscreen{position:fixed;inset:0;z-index:60;background:var(--black);display:grid;grid-template-rows:1fr auto;padding:4px 2px}
 #mapscreen[hidden]{display:none}
 #mapscreen .rotwrap{display:grid;place-items:center;overflow:hidden;min-height:0}
-#mapscreen canvas{transform:rotate(-90deg);transform-origin:center}
+@media (max-width:860px){#mapscreen canvas{transform:rotate(-90deg);transform-origin:center}}
 #mapscreen .msctl{display:grid;gap:8px;padding:8px 4px 4px}
 #mapscreen .msctl .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-#mapscreen .msctl .name{font-size:12px;color:var(--beige-d)}
+#mapscreen .msctl{max-width:1120px;margin:0 auto;width:100%}
+#mapscreen .msctl .name{font-size:13px;color:var(--beige-d);min-width:9em}
+#mapscreen .msctl .row{gap:14px}
+@media (min-width:861px){#mapscreen{padding:18px}#mapscreen .msctl{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 30px}#mapscreen .msctl .close{grid-column:2;justify-self:end}}
 #mapscreen .close{justify-self:end;background:none;border:0;color:var(--orange);font:inherit;cursor:pointer;padding:4px 8px}
 /* map: canvas with a vertical colour bar at its right, controls in one row below */
 .maprow{display:grid;grid-template-columns:minmax(0,1fr) 66px;gap:8px;align-items:stretch}
@@ -86,13 +89,14 @@ a{color:var(--white)}
 .panel .seg{border-color:#6a7075}.panel .seg button{color:var(--ink)}.panel .seg button+button{border-left-color:#6a7075}.panel .seg button[aria-pressed=true]{background:var(--ink);color:var(--beige-l)}
 .cap{color:var(--grey);font-size:13.5px;margin:0;min-height:7.6em}
 .fadewrap{position:relative}
+@media (max-width:760px){.card.fadewrap.collapsed .fadebody{max-height:1.7em}}
 .fadebtn{display:none}
 @media (max-width:760px){
   .cap{min-height:0}
   .fadewrap.collapsed .fadebody{max-height:3.1em;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,#000 45%,rgba(0,0,0,.3) 80%,transparent 100%);mask-image:linear-gradient(180deg,#000 45%,rgba(0,0,0,.3) 80%,transparent 100%)}
   .fadebtn{display:flex;align-items:center;justify-content:center;width:100%;background:none;border:0;padding:5px 0 1px;cursor:pointer}
-  .fadebtn i{display:block;width:13px;height:13px;border-right:2px solid var(--orange);border-bottom:2px solid var(--orange);transform:rotate(45deg) translate(-2px,-2px);transition:transform .18s ease}
-  .fadewrap:not(.collapsed) .fadebtn i{transform:rotate(-135deg) translate(-2px,-2px)}
+  .fadebtn i{display:block;width:18px;height:11px;background:var(--orange);-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='460 295 624 402'><path d='M581.973 295.338 759.208 615.524C761.752 618.357 764.296 624.024 771.929 624.024 779.561 624.024 782.105 618.357 784.649 615.524L961.884 295.338 1083.15 295.338 867.754 653.493C855.882 672.194 832.986 696.562 771.929 696.562 745.64 696.562 698.999 692.595 676.103 653.493L460.707 295.338 581.973 295.338Z' fill='black'/></svg>") no-repeat center/contain;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='460 295 624 402'><path d='M581.973 295.338 759.208 615.524C761.752 618.357 764.296 624.024 771.929 624.024 779.561 624.024 782.105 618.357 784.649 615.524L961.884 295.338 1083.15 295.338 867.754 653.493C855.882 672.194 832.986 696.562 771.929 696.562 745.64 696.562 698.999 692.595 676.103 653.493L460.707 295.338 581.973 295.338Z' fill='black'/></svg>") no-repeat center/contain;transition:transform .2s ease}
+  .fadewrap:not(.collapsed) .fadebtn i{transform:rotate(180deg)}
 }
 .seg{display:inline-flex;border:1px solid var(--beige-d);border-radius:2px;overflow:hidden}
 .seg button{background:transparent;border:0;padding:5px 12px;font:inherit;font-size:14px;color:var(--beige-l);cursor:pointer}
@@ -100,16 +104,23 @@ a{color:var(--white)}
 .seg button[aria-pressed=true]{background:var(--beige-l);color:var(--ink)}
 input[type=range]{width:100%;margin:6px 0 0;accent-color:var(--orange);cursor:pointer;height:28px}
 section{margin-top:40px}
-.articles{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px;align-items:start}
-.art{margin:0;background:rgba(201,189,178,.09);border:1px solid rgba(255,252,250,.12);border-radius:3px;padding:2px 18px}
-.art.open{grid-column:1/-1;background:rgba(201,189,178,.13)}
+.articles{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:14px;margin-top:40px;align-items:start}
+.artcol{display:grid;gap:16px;align-content:start}
+.artcol:not(.wide) .arthead{padding:52px 0}
+.artcol:not(.wide) .arthead h2{font-size:clamp(17px,1.9vw,22px)}
+.artcol:not(.wide) .artsum{font-size:14px}
+.art{margin:0;background:rgba(201,189,178,.09);border:1px solid rgba(255,252,250,.12);border-radius:3px;padding:2px 16px}
+.art.open{background:rgba(201,189,178,.13)}
+.art .artbody{display:grid;grid-template-rows:0fr;transition:grid-template-rows .28s ease}
+.art.open .artbody{grid-template-rows:1fr}
+.art .artbody>*{overflow:hidden;min-height:0}
+@media (prefers-reduced-motion:reduce){.art .artbody{transition:none}}
 .arthead{display:grid;grid-template-columns:minmax(0,1fr) 22px;align-items:center;gap:3px 14px;width:100%;background:none;border:0;padding:14px 0;text-align:left;cursor:pointer;color:inherit;font:inherit}
 .arthead h2{margin:0;grid-column:1;grid-row:1;font-size:clamp(16px,1.7vw,21px);line-height:1.15}
 .artsum{grid-column:1;grid-row:2;color:var(--beige-d);font-size:13.5px;line-height:1.3}
-.chev{width:14px;height:14px;border-right:2px solid var(--orange);border-bottom:2px solid var(--orange);transform:rotate(45deg) translate(-3px,-3px);transition:transform .18s ease;grid-column:2;grid-row:1/3;justify-self:end;align-self:center}
-.art.open .chev{transform:rotate(-135deg) translate(-2px,-2px)}
-.artbody{display:none;padding-bottom:16px}
-.art.open .artbody{display:block}
+.chev{width:20px;height:13px;background:var(--orange);-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='460 295 624 402'><path d='M581.973 295.338 759.208 615.524C761.752 618.357 764.296 624.024 771.929 624.024 779.561 624.024 782.105 618.357 784.649 615.524L961.884 295.338 1083.15 295.338 867.754 653.493C855.882 672.194 832.986 696.562 771.929 696.562 745.64 696.562 698.999 692.595 676.103 653.493L460.707 295.338 581.973 295.338Z' fill='black'/></svg>") no-repeat center/contain;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='460 295 624 402'><path d='M581.973 295.338 759.208 615.524C761.752 618.357 764.296 624.024 771.929 624.024 779.561 624.024 782.105 618.357 784.649 615.524L961.884 295.338 1083.15 295.338 867.754 653.493C855.882 672.194 832.986 696.562 771.929 696.562 745.64 696.562 698.999 692.595 676.103 653.493L460.707 295.338 581.973 295.338Z' fill='black'/></svg>") no-repeat center/contain;transition:transform .2s ease;grid-column:2;grid-row:1/3;justify-self:end;align-self:center}
+.art.open .chev{transform:rotate(180deg)}
+
 @media (max-width:760px){.articles{grid-template-columns:1fr;gap:10px}.artsum{font-size:13px}}
 @media (prefers-reduced-motion:reduce){.chev{transition:none}}
 .glass{background:rgba(201,189,178,.13);border:1px solid rgba(255,252,250,.12);border-radius:3px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
@@ -190,17 +201,18 @@ svg{width:100%;height:auto;display:block}
   .controls{display:block}
   .toprow{display:block;border-bottom:0;padding:0}
   .toprow .phasectl{margin-top:8px}
-  .readouts,.panels{grid-template-columns:1fr 1fr;gap:8px;min-height:0}
+  .readouts,.panels{grid-template-columns:1fr 1fr;gap:6px;min-height:0}
   .readout{min-height:0;padding:8px 9px}
   .readout h3{font-size:13px}
-  .rv .lab{font-size:11px}.rv .num{font-size:20px;min-width:0}.rv .num.small{font-size:15px}.rv .ci{font-size:10.5px;min-height:0}
-  .counts{font-size:10.5px;min-height:0}
+  .rv{column-gap:6px}.rv .lab{font-size:10px}.rv .num{font-size:17px;min-width:0}.rv .num.small{font-size:13px}.rv .ci{font-size:9.5px;min-height:0;line-height:1.25}
+  .counts{font-size:9.5px;min-height:0;line-height:1.3}
   .panels .panel{padding:4px 4px 2px;cursor:zoom-in}
   .opscol .panel{padding:6px 4px 4px}
   .rot{transform:rotate(-90deg);transform-origin:center;width:var(--rw);height:var(--rh)}
   .rotbox{display:grid;place-items:center;overflow:hidden}
   .panels .panel h3{font-size:11px}
-  .binrow{font-size:9px;margin:2px 2px 2px}
+  .binrow{font-size:8px;margin:1px 1px}
+  .panels .panel h3{margin:0 2px}
 }
 /* two- and three-column text blocks */
 .two{display:grid;grid-template-columns:2fr 3fr;gap:24px;align-items:start}
@@ -216,10 +228,12 @@ svg{width:100%;height:auto;display:block}
 .def h3,.item h3{color:var(--orange);font-family:Figtree,sans-serif;font-weight:600;font-size:15px;letter-spacing:.02em;margin:0 0 4px}
 .def p{margin:0}
 .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:12px}
-.gallery{grid-template-columns:repeat(3,minmax(0,1fr))}
-@media (max-width:900px){.gallery{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:620px){.gallery{grid-template-columns:1fr}}
-.tile img{width:100%;height:232px;object-fit:contain;object-position:center;margin:0}
+.gallery{grid-template-columns:repeat(9,minmax(0,1fr));gap:7px}
+@media (max-width:900px){.gallery{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}}
+.tile{padding:5px 5px 3px}
+.tile img{width:100%;height:74px;object-fit:contain;object-position:center;margin:0}
+.tile .tlabel{display:block;font-size:10px;line-height:1.15;min-height:2.3em;color:#4a4f55;text-align:center;margin:3px 2px 0}
+.tile::after{font-size:11px;right:4px;top:3px}
 .gallery .tile .tlabel{font-size:12px;color:#4a4f55;text-align:center;margin:2px 4px 2px}
 @media (max-width:620px){
   .gallery{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
@@ -239,7 +253,10 @@ svg{width:100%;height:auto;display:block}
 .tile img{margin-top:4px}
 ul.plain{margin:0;padding-left:1.1em}
 ul.plain li{margin:0 0 6px}
-.geopanel{padding:8px 12px 12px}
+.geopanel{padding:6px 10px 8px;margin:0 0 10px}
+.geopanel .control{margin-top:4px}
+.geopanel .val .k{font-size:19px}
+.geopanel .val .lab{font-size:12px}
 .geopanel .control .name,.geopanel .control output{color:var(--ink)}
 .geopanel .val{display:grid;grid-template-columns:7.5em 6em minmax(0,1fr);gap:10px;margin-top:8px}
 @media (max-width:760px){.geopanel .val{grid-template-columns:1fr 1fr}.geopanel .val>div:last-child{grid-column:1/-1}.geopanel .val .k{white-space:normal}}
@@ -324,7 +341,6 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
   <div class="map">
     <div class="maprow">
       <div id="map"><p class="maphint">Tap a control below to draw the map</p></div>
-      <button type="button" class="mapfull only-mobile" id="mapfull">Show the map across the screen</button>
       <div class="vbar"><span class="vlab">median proton elevation angle per 5° cell [deg]</span><div class="vg" id="cbar"></div><span class="vt vt-hi">68</span><span class="vt vt-mid">52</span><span class="vt vt-lo">36</span></div>
     </div>
     <div class="mapfoot2">
@@ -383,6 +399,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
 </div>
 
 <div class="articles">
+<div class="artcol">
 <section class="art" id="definitions">
   <button type="button" class="arthead"><h2>Definitions</h2><span class="artsum">Regions, profile and fit, isotropic control</span><span class="chev" aria-hidden="true"></span></button>
   <div class="artbody">
@@ -393,26 +410,6 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
   </div>
   </div>
 </section>
-
-<section class="art geo" id="geometry">
-  <button type="button" class="arthead"><h2>How one layer of silicon sees an angle</h2><span class="artsum">Projected track length, the floor and the ceiling</span><span class="chev" aria-hidden="true"></span></button>
-  <div class="artbody">
-  <div class="two eq">
-    <div>
-      <p>A particle crossing the 500 µm sensor deposits charge along its path. Projected onto the pixel matrix the track has a length L2D, counted in pixels of pitch p = 55 µm, and the elevation angle from the sensor normal follows from the geometry alone. The slider sets the measured quantity, the projected length; the angle is what the reconstruction reads from it.</p>
-      <p class="num" style="font-size:22px">β = arctan(p L2D / d)</p>
-      <p>The projected length is corrected for charge sharing by subtracting 2.5 times the lateral spread of the charge before it enters the formula. Two instrumental limits follow. Below about 25° the whole range is encoded in fewer than five pixels, and the residual length reflects the diffusion of the charge rather than the track; this reconstruction floor lies at 11.3° and 10.8° for protons in the two phases. At the other end the longest track that fits the 128 pixel read-out corresponds to 85.9°, and steeper tracks pile up at that ceiling.</p>
-    </div>
-    <div class="panel geopanel">
-      <div id="geom"></div>
-      <div class="cluex"><img id="cluimg" alt="" loading="lazy"><p class="small" id="clucap"></p></div>
-      <div class="control"><div class="row"><label class="name" for="s-l2d">Projected track length</label><output id="o-l2d" for="s-l2d"></output></div><input type="range" id="s-l2d" min="0" max="140" step="1" value="9" aria-label="Projected track length in pixels"></div>
-      <div class="val"><div><span class="k" id="v-beta"></span><span class="lab">angle β</span></div><div><span class="k" id="v-l3d"></span><span class="lab">path [µm]</span></div><div><span class="k" id="v-reg"></span><span class="lab">regime</span></div></div>
-    </div>
-  </div>
-  </div>
-</section>
-
 <section class="art" id="inclination">
   <button type="button" class="arthead"><h2>Why inclination is the axis</h2><span class="artsum">Three reference behaviours and the measured profile</span><span class="chev" aria-hidden="true"></span></button>
   <div class="artbody">
@@ -426,7 +423,6 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
   </div>
   </div>
 </section>
-
 <section class="art" id="instrument">
   <button type="button" class="arthead"><h2>The instrument in operation</h2><span class="artsum">Cadence, exposure control and where the time goes</span><span class="chev" aria-hidden="true"></span></button>
   <div class="artbody">
@@ -443,7 +439,29 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
   </div>
   </div>
 </section>
+</div>
+<div class="artcol wide">
+<section class="art geo" id="geometry">
+  <button type="button" class="arthead"><h2>How one layer of silicon sees an angle</h2><span class="artsum">Projected track length, the floor and the ceiling</span><span class="chev" aria-hidden="true"></span></button>
+  <div class="panel geopanel">
+      <div id="geom"></div>
+      <div class="control"><div class="row"><label class="name" for="s-l2d">Projected track length</label><output id="o-l2d" for="s-l2d"></output></div><input type="range" id="s-l2d" min="0" max="140" step="1" value="9" aria-label="Projected track length in pixels"></div>
+      <div class="val"><div><span class="k" id="v-beta"></span><span class="lab">angle β</span></div><div><span class="k" id="v-l3d"></span><span class="lab">path [µm]</span></div><div><span class="k" id="v-reg"></span><span class="lab">regime</span></div></div>
+    </div>
 
+
+  <div class="artbody">
+  <div class="two eq">
+    <div>
+      <p>A particle crossing the 500 µm sensor deposits charge along its path. Projected onto the pixel matrix the track has a length L2D, counted in pixels of pitch p = 55 µm, and the elevation angle from the sensor normal follows from the geometry alone. The slider sets the measured quantity, the projected length; the angle is what the reconstruction reads from it.</p>
+      <p class="num" style="font-size:22px">β = arctan(p L2D / d)</p>
+      <p>The projected length is corrected for charge sharing by subtracting 2.5 times the lateral spread of the charge before it enters the formula. Two instrumental limits follow. Below about 25° the whole range is encoded in fewer than five pixels, and the residual length reflects the diffusion of the charge rather than the track; this reconstruction floor lies at 11.3° and 10.8° for protons in the two phases. At the other end the longest track that fits the 128 pixel read-out corresponds to 85.9°, and steeper tracks pile up at that ceiling.</p>
+      <div class="cluex"><img id="cluimg" alt="" loading="lazy"><p class="small" id="clucap"></p></div>
+    </div>
+      </div>
+  </div>
+</section>
+</div>
 </div>
 
 <section>
@@ -698,8 +716,10 @@ function renderMap(){
 function fitMapScreen(){
   const box=q('mapscreenbox');if(!box)return;
   const cv=box.querySelector('canvas');if(!cv)return;
-  const bw=box.clientWidth,bh=box.clientHeight;
-  const Wp=Math.min(bh,bw*MW/MH)*0.995, Hp=Wp*MH/MW;   /* rotated: the CSS width shows as height */
+  const bw=box.clientWidth,bh=box.clientHeight,rot=window.innerWidth<=860;
+  let Wp,Hp;
+  if(rot){Wp=Math.min(bh,bw*MW/MH)*0.995;Hp=Wp*MH/MW;}
+  else{Wp=Math.min(bw,bh*MW/MH)*0.995;Hp=Wp*MH/MW;}
   cv.style.width=Wp+'px';cv.style.height=Hp+'px';
 }
 function openMapScreen(){
@@ -915,7 +935,7 @@ seg('seg-pop',v=>{mapState.pop=v;pressSeg('seg-pop2',v);renderMap();});
 seg('seg-pop2',v=>{mapState.pop=v;pressSeg('seg-pop',v);renderMap();});
 seg('seg-ms',setPhase);
 q('seg-layers2').addEventListener('click',e=>{const bt=e.target.closest('button');if(!bt)return;const on=bt.getAttribute('aria-pressed')!=='true';bt.setAttribute('aria-pressed',on?'true':'false');const m=q('seg-layers').querySelector('[data-v=iso]');if(m)m.setAttribute('aria-pressed',on?'true':'false');mapState.iso=on;renderMap();});
-q('mapfull').addEventListener('click',openMapScreen);
+document.getElementById('map').addEventListener('click',e=>{if(e.target.closest('.maphint'))return;openMapScreen();});
 q('mapscreenclose').addEventListener('click',()=>{q('mapscreen').hidden=true;});
 q('dockback').addEventListener('click',()=>{document.querySelector('.map').scrollIntoView({behavior:'smooth',block:'start'});});
 q('seg-layers').addEventListener('click',e=>{const bt=e.target.closest('button');if(!bt)return;const on=bt.getAttribute('aria-pressed')!=='true';bt.setAttribute('aria-pressed',on?'true':'false');mapState[bt.dataset.v]=on;renderMap();});
