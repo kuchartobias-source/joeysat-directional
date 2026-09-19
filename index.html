@@ -41,6 +41,15 @@ a{color:var(--white)}
 #map{position:relative;min-height:60px}
 #map canvas{position:relative;z-index:1}
 .maphint{position:absolute;inset:0;display:grid;place-items:center;margin:0;color:var(--beige-d);font-size:14px;text-align:center;z-index:0}
+.mapfull{margin:6px 0 0;width:100%;padding:7px;background:rgba(201,189,178,.14);border:1px solid rgba(255,252,250,.18);border-radius:2px;color:var(--beige-l);font:inherit;font-size:13px;cursor:pointer}
+#mapscreen{position:fixed;inset:0;z-index:60;background:var(--black);display:grid;grid-template-rows:1fr auto;padding:4px 2px}
+#mapscreen[hidden]{display:none}
+#mapscreen .rotwrap{display:grid;place-items:center;overflow:hidden;min-height:0}
+#mapscreen canvas{transform:rotate(-90deg);transform-origin:center}
+#mapscreen .msctl{display:grid;gap:8px;padding:8px 4px 4px}
+#mapscreen .msctl .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+#mapscreen .msctl .name{font-size:12px;color:var(--beige-d)}
+#mapscreen .close{justify-self:end;background:none;border:0;color:var(--orange);font:inherit;cursor:pointer;padding:4px 8px}
 /* map: canvas with a vertical colour bar at its right, controls in one row below */
 .maprow{display:grid;grid-template-columns:minmax(0,1fr) 66px;gap:8px;align-items:stretch}
 .vbar{position:relative;font-size:12px;color:var(--beige-d)}
@@ -52,6 +61,10 @@ a{color:var(--white)}
 @media (max-width:760px){.mapfoot2{grid-template-columns:1fr;gap:6px}}
 .mapctl2{display:flex;flex-direction:column;gap:10px;align-items:start}
 .mapctl2 .seg button{padding:4px 10px;font-size:13px}
+.mapctl2 .quiet .name{font-size:11px;opacity:.75}
+.seg.tiny{border-color:rgba(201,189,178,.5);border-radius:14px}
+.seg.tiny button{padding:2px 9px;font-size:11px;color:var(--beige-d)}
+.seg.tiny button[aria-pressed=true]{background:rgba(201,189,178,.22);color:var(--beige-l)}
 .mapctl2 .ctl{display:flex;flex-direction:column;gap:4px}
 .mapctl2 .ctl.gb{flex:1 1 320px}
 .mapctl2 .name{color:var(--beige-d);font-size:13px}
@@ -72,11 +85,14 @@ a{color:var(--white)}
 .mapctl .seg{justify-self:start}
 .panel .seg{border-color:#6a7075}.panel .seg button{color:var(--ink)}.panel .seg button+button{border-left-color:#6a7075}.panel .seg button[aria-pressed=true]{background:var(--ink);color:var(--beige-l)}
 .cap{color:var(--grey);font-size:13.5px;margin:0;min-height:7.6em}
-.capmore{display:none}
+.fadewrap{position:relative}
+.fadebtn{display:none}
 @media (max-width:760px){
   .cap{min-height:0}
-  .capwrap.collapsed .cap{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
-  .capmore{display:inline-block;margin-top:4px;background:none;border:0;padding:0;font:inherit;font-size:13px;color:var(--orange);cursor:pointer}
+  .fadewrap.collapsed .fadebody{max-height:3.1em;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,#000 45%,rgba(0,0,0,.3) 80%,transparent 100%);mask-image:linear-gradient(180deg,#000 45%,rgba(0,0,0,.3) 80%,transparent 100%)}
+  .fadebtn{display:flex;align-items:center;justify-content:center;width:100%;background:none;border:0;padding:5px 0 1px;cursor:pointer}
+  .fadebtn i{display:block;width:13px;height:13px;border-right:2px solid var(--orange);border-bottom:2px solid var(--orange);transform:rotate(45deg) translate(-2px,-2px);transition:transform .18s ease}
+  .fadewrap:not(.collapsed) .fadebtn i{transform:rotate(-135deg) translate(-2px,-2px)}
 }
 .seg{display:inline-flex;border:1px solid var(--beige-d);border-radius:2px;overflow:hidden}
 .seg button{background:transparent;border:0;padding:5px 12px;font:inherit;font-size:14px;color:var(--beige-l);cursor:pointer}
@@ -84,6 +100,18 @@ a{color:var(--white)}
 .seg button[aria-pressed=true]{background:var(--beige-l);color:var(--ink)}
 input[type=range]{width:100%;margin:6px 0 0;accent-color:var(--orange);cursor:pointer;height:28px}
 section{margin-top:40px}
+.articles{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px;align-items:start}
+.art{margin:0;background:rgba(201,189,178,.09);border:1px solid rgba(255,252,250,.12);border-radius:3px;padding:2px 18px}
+.art.open{grid-column:1/-1;background:rgba(201,189,178,.13)}
+.arthead{display:grid;grid-template-columns:minmax(0,1fr) 22px;align-items:center;gap:3px 14px;width:100%;background:none;border:0;padding:14px 0;text-align:left;cursor:pointer;color:inherit;font:inherit}
+.arthead h2{margin:0;grid-column:1;grid-row:1;font-size:clamp(16px,1.7vw,21px);line-height:1.15}
+.artsum{grid-column:1;grid-row:2;color:var(--beige-d);font-size:13.5px;line-height:1.3}
+.chev{width:14px;height:14px;border-right:2px solid var(--orange);border-bottom:2px solid var(--orange);transform:rotate(45deg) translate(-3px,-3px);transition:transform .18s ease;grid-column:2;grid-row:1/3;justify-self:end;align-self:center}
+.art.open .chev{transform:rotate(-135deg) translate(-2px,-2px)}
+.artbody{display:none;padding-bottom:16px}
+.art.open .artbody{display:block}
+@media (max-width:760px){.articles{grid-template-columns:1fr;gap:10px}.artsum{font-size:13px}}
+@media (prefers-reduced-motion:reduce){.chev{transition:none}}
 .glass{background:rgba(201,189,178,.13);border:1px solid rgba(255,252,250,.12);border-radius:3px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
 .panel{background:var(--beige-l);color:var(--ink);padding:8px 8px 6px;border:1px solid rgba(201,189,178,.6);border-radius:3px;box-shadow:0 0 0 3px rgba(201,189,178,.07)}
 .panel img{width:100%;height:auto;display:block}
@@ -120,7 +148,9 @@ svg{width:100%;height:auto;display:block}
 .toprow .btn{margin:0 6px 0 0;width:auto;padding:9px 18px}
 .toprow .phasectl{margin:0}
 .livebar{padding:0}
-.controls>.tried{grid-column:1/-1;margin-top:10px;min-height:3.2em}
+.controls>.triedwrap{grid-column:1/-1;margin-top:10px}
+.controls .tried{min-height:3.2em}
+@media (max-width:860px){.controls .tried{min-height:0}}
 .livebar .lab{display:block;font-size:12px;color:var(--beige-d)}
 .livebar .num{font-size:24px;line-height:1.1}
 .livebar .num span{display:inline-block;min-width:4.6em;white-space:nowrap}
@@ -160,14 +190,25 @@ svg{width:100%;height:auto;display:block}
   .controls{display:block}
   .toprow{display:block;border-bottom:0;padding:0}
   .toprow .phasectl{margin-top:8px}
-  .readouts,.panels{grid-template-columns:1fr;min-height:0}
-  .readout{min-height:0}
+  .readouts,.panels{grid-template-columns:1fr 1fr;gap:8px;min-height:0}
+  .readout{min-height:0;padding:8px 9px}
+  .readout h3{font-size:13px}
+  .rv .lab{font-size:11px}.rv .num{font-size:20px;min-width:0}.rv .num.small{font-size:15px}.rv .ci{font-size:10.5px;min-height:0}
+  .counts{font-size:10.5px;min-height:0}
+  .panels .panel{padding:4px 4px 2px;cursor:zoom-in}
+  .opscol .panel{padding:6px 4px 4px}
+  .rot{transform:rotate(-90deg);transform-origin:center;width:var(--rw);height:var(--rh)}
+  .rotbox{display:grid;place-items:center;overflow:hidden}
+  .panels .panel h3{font-size:11px}
+  .binrow{font-size:9px;margin:2px 2px 2px}
 }
 /* two- and three-column text blocks */
 .two{display:grid;grid-template-columns:2fr 3fr;gap:24px;align-items:start}
 .two.rev{grid-template-columns:3fr 2fr}
 @media (max-width:760px){.two.rev{grid-template-columns:1fr}.two.rev>:first-child{order:2}}
-.opscol{display:grid;gap:12px;align-content:start}
+.opscol{display:grid;gap:10px;align-content:start}
+.opscol .panel{padding:6px 6px 4px}
+#opsmap canvas{max-height:230px}
 @media (max-width:760px){.opsrow{grid-template-columns:1fr}}
 .two.eq{grid-template-columns:1fr 1fr}
 .three{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:start}
@@ -210,10 +251,17 @@ ul.plain li{margin:0 0 6px}
 .cluex p{color:#4a4f55;margin:0;font-size:12.5px}
 .geopanel .val{margin-top:4px}
 .small{font-size:14px;color:var(--beige-d)}
-.lightbox{position:fixed;inset:0;z-index:50;background:rgba(3,4,23,.93);display:grid;place-items:center;padding:24px;cursor:zoom-out;overflow:auto}
+.lightbox{position:fixed;inset:0;z-index:50;background:rgba(3,4,23,.93);display:grid;place-items:center;padding:24px;cursor:zoom-out;overflow:auto;opacity:0;transition:opacity .18s ease}
+.lightbox.shown{opacity:1}
+.lightbox .lbin{transform:scale(.94);transition:transform .22s cubic-bezier(.2,.7,.3,1)}
+.lightbox.shown .lbin{transform:scale(1)}
+@media (prefers-reduced-motion:reduce){.lightbox,.lightbox .lbin{transition:none}}
 .lightbox[hidden]{display:none}
 .lightbox .lbin{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:24px;align-items:center;max-width:min(96vw,1500px)}
+.lightbox .lbsvg{background:var(--beige-l);padding:8px;border-radius:3px}
+.lightbox .lbsvg svg{width:100%;height:auto}
 .lightbox img{max-width:100%;max-height:86vh;width:auto;height:auto;background:var(--beige-l);padding:10px;border-radius:3px;display:block}
+.lightbox img[hidden],.lightbox .lbsvg[hidden]{display:none}
 .lightbox h3{color:var(--orange);font-family:Magistral,Figtree,sans-serif;font-size:20px;margin:0 0 8px}
 .lightbox p{color:var(--beige-d);margin:0;text-align:left;font-size:14px}
 @media (max-width:860px){.lightbox{place-items:center;padding:16px}.lightbox .lbin{grid-template-columns:1fr;gap:12px;align-items:center}.lightbox .lbtext{order:-1}.lightbox img{max-height:46vh}}
@@ -242,6 +290,10 @@ ul.plain li{margin:0 0 6px}
 .dock .name output{color:var(--white);font-weight:600;margin-left:6px;display:inline-block;min-width:5.2em}
 .dock .seg button{padding:4px 10px;font-size:13px}
 .dock input[type=range]{margin:0;height:24px}
+.dockback{display:none;width:100%;margin-top:8px;padding:8px;background:none;border:1px solid rgba(255,252,250,.25);border-radius:2px;color:var(--beige-l);font:inherit;font-size:14px;cursor:pointer}
+.dock.away .dockbody{display:none}
+.dock.away .dockbtn{display:none}
+.dock.away .dockback{display:block;margin:0}
 .dock .btn{margin:0;width:auto;padding:7px 14px;font-size:14px;box-shadow:0 0 0 2px rgba(254,177,97,.18),0 0 18px 2px rgba(255,157,0,.28)}
 .dockbtn{display:none}
 @media (min-width:861px){.dock{display:none}}
@@ -272,14 +324,15 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
   <div class="map">
     <div class="maprow">
       <div id="map"><p class="maphint">Tap a control below to draw the map</p></div>
+      <button type="button" class="mapfull only-mobile" id="mapfull">Show the map across the screen</button>
       <div class="vbar"><span class="vlab">median proton elevation angle per 5° cell [deg]</span><div class="vg" id="cbar"></div><span class="vt vt-hi">68</span><span class="vt vt-mid">52</span><span class="vt vt-lo">36</span></div>
     </div>
     <div class="mapfoot2">
       <div class="mapctl2">
         <div class="ctl"><span class="name">Population</span><div class="seg" id="seg-pop" role="group" aria-label="Map population"><button type="button" data-v="all" aria-pressed="true">all protons</button><button type="button" data-v="fid" aria-pressed="false">fiducial selection</button></div></div>
-        <div class="ctl"><span class="name">Layers</span><div class="seg" id="seg-layers" role="group" aria-label="Map layers"><button type="button" data-v="iso" aria-pressed="true">|I| isolines</button></div></div>
+        <div class="ctl quiet"><span class="name">Layers</span><div class="seg tiny" id="seg-layers" role="group" aria-label="Map layers"><button type="button" data-v="iso" aria-pressed="true">|I| isolines</button></div></div>
       </div>
-      <div class="capwrap"><p class="cap" id="mapcap"></p><button type="button" class="capmore" id="capmore" aria-expanded="false">See more</button></div>
+      <div class="capwrap fadewrap"><div class="fadebody"><p class="cap" id="mapcap"></p></div><button type="button" class="fadebtn" aria-expanded="false" aria-label="Show the whole caption"><i></i></button></div>
     </div>
   </div>
 
@@ -298,9 +351,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
 </div>
 
   <div class="cards">
-    <div class="card glass"><span class="lab">Sign of the dependence</span><span class="k">negative in both phases</span><p>The median elevation angle of protons in the core falls with the local magnetic inclination, under every selection, control variable, spectral band and time interval examined.</p></div>
-    <div class="card glass"><span class="lab">Isotropic control</span><span class="k">consistent with zero</span><p id="card-iso"></p></div>
-    <div class="card glass"><span class="lab">Magnitude, deg per deg</span><span class="k" id="card-mag"></span><p>The size follows the cluster-width limit and shows no plateau at any limit that retains single tracks, so the paper reports the existence and sign of the signature, not a calibrated slope.</p></div>
+    <div class="card glass fadewrap"><span class="lab">Sign of the dependence</span><span class="k">negative in both phases</span><div class="fadebody"><p>The median elevation angle of protons in the core falls with the local magnetic inclination, under every selection, control variable, spectral band and time interval examined.</p></div><button type="button" class="fadebtn" aria-expanded="false" aria-label="Show more"><i></i></button></div>
+    <div class="card glass fadewrap"><span class="lab">Isotropic control</span><span class="k">consistent with zero</span><div class="fadebody"><p id="card-iso"></p></div><button type="button" class="fadebtn" aria-expanded="false" aria-label="Show more"><i></i></button></div>
+    <div class="card glass fadewrap"><span class="lab">Magnitude, deg per deg</span><span class="k" id="card-mag"></span><div class="fadebody"><p>The size follows the cluster-width limit and shows no plateau at any limit that retains single tracks, so the paper reports the existence and sign of the signature, not a calibrated slope.</p></div><button type="button" class="fadebtn" aria-expanded="false" aria-label="Show more"><i></i></button></div>
   </div>
 
 <section id="explorer">
@@ -319,7 +372,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
       <div class="row"><span class="name">Occupancy</span><output id="o-occ"></output></div>
       <div class="panel mini" id="st-occ"></div>
     </div>
-    <p class="tried" id="tried"></p>
+    <div class="fadewrap triedwrap"><div class="fadebody"><p class="tried" id="tried"></p></div><button type="button" class="fadebtn" aria-expanded="false" aria-label="Show the whole line"><i></i></button></div>
   </div>
   <div class="out">
     <div class="readouts" id="readouts"></div>
@@ -329,17 +382,21 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
 </section>
 </div>
 
-<section>
-  <h2>Definitions</h2>
+<div class="articles">
+<section class="art" id="definitions">
+  <button type="button" class="arthead"><h2>Definitions</h2><span class="artsum">Regions, profile and fit, isotropic control</span><span class="chev" aria-hidden="true"></span></button>
+  <div class="artbody">
   <div class="three">
     <div class="def"><h3>Regions</h3><p>The contour is a fixed level of the AP9 proton flux above 10 MeV, drawn separately for each altitude. <b>Core</b>: inside the contour by more than the guard-band width b. <b>Reference</b>: outside it by more than b. <b>Guard band</b>: within b of the contour on either side, excluded from the comparison.</p></div>
     <div class="def"><h3>Profile and fit</h3><p>Median elevation angle in bins of local magnetic inclination, 6° wide from 24° to 66°, fitted with a straight line weighted by the inverse variance of the bootstrap median. Bins below 30 clusters are drawn hollow and left out of the fit; a fit requires four populated bins spanning at least 18°. Slopes in degrees of elevation per degree of inclination, 68 % bootstrap intervals.</p></div>
     <div class="def"><h3>Isotropic control</h3><p>A simulated population with no preferred direction passed through the same reconstruction chain and binning. Any slope it returned would be instrumental; the paper uses it as the null for the sign of the slope, not for the level of the profile, which the simulation does not reproduce because it omits transport through the shield.</p></div>
   </div>
+  </div>
 </section>
 
-<section class="geo" id="geometry">
-  <h2>How one layer of silicon sees an angle</h2>
+<section class="art geo" id="geometry">
+  <button type="button" class="arthead"><h2>How one layer of silicon sees an angle</h2><span class="artsum">Projected track length, the floor and the ceiling</span><span class="chev" aria-hidden="true"></span></button>
+  <div class="artbody">
   <div class="two eq">
     <div>
       <p>A particle crossing the 500 µm sensor deposits charge along its path. Projected onto the pixel matrix the track has a length L2D, counted in pixels of pitch p = 55 µm, and the elevation angle from the sensor normal follows from the geometry alone. The slider sets the measured quantity, the projected length; the angle is what the reconstruction reads from it.</p>
@@ -353,10 +410,12 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
       <div class="val"><div><span class="k" id="v-beta"></span><span class="lab">angle β</span></div><div><span class="k" id="v-l3d"></span><span class="lab">path [µm]</span></div><div><span class="k" id="v-reg"></span><span class="lab">regime</span></div></div>
     </div>
   </div>
+  </div>
 </section>
 
-<section>
-  <h2>Why inclination is the axis</h2>
+<section class="art" id="inclination">
+  <button type="button" class="arthead"><h2>Why inclination is the axis</h2><span class="artsum">Three reference behaviours and the measured profile</span><span class="chev" aria-hidden="true"></span></button>
+  <div class="artbody">
   <div class="two rev">
     <div><div class="panel" id="why"></div><p class="small" style="margin-top:6px">Markers: median elevation angle of core protons in 3° bins of inclination at the paper's selection, both phases, bins with at least 30 clusters, 68 % bootstrap intervals. The paper fits the shaded range only.</p></div>
     <div>
@@ -365,10 +424,12 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
       <p>The measured profile falls, so the organisation is of the field-aligned kind and not the mirroring kind, and it falls far less steeply than a purely field-aligned population would. The paper stops at the sign; the pitch-angle distribution behind it would need an angular response that includes the shield.</p>
     </div>
   </div>
+  </div>
 </section>
 
-<section>
-  <h2>The instrument in operation</h2>
+<section class="art" id="instrument">
+  <button type="button" class="arthead"><h2>The instrument in operation</h2><span class="artsum">Cadence, exposure control and where the time goes</span><span class="chev" aria-hidden="true"></span></button>
+  <div class="artbody">
   <div class="two">
     <div>
       <p>The detector does not observe continuously. It samples the field in exposures at a cadence of 64 s, about 1400 frames a day, with a nominal exposure of 25 s, so that acquisition covers 35 % of the elapsed time in the lower phase and 30 % in the higher one. Where the field is intense the exposure is shortened to keep the number of clusters in a frame within bounds: to a median of 1.35 s inside the anomaly at 613 km and 0.075 s at 1175 km, against 25 s elsewhere.</p>
@@ -380,7 +441,10 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
       <div class="panel" id="ops"></div>
     </div>
   </div>
+  </div>
 </section>
+
+</div>
 
 <section>
   <h2>Robustness</h2>
@@ -419,6 +483,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
 </div>
 <div id="dock" class="dock glass" hidden>
   <button type="button" class="dockbtn only-mobile" id="docktoggle" aria-expanded="false">Selection</button>
+  <button type="button" class="dockback" id="dockback">Back to the selection panel</button>
   <div class="dockbody">
     <div class="dockrow">
       <div class="dockhead"><div class="ctl"><span class="name">Phase</span><div class="seg seg-phase-any" id="seg-dock" role="group" aria-label="Phase"><button type="button" data-v="I" aria-pressed="false">I</button><button type="button" data-v="II" aria-pressed="false">II</button><button type="button" data-v="both" aria-pressed="true">both</button></div></div><div class="livebar"><span class="lab">core slope, deg per deg</span><div class="num" id="livebar2"></div></div></div>
@@ -429,6 +494,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
     <button type="button" class="btn dockreset" id="reset3">Back to the paper's selection</button>
   </div>
 </div>
+<div id="mapscreen" hidden><div class="rotwrap" id="mapscreenbox"></div><div class="msctl"><div class="row"><span class="name">Phase</span><div class="seg" id="seg-ms" role="group" aria-label="Phase"><button type="button" data-v="I" aria-pressed="false">I</button><button type="button" data-v="II" aria-pressed="false">II</button><button type="button" data-v="both" aria-pressed="true">both</button></div></div><div class="row"><span class="name">Population</span><div class="seg" id="seg-pop2" role="group" aria-label="Population"><button type="button" data-v="all" aria-pressed="true">all protons</button><button type="button" data-v="fid" aria-pressed="false">fiducial</button></div><div class="seg tiny" id="seg-layers2" role="group" aria-label="Layers"><button type="button" data-v="iso" aria-pressed="true">|I| isolines</button></div></div><div class="row"><span class="name">Guard band <output class="o-b"></output></span><input type="range" class="sl-b" min="0" max="9" step="1" style="flex:1" aria-label="Guard band"></div><div class="row"><span class="name">Cluster width <output class="o-w2d"></output></span><input type="range" class="sl-w2d" min="0" max="25" step="1" style="flex:1" aria-label="Cluster width"></div><div class="row"><span class="name">Occupancy <output class="o-occ"></output></span><input type="range" class="sl-occ" min="0" max="8" step="1" style="flex:1" aria-label="Occupancy"></div><button type="button" class="close" id="mapscreenclose">Close</button></div></div>
 <div id="lightbox" class="lightbox" hidden><div class="lbin"><img alt=""><div class="lbtext"><h3></h3><p class="small"></p></div></div></div>
 <script src="data/core.js"></script>
 <script>
@@ -574,7 +640,7 @@ const MW=760,MH=400;
 const EE={A1:1.340264,A2:-0.081106,A3:0.000893,A4:0.003796,M:Math.sqrt(3)/2,K:133.0};
 function eeXY(lon,lat){const lam=lon*Math.PI/180,phi=lat*Math.PI/180,th=Math.asin(EE.M*Math.sin(phi)),t2=th*th,t6=t2*t2*t2;return [lam*Math.cos(th)/(EE.M*(EE.A1+3*EE.A2*t2+t6*(7*EE.A3+9*EE.A4*t2))),th*(EE.A1+EE.A2*t2+t6*(EE.A3+EE.A4*t2))];}
 function makeGeom(proj){
-  const compact=(window.innerWidth||1000)<640,ML=compact?50:34,MT=8,cx=ML+360,cy=MT+180;
+  const compact=(window.innerWidth||1000)<640,ML=compact?8:34,MT=8,cx=ML+360,cy=MT+180;
   const P=proj==='ee'?((lon,lat)=>{const xy=eeXY(lon,lat);return [cx+xy[0]*EE.K,cy-xy[1]*EE.K];}):((lon,lat)=>[ML+(lon+180)*2,MT+(90-lat)*2]);
   const cell=(ctx,lon,lat,s)=>{if(proj==='ee'){const a=P(lon-s/2,lat+s/2),b=P(lon+s/2,lat+s/2),c=P(lon+s/2,lat-s/2),d=P(lon-s/2,lat-s/2);ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0]+0.3,b[1]);ctx.lineTo(c[0]+0.3,c[1]+0.3);ctx.lineTo(d[0],d[1]+0.3);ctx.closePath();}else{const p=P(lon-s/2,lat+s/2);ctx.rect(p[0],p[1],s*2,s*2);}};
   const outline=ctx=>{ctx.beginPath();if(proj==='ee'){let first=true;const pts=[];for(let la=-90;la<=90;la+=3)pts.push([-180,la]);for(let lo=-180;lo<=180;lo+=3)pts.push([lo,90]);for(let la=90;la>=-90;la-=3)pts.push([180,la]);for(let lo=180;lo>=-180;lo-=3)pts.push([lo,-90]);pts.forEach(pt=>{const p=P(pt[0],pt[1]);if(first){ctx.moveTo(p[0],p[1]);first=false;}else ctx.lineTo(p[0],p[1]);});ctx.closePath();}else ctx.rect(ML,MT,720,360);};
@@ -584,7 +650,7 @@ function polyline(ctx,pts,P){pts.forEach((pt,i)=>{const p=P(pt[0],pt[1]);if(i)ct
 function drawPolylines(ctx,lines,P,style,width){ctx.strokeStyle=style;ctx.lineWidth=width;ctx.beginPath();lines.forEach(pl=>polyline(ctx,pl,P));ctx.stroke();}
 function closedRing(r){const a=r[0],b=r[r.length-1];return Math.hypot(a[0]-b[0],a[1]-b[1])<0.5;}   /* rings cut at the seam stay open */
 function drawGraticule(ctx,P,style){ctx.strokeStyle=style;ctx.lineWidth=1;ctx.beginPath();for(let lon=-180;lon<=180;lon+=30){const pts=[];for(let la=-90;la<=90;la+=3)pts.push([lon,la]);polyline(ctx,pts,P);}for(let lat=-60;lat<=60;lat+=30){const pts=[];for(let lo=-180;lo<=180;lo+=3)pts.push([lo,lat]);polyline(ctx,pts,P);}ctx.stroke();}
-function drawGratLabels(ctx,g,fill){const FS=g.compact?17:11,STEP=(g.compact||g.proj==='ee')?60:30;ctx.font=FS+'px Figtree, sans-serif';ctx.fillStyle=fill;ctx.textAlign='center';for(let lon=-150;lon<=150;lon+=30)if(lon%STEP===0){const p=g.P(lon,-90);ctx.fillText(lon<0?(-lon)+'\u00b0W':lon===0?'0\u00b0':lon+'\u00b0E',p[0],Math.min(p[1]+FS+3,MH-3));}ctx.textAlign='right';for(let lat=-60;lat<=60;lat+=30)if(lat%STEP===0){const p=g.P(-180,lat);ctx.fillText(lat<0?(-lat)+'\u00b0S':lat===0?'0\u00b0':lat+'\u00b0N',p[0]-3,p[1]+FS/3);}}
+function drawGratLabels(ctx,g,fill){if(g.compact)return;const FS=11,STEP=g.proj==='ee'?60:30;ctx.font=FS+'px Figtree, sans-serif';ctx.fillStyle=fill;ctx.textAlign='center';for(let lon=-150;lon<=150;lon+=30)if(lon%STEP===0){const p=g.P(lon,-90);ctx.fillText(lon<0?(-lon)+'\u00b0W':lon===0?'0\u00b0':lon+'\u00b0E',p[0],Math.min(p[1]+FS+3,MH-3));}ctx.textAlign='right';for(let lat=-60;lat<=60;lat+=30)if(lat%STEP===0){const p=g.P(-180,lat);ctx.fillText(lat<0?(-lat)+'\u00b0S':lat===0?'0\u00b0':lat+'\u00b0N',p[0]-3,p[1]+FS/3);}}
 function hatchPattern(ctx){const c=document.createElement('canvas');c.width=8;c.height=8;const g=c.getContext('2d');g.fillStyle='rgba(255,252,250,0.10)';g.fillRect(0,0,8,8);g.strokeStyle='rgba(255,252,250,0.92)';g.lineWidth=1.6;g.beginPath();g.moveTo(0,8);g.lineTo(8,0);g.moveTo(-2,2);g.lineTo(2,-2);g.moveTo(6,10);g.lineTo(10,6);g.stroke();return ctx.createPattern(c,'repeat');}
 let baseCache={};
 function renderMapBase(g){
@@ -625,7 +691,32 @@ function renderMap(){
   const cur=currentLayer(m),A=m.layers.all;
   const nMed=cur.lay.median_5deg.reduce((a,row)=>a+row.filter(v=>v!==A.missing&&v!==null).length,0);
   const single=D.site_numbers.table_I&&D.site_numbers.table_I[p]&&D.site_numbers.table_I[p].protons?(D.site_numbers.table_I[p].protons-A.n_total):null;
+  syncMapScreen();
   q('mapcap').textContent=(cur.pending?'The selection layers are still loading; the map shows all protons until they arrive. ':'')+'Phase '+p+', '+ALT[p]+'. White line: the contour of the anomaly, a fixed level of the AP9 proton flux above 10 MeV; hatched: the guard band excluded on both sides of it, inside lies the core, outside the reference. Colour: median elevation angle of '+cur.desc+', '+fmtN(cur.n)+' clusters, per 5\u00b0 cell holding at least '+A.min_cell_n+' of them ('+fmtN(nMed)+' cells coloured); cells with fewer are left dark.'+(mapState.pop==='all'&&single!==null?' Single-pixel clusters ('+single+' here) have no axis and are left out, which is why the total falls short of the classification count by that number.':'')+' Thin lines: |I| at 24\u00b0, 36\u00b0, 48\u00b0 and 60\u00b0; the same inclination occurs inside the anomaly and far from it, which is what makes the two regions comparable. Projection: '+(g.proj==='ee'?'Equal Earth':'equirectangular')+'; coastline data: Natural Earth.';
+}
+
+function fitMapScreen(){
+  const box=q('mapscreenbox');if(!box)return;
+  const cv=box.querySelector('canvas');if(!cv)return;
+  const bw=box.clientWidth,bh=box.clientHeight;
+  const Wp=Math.min(bh,bw*MW/MH)*0.995, Hp=Wp*MH/MW;   /* rotated: the CSS width shows as height */
+  cv.style.width=Wp+'px';cv.style.height=Hp+'px';
+}
+function openMapScreen(){
+  const ms=q('mapscreen'),box=q('mapscreenbox');if(!ms)return;
+  ms.hidden=false;
+  const src=document.querySelector('#map canvas');
+  let cv=box.querySelector('canvas');
+  if(!cv){cv=document.createElement('canvas');box.appendChild(cv);}
+  const dpr=Math.min(2,window.devicePixelRatio||1);
+  cv.width=MW*dpr;cv.height=MH*dpr;
+  requestAnimationFrame(()=>{fitMapScreen();syncMapScreen();});
+  pressSeg('seg-ms',st.phase);pressSeg('seg-pop2',mapState.pop);
+}
+function syncMapScreen(){
+  const ms=q('mapscreen');if(!ms||ms.hidden)return;
+  const src=document.querySelector('#map canvas'),cv=q('mapscreenbox').querySelector('canvas');
+  if(src&&cv){const ctx=cv.getContext('2d');const dpr=Math.min(2,window.devicePixelRatio||1);ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,MW,MH);ctx.drawImage(src,0,0,MW,MH);}
 }
 
 /* ---------- geometry explainer: slider on the projected length ---------- */
@@ -706,9 +797,10 @@ function renderWhy(){
 /* ---------- exposure by region and the exposure map ---------- */
 function renderOps(){
   const box=q('ops');box.innerHTML='';
-  const W=760,H=186,L=152,R=74,T=30,B=38,ex=D.site_numbers.exposure;
+  const W=760,H=196,L=152,R=74,T=42,B=38,ex=D.site_numbers.exposure;
   const svg=el('svg',{viewBox:'0 0 '+W+' '+H,role:'img','aria-label':'Median exposure per frame by region'});
-  txt(svg,12,17,'median exposure per frame [s], logarithmic scale',{fill:COL.ink,'font-weight':600,'font-size':12});
+  txt(svg,12,16,'Median exposure per frame [s]',{fill:COL.ink,'font-weight':700,'font-size':13});
+  txt(svg,12,29,'logarithmic scale',{fill:'#6a7075','font-size':10.5});
   const X=v=>L+(Math.log10(v)-Math.log10(0.04))/(Math.log10(40)-Math.log10(0.04))*(W-L-R);
   [0.1,1,10].forEach(v=>{el('line',{x1:X(v),x2:X(v),y1:T-5,y2:H-B,stroke:COL.grid},svg);txt(svg,X(v),H-B+14,v,{'text-anchor':'middle','font-size':10});});
   const rows=[['outside the anomaly',ex.nominal_tacq_s,'#8a857c'],['inside, '+ALT.I,1.35,COL.I],['inside, '+ALT.II,0.075,COL.II]];
@@ -757,12 +849,25 @@ function renderGallery(){
     const prev=PREVIEW[f.id]?'figures/preview/'+f.file:'figures/'+f.file;
     const cap=(PREVIEW[f.id]?'Shown here: '+PREVIEW[f.id]+'. ':'')+c[1];
     d.innerHTML='<img src="'+prev+'" alt="'+c[0]+'" loading="lazy" onerror="this.onerror=null;this.src=this.dataset.full" data-full="figures/'+f.file+'" data-title="'+c[0]+'" data-cap="'+cap.replace(/"/g,'&quot;')+'"><span class="tlabel">'+c[0]+'</span>';g.appendChild(d);});
-  const lb=q('lightbox');g.addEventListener('click',e=>{const tile=e.target.closest('.tile');const im=tile?tile.querySelector('img'):null;if(!im)return;lb.querySelector('img').src=im.dataset.full||im.src;lb.querySelector('img').alt=im.alt;lb.querySelector('h3').textContent=im.dataset.title||'';lb.querySelector('p').textContent=im.dataset.cap||'';lb.hidden=false;});
-  lb.addEventListener('click',()=>{lb.hidden=true;});document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.hidden=true;});
+  const lb=q('lightbox');g.addEventListener('click',e=>{const tile=e.target.closest('.tile');const im=tile?tile.querySelector('img'):null;if(!im)return;lb.querySelector('img').src=im.dataset.full||im.src;lb.querySelector('img').alt=im.alt;lb.querySelector('h3').textContent=im.dataset.title||'';lb.querySelector('p').textContent=im.dataset.cap||'';lb.hidden=false;requestAnimationFrame(()=>lb.classList.add('shown'));});
+  const closeLb=()=>{lb.classList.remove('shown');setTimeout(()=>{lb.hidden=true;},180);};
+  lb.addEventListener('click',closeLb);document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!lb.hidden)closeLb();});
 }
 
 /* ---------- legend ---------- */
 function glyph(col,dash,shape){let m='';if(shape==='circle')m='<circle cx="22" cy="7" r="4" fill="'+col+'"/>';else if(shape==='square')m='<rect x="18.5" y="3.5" width="7" height="7" fill="'+col+'"/>';else m='<polygon points="22,2.5 17.8,10.2 26.2,10.2" fill="'+col+'"/>';return '<svg class="gl" viewBox="0 0 44 14" width="44" height="14" aria-hidden="true"><line x1="2" y1="7" x2="42" y2="7" stroke="'+col+'" stroke-width="2"'+(dash?' stroke-dasharray="'+dash+'"':'')+'/>'+m+'</svg>';}
+function openPanel(panel){
+  const lb=q('lightbox'),svg=panel.querySelector('svg');if(!svg)return;
+  const holder=lb.querySelector('.lbin');
+  let box=lb.querySelector('.lbsvg');
+  if(!box){box=document.createElement('div');box.className='lbsvg';holder.insertBefore(box,holder.firstChild);}
+  box.innerHTML='';box.appendChild(svg.cloneNode(true));box.hidden=false;
+  lb.querySelector('img').hidden=true;
+  const h=panel.querySelector('h3');
+  lb.querySelector('h3').textContent=h?h.textContent:'';
+  lb.querySelector('p').textContent='Median elevation angle against local magnetic inclination at the current selection. Core: solid line with circles. Reference: dashed with squares. Isotropic control: dotted with triangles. Hollow markers: bands below 30 clusters, not fitted.';
+  lb.hidden=false;requestAnimationFrame(()=>lb.classList.add('shown'));
+}
 function renderLegend(){q('legend').innerHTML=glyph(COL.core,null,'circle')+'core'+glyph(COL.reference,'6 4','square')+'reference'+glyph(COL.iso,'2 3','triangle')+'isotropic control. In the scans:'+glyph(COL.I,null,'circle')+'phase I'+glyph(COL.II,'5 3','square')+'phase II';}
 
 /* ---------- explorer state ---------- */
@@ -785,6 +890,7 @@ function render(){
     const h=document.createElement('h3');h.textContent='Phase '+p+', '+ALT[p];box.appendChild(h);
     drawProfile(box,rec);binRow(box,rec.core);pa.appendChild(box);
   });
+  pa.querySelectorAll('.panel').forEach(p=>p.addEventListener('click',()=>{if(window.innerWidth<=860)openPanel(p);}));
   tried.add(fmtW(w)+'|'+b+'|'+o);
   const nsel=AX.w2d.length*AX.b.length*AX.occ.length;const tt='Selections tried: '+tried.size+' of '+fmtN(nsel)+'. The grid holds '+fmtN(nsel)+' selections for each phase, '+fmtN(2*nsel)+' fits in all, of which '+fmtN(GSTAT.fits)+' met the fitting rule; the core slope is positive in '+GSTAT.pos+' of those and significantly positive in '+GSTAT.sig+', the '+GSTAT.pos+' positive values all sitting at the limit of fittability with intervals that include zero.';
   q('tried').textContent=tt;
@@ -805,7 +911,13 @@ function setPhase(v){st.phase=v;if(v!=='both')mapState.phase=v;pressSeg('seg-pha
 function seg(id,fn){const sg=q(id);if(!sg)return;sg.addEventListener('click',e=>{const bt=e.target.closest('button');if(!bt)return;sg.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===bt?'true':'false'));fn(bt.dataset.v);});}
 seg('seg-phase',setPhase);seg('seg-dock',setPhase);
 seg('seg-ops',v=>{opsState.phase=v;renderOpsMap();});
-seg('seg-pop',v=>{mapState.pop=v;renderMap();});
+seg('seg-pop',v=>{mapState.pop=v;pressSeg('seg-pop2',v);renderMap();});
+seg('seg-pop2',v=>{mapState.pop=v;pressSeg('seg-pop',v);renderMap();});
+seg('seg-ms',setPhase);
+q('seg-layers2').addEventListener('click',e=>{const bt=e.target.closest('button');if(!bt)return;const on=bt.getAttribute('aria-pressed')!=='true';bt.setAttribute('aria-pressed',on?'true':'false');const m=q('seg-layers').querySelector('[data-v=iso]');if(m)m.setAttribute('aria-pressed',on?'true':'false');mapState.iso=on;renderMap();});
+q('mapfull').addEventListener('click',openMapScreen);
+q('mapscreenclose').addEventListener('click',()=>{q('mapscreen').hidden=true;});
+q('dockback').addEventListener('click',()=>{document.querySelector('.map').scrollIntoView({behavior:'smooth',block:'start'});});
 q('seg-layers').addEventListener('click',e=>{const bt=e.target.closest('button');if(!bt)return;const on=bt.getAttribute('aria-pressed')!=='true';bt.setAttribute('aria-pressed',on?'true':'false');mapState[bt.dataset.v]=on;renderMap();});
 const doReset=()=>{st.wi=NOMINAL.w2d;st.bi=NOMINAL.b;st.oi=NOMINAL.occ;render();};
 ['reset','reset3'].forEach(id=>{const e=q(id);if(e)e.addEventListener('click',doReset);});
@@ -814,15 +926,25 @@ let rt=null;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout
 /* a canvas can be dropped by the browser when the tab is backgrounded; redraw whenever the page or the map comes back */
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){renderMap();renderOpsMap();}});
 window.addEventListener('pageshow',()=>{renderMap();renderOpsMap();});
-window.addEventListener('orientationchange',()=>{setTimeout(()=>{baseCache={};renderMap();renderOpsMap();},250);});
+window.addEventListener('orientationchange',()=>{setTimeout(()=>{baseCache={};renderMap();renderOpsMap();fitMapScreen();syncMapScreen();},250);});
 if('IntersectionObserver' in window){
   const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)renderMap();})},{threshold:0.05});io.observe(document.querySelector('.map'));
   const io2=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)renderOpsMap();})},{threshold:0.05});io2.observe(q('opsmap'));
 }
-(function capToggle(){
-  const w=document.querySelector('.capwrap'),btn=q('capmore');if(!w||!btn)return;
-  w.classList.add('collapsed');
-  btn.addEventListener('click',()=>{const open=!w.classList.toggle('collapsed');btn.textContent=open?'See less':'See more';btn.setAttribute('aria-expanded',open?'true':'false');});
+(function collapsibles(){
+  document.querySelectorAll('.fadewrap').forEach(w=>{
+    w.classList.add('collapsed');
+    const btn=w.querySelector('.fadebtn');if(!btn)return;
+    btn.addEventListener('click',()=>{const open=!w.classList.toggle('collapsed');btn.setAttribute('aria-expanded',open?'true':'false');});
+  });
+  document.querySelectorAll('.art').forEach(a=>{
+    const head=a.querySelector('.arthead');if(!head)return;
+    head.setAttribute('aria-expanded','false');
+    head.addEventListener('click',()=>{
+      const open=a.classList.toggle('open');head.setAttribute('aria-expanded',open?'true':'false');
+      if(open){renderGeom();renderWhy();renderOps();renderOpsMap();}
+    });
+  });
 })();
 /* control dock: visible while the map or the explorer is on screen and their own controls are not */
 const dock=q('dock');
@@ -831,7 +953,7 @@ function updateDock(){
   if(!hubzone)return;
   const y=window.scrollY,vh=window.innerHeight,mobile=window.innerWidth<=860;
   const r=hubzone.getBoundingClientRect(),top=r.top+y,bottom=r.bottom+y;
-  if(mobile){dock.hidden=!(y<bottom-vh*0.15);}
+  if(mobile){dock.hidden=false;const near=y<bottom-vh*0.15;dock.classList.toggle('away',!near);if(!near)dock.classList.remove('open');}
   else{dock.hidden=true;if(hub)hub.classList.toggle('stuck',hub.getBoundingClientRect().top<=0.5);}
 }
 q('docktoggle').addEventListener('click',()=>{const open=!dock.classList.contains('open');dock.classList.toggle('open',open);dock.setAttribute('aria-expanded',open?'true':'false');q('docktoggle').setAttribute('aria-expanded',open?'true':'false');});
