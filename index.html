@@ -64,16 +64,13 @@ a{color:var(--white)}
 #mapscreen[hidden]{display:none}
 #mapscreen .rotwrap{display:grid;place-items:center;overflow:hidden;min-height:0}
 @media (max-width:860px){#mapscreen canvas{transform:rotate(-90deg);transform-origin:center}}
-#panelscreen{position:fixed;inset:0;z-index:60;background:var(--black);display:grid;grid-template-rows:auto 1fr;padding:8px;overflow:auto}
+#panelscreen{position:fixed;left:0;right:0;top:0;z-index:45;background:rgba(3,4,23,.93);display:grid;place-items:start center;padding:14px;opacity:0;transition:opacity .18s ease}
 #panelscreen[hidden]{display:none}
-#panelscreen .psbox{background:var(--beige-l);border-radius:3px;padding:6px}
+#panelscreen.shown{opacity:1}
+#panelscreen .psbox{background:var(--beige-l);border-radius:3px;padding:8px;width:100%;max-width:min(96vw,640px);transform:scale(.94);transition:transform .22s cubic-bezier(.2,.7,.3,1)}
+#panelscreen.shown .psbox{transform:scale(1)}
 #panelscreen .psbox svg{width:100%;height:auto}
-#panelscreen .msctl{align-self:start}
 #mapscreen .msctl{display:grid;gap:8px;padding:8px 4px 4px}
-#panelscreen .msctl{display:grid;gap:10px;padding:12px 4px 4px}
-#panelscreen .msctl .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-#panelscreen .msctl .name{font-size:12px;color:var(--beige-d)}
-#panelscreen .close{justify-self:end;background:none;border:0;color:var(--orange);font:inherit;cursor:pointer;padding:6px 10px}
 #mapscreen .msctl .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 #mapscreen .msctl{max-width:1120px;margin:0 auto;width:100%}
 #mapscreen .msctl .name{font-size:13px;color:var(--beige-d);min-width:9em}
@@ -95,6 +92,7 @@ a{color:var(--white)}
 .mapctl2 .quiet .name{font-size:11px;opacity:.75}
 .seg.tiny{border-color:rgba(201,189,178,.5);border-radius:14px}
 .seg.tiny button{padding:2px 9px;font-size:11px;color:var(--beige-d)}
+.mapctl2 .quiet .seg.tiny{margin-bottom:3px}
 .seg.tiny button[aria-pressed=true]{background:rgba(201,189,178,.22);color:var(--beige-l)}
 .mapctl2 .ctl{display:flex;flex-direction:column;gap:4px}
 .mapctl2 .ctl.gb{flex:1 1 320px}
@@ -268,7 +266,8 @@ svg{width:100%;height:auto;display:block}
 .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:12px}
 .gallery{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .tile{padding:6px 6px 4px}
-.tile img{width:100%;height:170px;object-fit:contain;object-position:center;margin:0}
+.tile picture{display:block}
+.tile img{width:100%;height:170px;object-fit:contain;object-position:center;margin:0;display:block}
 .tile .tlabel{display:block;font-size:12px;line-height:1.2;color:#4a4f55;text-align:center;margin:5px 2px 0}
 .tile::after{font-size:14px;right:7px;top:5px}
 .gallery .tile .tlabel{font-size:12px;color:#4a4f55;text-align:center;margin:2px 4px 2px}
@@ -551,7 +550,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
   </div>
 </div>
 <div id="artscreen" hidden><div class="asbody"></div><button type="button" class="close" id="artclose">Close</button></div>
-<div id="panelscreen" hidden><div class="psbox"></div><div class="msctl"><div class="row"><span class="name">Phase</span><div class="seg" id="seg-ps" role="group" aria-label="Phase"><button type="button" data-v="I" aria-pressed="false">I</button><button type="button" data-v="II" aria-pressed="false">II</button><button type="button" data-v="both" aria-pressed="true">both</button></div></div><div class="row"><span class="name">Cluster width <output class="o-w2d"></output></span><input type="range" class="sl-w2d" min="0" max="25" step="1" style="flex:1" aria-label="Cluster width"></div><div class="row"><span class="name">Guard band <output class="o-b"></output></span><input type="range" class="sl-b" min="0" max="9" step="1" style="flex:1" aria-label="Guard band"></div><div class="row"><span class="name">Occupancy <output class="o-occ"></output></span><input type="range" class="sl-occ" min="0" max="8" step="1" style="flex:1" aria-label="Occupancy"></div><button type="button" class="close" id="panelclose">Close</button></div></div>
+<div id="panelscreen" hidden><div class="psbox"></div></div>
 <div id="mapscreen" hidden><div class="rotwrap" id="mapscreenbox"></div><div class="msctl"><div class="row"><span class="name">Phase</span><div class="seg" id="seg-ms" role="group" aria-label="Phase"><button type="button" data-v="I" aria-pressed="false">I</button><button type="button" data-v="II" aria-pressed="false">II</button><button type="button" data-v="both" aria-pressed="true">both</button></div></div><div class="row"><span class="name">Population</span><div class="seg" id="seg-pop2" role="group" aria-label="Population"><button type="button" data-v="all" aria-pressed="true">all protons</button><button type="button" data-v="fid" aria-pressed="false">fiducial</button></div><div class="seg tiny" id="seg-layers2" role="group" aria-label="Layers"><button type="button" data-v="iso" aria-pressed="true">|I| isolines</button></div></div><div class="row"><span class="name">Guard band <output class="o-b"></output></span><input type="range" class="sl-b" min="0" max="9" step="1" style="flex:1" aria-label="Guard band"></div><div class="row"><span class="name">Cluster width <output class="o-w2d"></output></span><input type="range" class="sl-w2d" min="0" max="25" step="1" style="flex:1" aria-label="Cluster width"></div><div class="row"><span class="name">Occupancy <output class="o-occ"></output></span><input type="range" class="sl-occ" min="0" max="8" step="1" style="flex:1" aria-label="Occupancy"></div><button type="button" class="close" id="mapscreenclose">Close</button></div></div>
 <div id="lightbox" class="lightbox" hidden><div class="lbin"><img alt=""><div class="lbtext"><h3></h3><p class="small"></p></div></div></div>
 <script src="data/core.js"></script>
@@ -698,7 +697,7 @@ const MW=760,MH=400;
 const EE={A1:1.340264,A2:-0.081106,A3:0.000893,A4:0.003796,M:Math.sqrt(3)/2,K:133.0};
 function eeXY(lon,lat){const lam=lon*Math.PI/180,phi=lat*Math.PI/180,th=Math.asin(EE.M*Math.sin(phi)),t2=th*th,t6=t2*t2*t2;return [lam*Math.cos(th)/(EE.M*(EE.A1+3*EE.A2*t2+t6*(7*EE.A3+9*EE.A4*t2))),th*(EE.A1+EE.A2*t2+t6*(EE.A3+EE.A4*t2))];}
 function makeGeom(proj){
-  const compact=(window.innerWidth||1000)<640,ML=compact?20:34,MT=compact?20:8,cx=ML+360,cy=MT+180;
+  const compact=(window.innerWidth||1000)<640,ML=compact?8:34,MT=compact?8:8,cx=ML+360,cy=MT+180;
   const P=proj==='ee'?((lon,lat)=>{const xy=eeXY(lon,lat);return [cx+xy[0]*EE.K,cy-xy[1]*EE.K];}):((lon,lat)=>[ML+(lon+180)*2,MT+(90-lat)*2]);
   const cell=(ctx,lon,lat,s)=>{if(proj==='ee'){const a=P(lon-s/2,lat+s/2),b=P(lon+s/2,lat+s/2),c=P(lon+s/2,lat-s/2),d=P(lon-s/2,lat-s/2);ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0]+0.3,b[1]);ctx.lineTo(c[0]+0.3,c[1]+0.3);ctx.lineTo(d[0],d[1]+0.3);ctx.closePath();}else{const p=P(lon-s/2,lat+s/2);ctx.rect(p[0],p[1],s*2,s*2);}};
   const outline=ctx=>{ctx.beginPath();if(proj==='ee'){let first=true;const pts=[];for(let la=-90;la<=90;la+=3)pts.push([-180,la]);for(let lo=-180;lo<=180;lo+=3)pts.push([lo,90]);for(let la=90;la>=-90;la-=3)pts.push([180,la]);for(let lo=180;lo>=-180;lo-=3)pts.push([lo,-90]);pts.forEach(pt=>{const p=P(pt[0],pt[1]);if(first){ctx.moveTo(p[0],p[1]);first=false;}else ctx.lineTo(p[0],p[1]);});ctx.closePath();}else ctx.rect(ML,MT,720,360);};
@@ -764,7 +763,7 @@ function fitMapScreen(){
 }
 function openMapScreen(){
   const ms=q('mapscreen'),box=q('mapscreenbox');if(!ms)return;
-  ms.hidden=false;
+  ms.hidden=false;lockScroll(true);
   const src=document.querySelector('#map canvas');
   let cv=box.querySelector('canvas');
   if(!cv){cv=document.createElement('canvas');box.appendChild(cv);}
@@ -906,21 +905,29 @@ function renderGallery(){
     CAPTIONS.w2d_limit_study=['Cluster width','Fraction of clusters containing a pixel hit more than once, the signature of an overlap, and median linear energy transfer in bands of the projected cluster width, all protons with at least two pixels, no width or occupancy cut; the fiducial limit of '+wb.fiducial_limit+' pixels is marked. Below two pixels the overlap fraction stays under '+Math.ceil(below2)+' %; it crosses 50 % between '+cross.I.replace('[','').replace(')','').replace(',',' and ')+' pixels in both phases, while the median LET rises monotonically from '+Math.min(letI[0],letII[0]).toFixed(1)+' to over '+Math.floor(Math.min(letI[letI.length-1],letII[letII.length-1]))+' keV per \u00b5m. A wider limit therefore admits merged clusters and lower-energy protons together, which is why the width still measures a single proton track only near the limit adopted.'];}
   const PREVIEW={w2d_limit_study:'the overlap fraction; the panel with the ionization density follows in the enlarged figure',time_stability:'the halves of each phase; quarters and half-years follow in the enlarged figure',response_matrix:'protons; electrons and heavy ions follow in the enlarged figure'};
   D.figures.figures.filter(f=>f.shown!==false).forEach(f=>{const c=CAPTIONS[f.id]||[f.title,f.caption_draft];const d=document.createElement('div');d.className='panel tile';
-    const prev=PREVIEW[f.id]?'figures/preview/'+f.file:'figures/'+f.file;
+    const prev='figures/preview/'+f.file,prevM='figures/preview/m/'+f.file;
     const cap=(PREVIEW[f.id]?'Shown here: '+PREVIEW[f.id]+'. ':'')+c[1];
-    d.innerHTML='<img src="'+prev+'" alt="'+c[0]+'" loading="lazy" onerror="this.onerror=null;this.src=this.dataset.full" data-full="figures/'+f.file+'" data-title="'+c[0]+'" data-cap="'+cap.replace(/"/g,'&quot;')+'"><span class="tlabel">'+c[0]+'</span>';g.appendChild(d);});
-  const lb=q('lightbox');g.addEventListener('click',e=>{const tile=e.target.closest('.tile');const im=tile?tile.querySelector('img'):null;if(!im)return;lb.querySelector('img').src=im.dataset.full||im.src;lb.querySelector('img').alt=im.alt;lb.querySelector('h3').textContent=im.dataset.title||'';lb.querySelector('p').textContent=im.dataset.cap||'';lb.hidden=false;requestAnimationFrame(()=>lb.classList.add('shown'));});
-  const closeLb=()=>{lb.classList.remove('shown');setTimeout(()=>{lb.hidden=true;},180);};
+    d.innerHTML='<picture><source media="(max-width:620px)" srcset="'+prevM+'"><img src="'+prev+'" alt="'+c[0]+'" loading="lazy" data-full="figures/'+f.file+'" data-title="'+c[0]+'" data-cap="'+cap.replace(/"/g,'&quot;')+'"></picture><span class="tlabel">'+c[0]+'</span>';g.appendChild(d);});
+  const lb=q('lightbox');g.addEventListener('click',e=>{const tile=e.target.closest('.tile');const im=tile?tile.querySelector('img'):null;if(!im)return;lb.querySelector('img').src=im.dataset.full||im.src;lb.querySelector('img').alt=im.alt;lb.querySelector('h3').textContent=im.dataset.title||'';lb.querySelector('p').textContent=im.dataset.cap||'';lb.hidden=false;lockScroll(true);requestAnimationFrame(()=>lb.classList.add('shown'));});
+  const closeLb=()=>{lb.classList.remove('shown');lockScroll(false);setTimeout(()=>{lb.hidden=true;},180);};
   lb.addEventListener('click',closeLb);document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!lb.hidden)closeLb();});
 }
 
 /* ---------- legend ---------- */
 function glyph(col,dash,shape){let m='';if(shape==='circle')m='<circle cx="22" cy="7" r="4" fill="'+col+'"/>';else if(shape==='square')m='<rect x="18.5" y="3.5" width="7" height="7" fill="'+col+'"/>';else m='<polygon points="22,2.5 17.8,10.2 26.2,10.2" fill="'+col+'"/>';return '<svg class="gl" viewBox="0 0 44 14" width="44" height="14" aria-hidden="true"><line x1="2" y1="7" x2="42" y2="7" stroke="'+col+'" stroke-width="2"'+(dash?' stroke-dasharray="'+dash+'"':'')+'/>'+m+'</svg>';}
+function lockScroll(on){document.documentElement.style.overflow=on?'hidden':'';document.body.style.overflow=on?'hidden':'';}
 let panelOpenIdx=null;
 function openPanel(panel){
-  const ps=q('panelscreen');if(!ps)return;
+  const ps=q('panelscreen'),dock=q('dock');if(!ps)return;
   panelOpenIdx=Array.prototype.indexOf.call(panel.parentNode.children,panel);
-  ps.hidden=false;syncPanelScreen();pressSeg('seg-ps',st.phase);
+  if(dock){dock.classList.remove('away');dock.classList.add('open');dock.hidden=false;const tg=q('docktoggle');if(tg)tg.setAttribute('aria-expanded','true');}
+  ps.hidden=false;syncPanelScreen();lockScroll(true);
+  requestAnimationFrame(()=>{ps.style.bottom=(dock?dock.getBoundingClientRect().height:0)+'px';ps.classList.add('shown');});
+}
+function closePanelScreen(){
+  const ps=q('panelscreen');if(!ps||ps.hidden)return;
+  ps.classList.remove('shown');lockScroll(false);panelOpenIdx=null;
+  setTimeout(()=>{ps.hidden=true;},180);
 }
 function syncPanelScreen(){
   const ps=q('panelscreen');if(!ps||ps.hidden||panelOpenIdx===null)return;
@@ -982,9 +989,8 @@ seg('seg-pop2',v=>{mapState.pop=v;pressSeg('seg-pop',v);renderMap();});
 seg('seg-ms',setPhase);
 q('seg-layers2').addEventListener('click',e=>{const bt=e.target.closest('button');if(!bt)return;const on=bt.getAttribute('aria-pressed')!=='true';bt.setAttribute('aria-pressed',on?'true':'false');const m=q('seg-layers').querySelector('[data-v=iso]');if(m)m.setAttribute('aria-pressed',on?'true':'false');mapState.iso=on;renderMap();});
 document.getElementById('map').addEventListener('click',e=>{if(window.innerWidth<=860)return;if(e.target.closest('.maphint'))return;openMapScreen();});
-q('panelclose').addEventListener('click',()=>{q('panelscreen').hidden=true;panelOpenIdx=null;});
-seg('seg-ps',setPhase);
-q('mapscreenclose').addEventListener('click',()=>{q('mapscreen').hidden=true;});
+q('panelscreen').addEventListener('click',closePanelScreen);
+q('mapscreenclose').addEventListener('click',()=>{q('mapscreen').hidden=true;lockScroll(false);});
 q('dockback').addEventListener('click',()=>{const t=q('readouts')||q('explorer');const y=t.getBoundingClientRect().top+window.scrollY-190;window.scrollTo({top:Math.max(0,y),behavior:'smooth'});});
 q('seg-layers').addEventListener('click',e=>{const bt=e.target.closest('button');if(!bt)return;const on=bt.getAttribute('aria-pressed')!=='true';bt.setAttribute('aria-pressed',on?'true':'false');mapState[bt.dataset.v]=on;renderMap();});
 const doReset=()=>{st.wi=NOMINAL.w2d;st.bi=NOMINAL.b;st.oi=NOMINAL.occ;render();};
@@ -1008,24 +1014,29 @@ if('IntersectionObserver' in window){
   const as=q('artscreen'),asBody=as.querySelector('.asbody');let artHome=null,artOpen=null;
   const closeArt=()=>{
     if(!artOpen)return;
-    artHome.parentNode.insertBefore(artOpen,artHome);artHome.remove();
-    artOpen.classList.remove('open');artOpen.querySelector('.arthead').setAttribute('aria-expanded','false');
-    artOpen=null;artHome=null;as.classList.remove('shown');setTimeout(()=>{as.hidden=true;},170);
+    const a=artOpen,home=artHome;artOpen=null;artHome=null;
+    if(home&&home.parentNode)home.parentNode.insertBefore(a,home);
+    if(home&&home.parentNode)home.remove();
+    a.classList.remove('open');const hd=a.querySelector('.arthead');if(hd)hd.setAttribute('aria-expanded','false');
+    as.classList.remove('shown');lockScroll(false);setTimeout(()=>{as.hidden=true;},170);
+    renderGeom();renderWhy();renderOps();renderOpsMap();
+  };
+  const openArt=a=>{
+    if(artOpen===a)return;
+    if(artOpen)closeArt();
+    artHome=document.createElement('div');a.parentNode.insertBefore(artHome,a);
+    asBody.appendChild(a);a.classList.add('open');
+    const hd=a.querySelector('.arthead');if(hd)hd.setAttribute('aria-expanded','true');
+    artOpen=a;as.hidden=false;lockScroll(true);requestAnimationFrame(()=>as.classList.add('shown'));
     renderGeom();renderWhy();renderOps();renderOpsMap();
   };
   document.querySelectorAll('.art').forEach(a=>{
     const head=a.querySelector('.arthead');if(!head)return;
     head.setAttribute('aria-expanded','false');
-    head.addEventListener('click',()=>{
-      if(artOpen)closeArt();
-      artHome=document.createElement('div');a.parentNode.insertBefore(artHome,a);
-      asBody.appendChild(a);a.classList.add('open');head.setAttribute('aria-expanded','true');
-      artOpen=a;as.hidden=false;requestAnimationFrame(()=>as.classList.add('shown'));
-      renderGeom();renderWhy();renderOps();renderOpsMap();
-    });
+    head.addEventListener('click',()=>{if(as.hidden)openArt(a);});
   });
   q('artclose').addEventListener('click',closeArt);
-  as.addEventListener('click',e=>{if(e.target===as)closeArt();});
+  as.addEventListener('click',e=>{if(e.target.closest('input,button,select,textarea,label,.seg,a'))return;closeArt();});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!as.hidden)closeArt();});
 })();
 /* control dock: visible while the map or the explorer is on screen and their own controls are not */
@@ -1038,7 +1049,7 @@ function updateDock(){
   if(mobile){dock.hidden=false;const near=y<bottom-vh*0.15;dock.classList.toggle('away',!near);if(!near)dock.classList.remove('open');}
   else{dock.hidden=true;if(hub)hub.classList.toggle('stuck',hub.getBoundingClientRect().top<=0.5);}
 }
-q('docktoggle').addEventListener('click',()=>{const open=!dock.classList.contains('open');dock.classList.toggle('open',open);dock.setAttribute('aria-expanded',open?'true':'false');q('docktoggle').setAttribute('aria-expanded',open?'true':'false');});
+q('docktoggle').addEventListener('click',()=>{const open=!dock.classList.contains('open');if(!open)closePanelScreen();dock.classList.toggle('open',open);dock.setAttribute('aria-expanded',open?'true':'false');q('docktoggle').setAttribute('aria-expanded',open?'true':'false');});
 let dt=null;window.addEventListener('scroll',()=>{if(dt)return;dt=requestAnimationFrame(()=>{dt=null;updateDock();});},{passive:true});
 render();renderLegend();renderGeom();renderWhy();renderOps();renderOpsMap();renderGallery();updateDock();
 /* the map selection layers are large; fetch them after the first paint, the shown phase first */
