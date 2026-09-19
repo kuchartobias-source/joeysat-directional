@@ -73,7 +73,7 @@ a{color:var(--white)}
   #artscreen #definitions .artbody{align-content:center}
   #artscreen #definitions{align-self:center}
   #artscreen .three{gap:26px}
-  #artscreen #geom svg{max-height:34vh}
+  #artscreen #geom svg{width:100%;max-height:46vh}
   #artscreen #geometry .cluex{grid-template-columns:96px minmax(0,1fr);min-height:0;gap:10px}
   #artscreen #geometry .cluex img{width:96px;height:96px}
   #artscreen #geometry .cluex p{font-size:11.5px}
@@ -86,6 +86,32 @@ a{color:var(--white)}
   #artscreen .cluex{margin:6px 0 0}
 }
 #artscreen .cluex{grid-template-columns:130px minmax(0,1fr);min-height:0}
+@media (max-width:860px){
+  #artscreen{padding:14px 12px}
+  #artscreen .asbody{max-height:calc(100vh - 28px)}
+  #artscreen .arthead{padding:8px 0 6px}
+  #artscreen .arthead h2{font-size:18px}
+  #artscreen .artsum{font-size:12.5px}
+  #artscreen .def h3,#artscreen .item h3{font-size:13.5px;margin-bottom:2px}
+  #artscreen .def p{font-size:12.5px;line-height:1.35}
+  #artscreen .three{gap:10px}
+  #artscreen .artbody p{font-size:12px;line-height:1.35;margin-bottom:5px}
+  #artscreen .artbody .num{font-size:16px}
+  #artscreen .artbody .small{font-size:11px}
+  #artscreen #geom svg{max-height:20vh}
+  #artscreen #why svg{max-height:30vh}
+  #artscreen #inclination .artbody p:nth-child(2){display:none}
+  #artscreen #opsmap canvas{max-height:24vh}
+  #artscreen .geopanel .cluex{display:none}
+  #artscreen #geometry .artbody p:first-child{display:none}
+  #artscreen .cluex{grid-template-columns:76px minmax(0,1fr);gap:8px}
+  #artscreen .cluex img{width:76px;height:76px}
+  #artscreen .cluex p{font-size:10.5px}
+  #artscreen .geopanel .val .k{font-size:16px}
+  #artscreen .geopanel{padding:4px 8px 6px}
+  #artscreen .geopanel .val{min-height:0}
+  #artscreen .geopanel .control{margin-top:2px}
+}
 #artscreen .cluex img{width:130px;height:130px}
 #panelscreen{position:fixed;left:0;right:0;top:0;z-index:45;background:rgba(3,4,23,.93);display:grid;place-items:start center;padding:14px;opacity:0;transition:opacity .18s ease}
 #panelscreen[hidden]{display:none}
