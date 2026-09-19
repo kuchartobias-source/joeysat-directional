@@ -102,6 +102,7 @@ svg{width:100%;height:auto;display:block}
 .hub .name output{color:var(--white);font-weight:600;margin-left:6px;display:inline-block;min-width:5.2em}
 .hub .seg button{padding:4px 11px;font-size:13px}
 .hub input[type=range]{margin:0;height:24px}
+.hub .livebar{min-width:12.6em}
 .hub .livebar .lab{font-size:11px}
 .hub .livebar .num{font-size:20px}
 .hub .btn{margin:0;width:auto;padding:8px 16px;font-size:14px;align-self:center}
@@ -127,8 +128,8 @@ svg{width:100%;height:auto;display:block}
 .btn:hover{filter:brightness(1.04)}
 .tried{margin:10px 0 0;font-size:14px;color:var(--grey)}
 .out{display:grid;gap:14px;min-width:0;margin-top:14px}
-.readouts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;min-height:186px}
-.readout{min-height:186px}
+.readouts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;min-height:212px}
+.readout{min-height:212px}
 .readout{padding:12px 14px 12px;border-top:3px solid var(--ph1)}
 .readout.II{border-top-color:var(--ph2)}
 .rv{display:grid;grid-template-columns:auto 1fr;column-gap:10px;align-items:baseline;margin:2px 0}
@@ -185,6 +186,9 @@ ul.plain li{margin:0 0 6px}
 .geopanel .val .k{font-size:20px;display:block;color:var(--ink);min-height:1.25em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .geopanel .val .lab{font-size:13px;color:#6a7075;display:block;line-height:1.3;white-space:nowrap}
 .geopanel .control{margin-top:6px}
+.cluex{display:grid;grid-template-columns:150px minmax(0,1fr);gap:12px;align-items:center;margin:8px 0 2px;min-height:150px}
+.cluex img{width:150px;height:150px;object-fit:contain;background:#fff;border:1px solid #c4bfb6;border-radius:2px}
+.cluex p{color:#4a4f55;margin:0;font-size:12.5px}
 .geopanel .val{margin-top:4px}
 .small{font-size:14px;color:var(--beige-d)}
 .lightbox{position:fixed;inset:0;z-index:50;background:rgba(3,4,23,.93);display:grid;place-items:center;padding:24px;cursor:zoom-out;overflow:auto}
@@ -193,18 +197,28 @@ ul.plain li{margin:0 0 6px}
 .lightbox img{max-width:100%;max-height:86vh;width:auto;height:auto;background:var(--beige-l);padding:10px;border-radius:3px;display:block}
 .lightbox h3{color:var(--orange);font-family:Magistral,Figtree,sans-serif;font-size:20px;margin:0 0 8px}
 .lightbox p{color:var(--beige-d);margin:0;text-align:left;font-size:14px}
-@media (max-width:860px){.lightbox{place-items:start center;padding:16px}.lightbox .lbin{grid-template-columns:1fr;gap:12px;align-items:start}.lightbox img{max-height:52vh}}
+@media (max-width:860px){.lightbox{place-items:center;padding:16px}.lightbox .lbin{grid-template-columns:1fr;gap:12px;align-items:center}.lightbox .lbtext{order:-1}.lightbox img{max-height:46vh}}
 .tile img{cursor:zoom-in}
-.dock{position:fixed;left:0;right:0;z-index:40;background:rgba(3,4,23,.88);border-radius:0}
+.dock{position:fixed;left:0;right:0;z-index:40;background:#080a1c;border-radius:0}
 .dock[hidden]{display:none}
 .dockbody{max-width:1120px;margin:0 auto;padding:8px 18px 10px;display:grid;grid-template-columns:auto 1fr 1fr 1fr auto;gap:8px 20px;align-items:end}
 .dock .ctl{display:flex;flex-direction:column;gap:2px}
+.dockhead{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:end;width:100%}
+.dockhead .livebar{justify-self:end;text-align:right}
+.dockhead .livebar{min-width:0}
+.dockhead .livebar .lab{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dockhead .livebar .num{white-space:nowrap}
+.dockhead .livebar .lab{font-size:11px;color:var(--beige-d)}
+.dockhead .livebar .num{font-size:20px}
+.dockhead .livebar .num span{min-width:4.2em}
 .dock .seg{align-self:start}
+.dock .dockrow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:end}
+.dock .livebar .lab{font-size:11px;color:var(--beige-d)}
+.dock .livebar .num{font-size:20px;line-height:1.1}
 .dock .name{font-size:12px;color:var(--beige-d);white-space:nowrap}
 .dock .name output{color:var(--white);font-weight:600;margin-left:6px;display:inline-block;min-width:5.2em}
 .dock .seg button{padding:4px 10px;font-size:13px}
 .dock input[type=range]{margin:0;height:24px}
-.dock .tried{min-height:5.6em}
 .dock .btn{margin:0;width:auto;padding:7px 14px;font-size:14px;box-shadow:0 0 0 2px rgba(254,177,97,.18),0 0 18px 2px rgba(255,157,0,.28)}
 .dockbtn{display:none}
 @media (min-width:861px){.dock{display:none}}
@@ -311,6 +325,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
     </div>
     <div class="panel geopanel">
       <div id="geom"></div>
+      <div class="cluex"><img id="cluimg" alt="" loading="lazy"><p class="small" id="clucap"></p></div>
       <div class="control"><div class="row"><label class="name" for="s-l2d">Projected track length</label><output id="o-l2d" for="s-l2d"></output></div><input type="range" id="s-l2d" min="0" max="140" step="1" value="9" aria-label="Projected track length in pixels"></div>
       <div class="val"><div><span class="k" id="v-beta"></span><span class="lab">angle β</span></div><div><span class="k" id="v-l3d"></span><span class="lab">path [µm]</span></div><div><span class="k" id="v-reg"></span><span class="lab">regime</span></div></div>
     </div>
@@ -379,16 +394,17 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
 <div id="dock" class="dock glass" hidden>
   <button type="button" class="dockbtn only-mobile" id="docktoggle" aria-expanded="false">Selection</button>
   <div class="dockbody">
-    <div class="ctl"><span class="name">Phase</span><div class="seg seg-phase-any" id="seg-dock" role="group" aria-label="Phase"><button type="button" data-v="I" aria-pressed="false">I</button><button type="button" data-v="II" aria-pressed="false">II</button><button type="button" data-v="both" aria-pressed="true">both</button></div></div>
+    <div class="dockrow">
+      <div class="dockhead"><div class="ctl"><span class="name">Phase</span><div class="seg seg-phase-any" id="seg-dock" role="group" aria-label="Phase"><button type="button" data-v="I" aria-pressed="false">I</button><button type="button" data-v="II" aria-pressed="false">II</button><button type="button" data-v="both" aria-pressed="true">both</button></div></div><div class="livebar"><span class="lab">core slope, deg per deg</span><div class="num" id="livebar2"></div></div></div>
+    </div>
     <div class="ctl sl"><span class="name">Cluster width <output class="o-w2d"></output></span><input type="range" class="sl-w2d" min="0" max="25" step="1" aria-label="Cluster width limit"></div>
     <div class="ctl sl"><span class="name">Guard band <output class="o-b"></output></span><input type="range" class="sl-b" min="0" max="9" step="1" aria-label="Guard band width"></div>
     <div class="ctl sl"><span class="name">Occupancy <output class="o-occ"></output></span><input type="range" class="sl-occ" min="0" max="8" step="1" aria-label="Occupancy threshold"></div>
     <button type="button" class="btn dockreset" id="reset3">Back to the paper's selection</button>
-    <p class="tried" id="tried2"></p>
   </div>
 </div>
 <div id="lightbox" class="lightbox" hidden><div class="lbin"><img alt=""><div class="lbtext"><h3></h3><p class="small"></p></div></div></div>
-<script src="data/data.js"></script>
+<script src="data/core.js"></script>
 <script>
 (function(){
 'use strict';
@@ -521,9 +537,12 @@ function currentLayer(m){
   if(mapState.pop==='all')return {lay:L.all,key:'all',n:L.all.n_total,desc:'all protons with at least two pixels'};
   const wk=layerKeyFor(L.w2d,w),ok=layerKeyFor(L.occ,o);
   const wTxt=w==='none'?'no width limit':'width below '+Number(w).toFixed(1)+' px',oTxt=o==='none'?'no occupancy threshold':'occupancy below '+o;
-  if(String(o)===String(DEF.occ_max)&&wk&&L.w2d[wk])return {lay:L.w2d[wk],key:'w2d|'+wk,n:L.w2d[wk].n_total,desc:'protons at '+wTxt+' and '+oTxt};
-  if(Number(w)===DEF.w2d_max&&ok&&L.occ[ok])return {lay:L.occ[ok],key:'occ|'+ok,n:L.occ[ok].n_total,desc:'protons at '+wTxt+' and '+oTxt};
-  return {lay:L.w2d[wk],key:'w2d|'+wk+'|nominalocc',n:L.w2d[wk].n_total,desc:'protons at '+wTxt+' and occupancy below '+DEF.occ_max+' (the map carries layers along one selection axis at a time, so the occupancy slider is not applied here)'};
+  const gk=(wk||'')+'|'+(ok||'');
+  if(L.grid&&L.grid[gk])return {lay:L.grid[gk],key:'grid|'+gk,n:L.grid[gk].n_total,desc:'protons at '+wTxt+' and '+oTxt};
+  if(L.w2d&&String(o)===String(DEF.occ_max)&&wk&&L.w2d[wk])return {lay:L.w2d[wk],key:'w2d|'+wk,n:L.w2d[wk].n_total,desc:'protons at '+wTxt+' and '+oTxt};
+  if(L.occ&&Number(w)===DEF.w2d_max&&ok&&L.occ[ok])return {lay:L.occ[ok],key:'occ|'+ok,n:L.occ[ok].n_total,desc:'protons at '+wTxt+' and '+oTxt};
+  if(L.w2d&&L.w2d[wk])return {lay:L.w2d[wk],key:'w2d|'+wk+'|nominalocc',n:L.w2d[wk].n_total,desc:'protons at '+wTxt+' and occupancy below '+DEF.occ_max};
+  return {lay:L.all,key:'all',n:L.all.n_total,desc:'all protons with at least two pixels, while the remaining selections are still loading',pending:true};
 }
 const MW=760,MH=400;
 const EE={A1:1.340264,A2:-0.081106,A3:0.000893,A4:0.003796,M:Math.sqrt(3)/2,K:133.0};
@@ -580,7 +599,7 @@ function renderMap(){
   const cur=currentLayer(m),A=m.layers.all;
   const nMed=cur.lay.median_5deg.reduce((a,row)=>a+row.filter(v=>v!==A.missing&&v!==null).length,0);
   const single=D.site_numbers.table_I&&D.site_numbers.table_I[p]&&D.site_numbers.table_I[p].protons?(D.site_numbers.table_I[p].protons-A.n_total):null;
-  q('mapcap').textContent='Phase '+p+', '+ALT[p]+'. White line: the contour of the anomaly, a fixed level of the AP9 proton flux above 10 MeV; hatched: the guard band excluded on both sides of it, inside lies the core, outside the reference. Colour: median elevation angle of '+cur.desc+', '+fmtN(cur.n)+' clusters, per 5\u00b0 cell holding at least '+A.min_cell_n+' of them ('+fmtN(nMed)+' cells coloured); cells with fewer are left dark.'+(mapState.pop==='all'&&single!==null?' Single-pixel clusters ('+single+' here) have no axis and are left out, which is why the total falls short of the classification count by that number.':'')+' Thin lines: |I| at 24\u00b0, 36\u00b0, 48\u00b0 and 60\u00b0; the same inclination occurs inside the anomaly and far from it, which is what makes the two regions comparable. Projection: '+(g.proj==='ee'?'Equal Earth':'equirectangular')+'; coastline data: Natural Earth.';
+  q('mapcap').textContent=(cur.pending?'The selection layers are still loading; the map shows all protons until they arrive. ':'')+'Phase '+p+', '+ALT[p]+'. White line: the contour of the anomaly, a fixed level of the AP9 proton flux above 10 MeV; hatched: the guard band excluded on both sides of it, inside lies the core, outside the reference. Colour: median elevation angle of '+cur.desc+', '+fmtN(cur.n)+' clusters, per 5\u00b0 cell holding at least '+A.min_cell_n+' of them ('+fmtN(nMed)+' cells coloured); cells with fewer are left dark.'+(mapState.pop==='all'&&single!==null?' Single-pixel clusters ('+single+' here) have no axis and are left out, which is why the total falls short of the classification count by that number.':'')+' Thin lines: |I| at 24\u00b0, 36\u00b0, 48\u00b0 and 60\u00b0; the same inclination occurs inside the anomaly and far from it, which is what makes the two regions comparable. Projection: '+(g.proj==='ee'?'Equal Earth':'equirectangular')+'; coastline data: Natural Earth.';
 }
 
 /* ---------- geometry explainer: slider on the projected length ---------- */
@@ -620,6 +639,13 @@ function renderGeom(){
   txt(svg,M,ry+px+24,'which the correction of 2.5 lateral widths removes',{'font-size':9});
   txt(svg,M,ry+px+39,beta<GEO.floor?'The track is shorter than the charge cloud is wide: the angle sits at the proton floor of '+GEO.floor.toFixed(1)+'\u00b0.':trunc?'Beyond the '+SEN.pixels+'-pixel read-out: the exit point is lost, the track reports the '+GEO.ceil.toFixed(1)+'\u00b0 ceiling.':'The angle follows from the ratio of projected length to sensor thickness.',{fill:COL.ink,'font-size':9.5});
   box.appendChild(svg);
+  const CLU=D.figures&&D.figures.clusters;
+  if(CLU&&CLU.items&&CLU.items.length){
+    let best=CLU.items[0];CLU.items.forEach(it=>{if(Math.abs(it.l2d-L)<Math.abs(best.l2d-L))best=it;});
+    const im=q('cluimg'),cap=q('clucap');
+    if(im&&im.dataset.cur!==best.file){im.dataset.cur=best.file;im.src='figures/'+best.file;im.alt='Example proton cluster of '+best.l2d+' pixels';}
+    if(cap)cap.textContent='A measured proton cluster of this length: L2D = '+best.l2d.toFixed(1)+' px, W2D = '+best.w2d.toFixed(2)+' px, '+best.size+' pixels, \u03b2 = '+best.beta.toFixed(1)+'\u00b0'+(best.truncated?', truncated at the read-out edge':'')+'. Pixel shade: energy deposited, one logarithmic scale for every example; the red line is the fitted axis.';
+  }
 }
 
 /* ---------- three predictions against the measured core profile ---------- */
@@ -702,7 +728,7 @@ function renderGallery(){
   D.figures.figures.filter(f=>f.shown!==false).forEach(f=>{const c=CAPTIONS[f.id]||[f.title,f.caption_draft];const d=document.createElement('div');d.className='panel tile';
     const prev=PREVIEW[f.id]?'figures/preview/'+f.file:'figures/'+f.file;
     const cap=(PREVIEW[f.id]?'Shown here: '+PREVIEW[f.id]+'. ':'')+c[1];
-    d.innerHTML='<img src="'+prev+'" alt="'+c[0]+'" loading="lazy" data-full="figures/'+f.file+'" data-title="'+c[0]+'" data-cap="'+cap.replace(/"/g,'&quot;')+'">';g.appendChild(d);});
+    d.innerHTML='<img src="'+prev+'" alt="'+c[0]+'" loading="lazy" onerror="this.onerror=null;this.src=this.dataset.full" data-full="figures/'+f.file+'" data-title="'+c[0]+'" data-cap="'+cap.replace(/"/g,'&quot;')+'">';g.appendChild(d);});
   const lb=q('lightbox');g.addEventListener('click',e=>{const im=e.target.closest('img');if(!im)return;lb.querySelector('img').src=im.dataset.full||im.src;lb.querySelector('img').alt=im.alt;lb.querySelector('h3').textContent=im.dataset.title||'';lb.querySelector('p').textContent=im.dataset.cap||'';lb.hidden=false;});
   lb.addEventListener('click',()=>{lb.hidden=true;});document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.hidden=true;});
 }
@@ -722,7 +748,8 @@ function render(){
   document.querySelectorAll('.o-w2d').forEach(e=>e.textContent=w==='none'?'none':'< '+Number(w).toFixed(1)+' px');document.querySelectorAll('.o-b').forEach(e=>e.textContent='\u00b1'+b+'\u00b0');document.querySelectorAll('.o-occ').forEach(e=>e.textContent=o==='none'?'none':'< '+o);
   document.querySelectorAll('.sl-w2d').forEach(e=>{if(+e.value!==st.wi)e.value=st.wi;});document.querySelectorAll('.sl-b').forEach(e=>{if(+e.value!==st.bi)e.value=st.bi;});document.querySelectorAll('.sl-occ').forEach(e=>{if(+e.value!==st.oi)e.value=st.oi;});
   const phases=st.phase==='both'?PHASES:[st.phase];
-  q('livebar').innerHTML=phases.map(p=>{const f=G[key(w,b,o,p)].core.fit;return '<span><small>'+p+'</small>'+(f?fmtS(f.slope):'no fit')+'</span>';}).join('');
+  const lbHtml=phases.map(p=>{const f=G[key(w,b,o,p)].core.fit;return '<span><small>'+p+'</small>'+(f?fmtS(f.slope):'no fit')+'</span>';}).join('');
+  q('livebar').innerHTML=lbHtml;const lb2=q('livebar2');if(lb2)lb2.innerHTML=lbHtml;
   const ro=q('readouts'),pa=q('panels');ro.innerHTML='';pa.innerHTML='';
   phases.forEach(p=>{
     const rec=G[key(w,b,o,p)];ro.appendChild(readout(rec));
@@ -732,7 +759,7 @@ function render(){
   });
   tried.add(fmtW(w)+'|'+b+'|'+o);
   const nsel=AX.w2d.length*AX.b.length*AX.occ.length;const tt='Selections tried: '+tried.size+' of '+fmtN(nsel)+'. The grid holds '+fmtN(nsel)+' selections for each phase, '+fmtN(2*nsel)+' fits in all, of which '+fmtN(GSTAT.fits)+' met the fitting rule; the core slope is positive in '+GSTAT.pos+' of those and significantly positive in '+GSTAT.sig+', the '+GSTAT.pos+' positive values all sitting at the limit of fittability with intervals that include zero.';
-  q('tried').textContent=tt;q('tried2').textContent=tt;
+  q('tried').textContent=tt;
   const num=AX.w2d.filter(v=>v!=='none'),numO=AX.occ.filter(v=>v!=='none');
   const coreSeries=(axis,mk)=>phases.map(p=>({phase:p,pts:axis.map(v=>{const f=G[mk(v,p)].core.fit;return f?{x:v,y:f.slope,lo:f.lo,hi:f.hi}:null;}).filter(Boolean)}));
   drawStrip(q('st-w2d'),{title:'core slope against the width limit [px]',xmin:1.05,xmax:6.15,minor:num,xticks:[1.2,2,3,4,5,6],series:coreSeries(num,(v,p)=>key(v,b,o,p)),none:phases.map(p=>{const f=G[key('none',b,o,p)].core.fit;return f?{phase:p,val:f.slope}:null;}).filter(Boolean),cur:w==='none'?{none:true}:{x:w}});
@@ -769,6 +796,19 @@ function updateDock(){
 q('docktoggle').addEventListener('click',()=>{const open=!dock.classList.contains('open');dock.classList.toggle('open',open);dock.setAttribute('aria-expanded',open?'true':'false');q('docktoggle').setAttribute('aria-expanded',open?'true':'false');});
 let dt=null;window.addEventListener('scroll',()=>{if(dt)return;dt=requestAnimationFrame(()=>{dt=null;updateDock();});},{passive:true});
 render();renderLegend();renderGeom();renderWhy();renderOps();renderOpsMap();renderGallery();updateDock();
+/* the map selection layers are large; fetch them after the first paint, the shown phase first */
+window.__joeyLayers=function(ph){
+  const src=window['JOEYSAT_LAYERS_'+ph];if(!src)return;
+  Object.assign(D['map_phase_'+ph].layers,src);
+  try{delete window['JOEYSAT_LAYERS_'+ph];}catch(e){}
+  baseCache={};if(mapState.phase===ph)renderMap();
+};
+(function loadLayers(){
+  const order=[mapState.phase].concat(PHASES.filter(p=>p!==mapState.phase));
+  let i=0;
+  const next=()=>{if(i>=order.length)return;const ph=order[i++];const sc=document.createElement('script');sc.src='data/layers_'+ph+'.js';sc.async=true;sc.onload=next;sc.onerror=next;document.head.appendChild(sc);};
+  if('requestIdleCallback' in window)requestIdleCallback(next,{timeout:1200});else setTimeout(next,600);
+})();
 })();
 
 </script>

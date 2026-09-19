@@ -282,5 +282,209 @@
    "n_total_all_widths": 746907,
    "n_in_bands": 745906
   }
+ },
+ "clusters": {
+  "selection": "protons, Size >= 2, full traversal, raw cache; W2D < 1.8 preferred",
+  "energy_scale": {
+   "min_keV": 3.0,
+   "max_keV": 108.68,
+   "log": true,
+   "note": "one scale for every example"
+  },
+  "note": "images only -- no pixel matrix, no coordinates, no time, no position and no frame or cluster identifier reaches the page",
+  "items": [
+   {
+    "target_l2d": 1,
+    "file": "clusters/cluster_L1.png",
+    "svg": "clusters/cluster_L1.svg",
+    "l2d": 1.0,
+    "w2d": 1.1,
+    "beta": 6.0,
+    "size": 6,
+    "pixels": 6,
+    "truncated": false,
+    "note": ""
+   },
+   {
+    "target_l2d": 2,
+    "file": "clusters/cluster_L2.png",
+    "svg": "clusters/cluster_L2.svg",
+    "l2d": 2.0,
+    "w2d": 1.06,
+    "beta": 12.4,
+    "size": 7,
+    "pixels": 7,
+    "truncated": false,
+    "note": ""
+   },
+   {
+    "target_l2d": 3,
+    "file": "clusters/cluster_L3.png",
+    "svg": "clusters/cluster_L3.svg",
+    "l2d": 3.1,
+    "w2d": 1.13,
+    "beta": 18.9,
+    "size": 9,
+    "pixels": 9,
+    "truncated": false,
+    "note": ""
+   },
+   {
+    "target_l2d": 4,
+    "file": "clusters/cluster_L4.png",
+    "svg": "clusters/cluster_L4.svg",
+    "l2d": 4.0,
+    "w2d": 1.47,
+    "beta": 23.6,
+    "size": 12,
+    "pixels": 12,
+    "truncated": false,
+    "note": ""
+   },
+   {
+    "target_l2d": 6,
+    "file": "clusters/cluster_L6.png",
+    "svg": "clusters/cluster_L6.svg",
+    "l2d": 6.2,
+    "w2d": 1.55,
+    "beta": 34.3,
+    "size": 16,
+    "pixels": 16,
+    "truncated": false,
+    "note": ""
+   },
+   {
+    "target_l2d": 8,
+    "file": "clusters/cluster_L8.png",
+    "svg": "clusters/cluster_L8.svg",
+    "l2d": 8.3,
+    "w2d": 1.57,
+    "beta": 42.5,
+    "size": 17,
+    "pixels": 17,
+    "truncated": false,
+    "note": ""
+   },
+   {
+    "target_l2d": 12,
+    "file": "clusters/cluster_L12.png",
+    "svg": "clusters/cluster_L12.svg",
+    "l2d": 11.8,
+    "w2d": 1.52,
+    "beta": 52.4,
+    "size": 28,
+    "pixels": 28,
+    "truncated": false,
+    "note": ""
+   },
+   {
+    "target_l2d": 16,
+    "file": "clusters/cluster_L16.png",
+    "svg": "clusters/cluster_L16.svg",
+    "l2d": 15.2,
+    "w2d": 1.55,
+    "beta": 59.1,
+    "size": 27,
+    "pixels": 27,
+    "truncated": false,
+    "note": ""
+   },
+   {
+    "target_l2d": 24,
+    "file": "clusters/cluster_L24.png",
+    "svg": "clusters/cluster_L24.svg",
+    "l2d": 24.7,
+    "w2d": 1.59,
+    "beta": 69.8,
+    "size": 40,
+    "pixels": 40,
+    "truncated": false,
+    "note": ""
+   },
+   {
+    "target_l2d": 32,
+    "file": "clusters/cluster_L32.png",
+    "svg": "clusters/cluster_L32.svg",
+    "l2d": 31.0,
+    "w2d": 1.6,
+    "beta": 73.7,
+    "size": 49,
+    "pixels": 49,
+    "truncated": false,
+    "note": ""
+   },
+   {
+    "target_l2d": 48,
+    "file": "clusters/cluster_L48.png",
+    "svg": "clusters/cluster_L48.svg",
+    "l2d": 46.8,
+    "w2d": 1.66,
+    "beta": 79.0,
+    "size": 61,
+    "pixels": 61,
+    "truncated": false,
+    "note": ""
+   },
+   {
+    "target_l2d": 64,
+    "file": "clusters/cluster_L64.png",
+    "svg": "clusters/cluster_L64.svg",
+    "l2d": 66.3,
+    "w2d": 1.64,
+    "beta": 82.2,
+    "size": 95,
+    "pixels": 95,
+    "truncated": false,
+    "note": ""
+   },
+   {
+    "target_l2d": 80,
+    "file": "clusters/cluster_L80.png",
+    "svg": "clusters/cluster_L80.svg",
+    "l2d": 78.4,
+    "w2d": 1.65,
+    "beta": 83.4,
+    "size": 121,
+    "pixels": 121,
+    "truncated": false,
+    "note": ""
+   },
+   {
+    "target_l2d": 96,
+    "file": "clusters/cluster_L96.png",
+    "svg": "clusters/cluster_L96.svg",
+    "l2d": 92.2,
+    "w2d": 1.66,
+    "beta": 84.4,
+    "size": 125,
+    "pixels": 125,
+    "truncated": true,
+    "note": ""
+   },
+   {
+    "target_l2d": 112,
+    "file": "clusters/cluster_L112.png",
+    "svg": "clusters/cluster_L112.svg",
+    "l2d": 114.1,
+    "w2d": 1.59,
+    "beta": 85.4,
+    "size": 162,
+    "pixels": 162,
+    "truncated": true,
+    "note": ""
+   },
+   {
+    "target_l2d": 128,
+    "file": "clusters/cluster_L128.png",
+    "svg": "clusters/cluster_L128.svg",
+    "l2d": 125.0,
+    "w2d": 1.74,
+    "beta": 85.8,
+    "size": 178,
+    "pixels": 178,
+    "truncated": true,
+    "note": ""
+   }
+  ]
  }
 }

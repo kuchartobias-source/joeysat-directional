@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-18 09:35",
+ "generated": "2026-09-19 12:13",
  "git_commit": null,
  "cache": "data_cache.parquet",
  "package": "directional_analysis (run_all.py)",
@@ -155,8 +155,8 @@
   },
   {
    "file": "figures.json",
-   "raw": 7616,
-   "gzip": 2002
+   "raw": 11969,
+   "gzip": 2671
   },
   {
    "file": "isotropic.json",
@@ -175,13 +175,13 @@
   },
   {
    "file": "map_phase_I.json",
-   "raw": 1500209,
-   "gzip": 310300
+   "raw": 6475169,
+   "gzip": 1120572
   },
   {
    "file": "map_phase_II.json",
-   "raw": 1492477,
-   "gzip": 327538
+   "raw": 6448340,
+   "gzip": 1291861
   },
   {
    "file": "ops.json",
@@ -205,8 +205,8 @@
   },
   {
    "file": "data.js",
-   "raw": 7969388,
-   "gzip": 1408908
+   "raw": 17904564,
+   "gzip": 3183450
   }
  ]
 }
