@@ -38,7 +38,7 @@ a{color:var(--white)}
 .note{font-size:14px;color:var(--grey);border-left:2px solid var(--orange);padding:2px 10px;margin:6px 0 20px}
 .sub{color:var(--beige-d);font-size:17px;margin:0 0 14px;max-width:62em}
 .map{background:#0B0C1B;border:1px solid rgba(255,252,250,.12);border-radius:3px;padding:6px 6px 8px}
-#map{position:relative;min-height:60px;cursor:zoom-in}
+#map{position:relative;min-height:60px}
 #map canvas{position:relative;z-index:1}
 .maphint{position:absolute;inset:0;display:grid;place-items:center;margin:0;color:var(--beige-d);font-size:14px;text-align:center;z-index:0}
 .mapfull{margin:6px 0 0;width:100%;padding:7px;background:rgba(201,189,178,.14);border:1px solid rgba(255,252,250,.18);border-radius:2px;color:var(--beige-l);font:inherit;font-size:13px;cursor:pointer}
@@ -53,7 +53,9 @@ a{color:var(--white)}
 .xclose:hover{color:var(--orange);border-color:var(--orange)}
 #artscreen .chev{display:none}
 @media (min-width:861px){
-  #artscreen #geometry{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:24px;align-items:center}
+  #artscreen #geometry{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.45fr);gap:26px;align-items:center}
+  #artscreen #geometry .geopanel{order:2}
+  #artscreen #geometry .artbody{order:1}
   #artscreen #geometry .artbody{font-size:14.5px;align-self:center}
   #artscreen #geometry .artbody .two,#artscreen #geometry .artbody .two.eq{grid-template-columns:minmax(0,1fr);gap:0}
   #artscreen #geometry .artbody p{margin-bottom:8px}
@@ -61,7 +63,9 @@ a{color:var(--white)}
   #artscreen #geometry .arthead{grid-column:1/-1;cursor:default}
   #artscreen #geometry .geopanel{margin:0}
   #artscreen .art .two,#artscreen .art .two.eq{grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);align-items:center;gap:26px}
-  #artscreen .art .two.rev{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);align-items:center;gap:26px}
+  #artscreen .art .two.rev{grid-template-columns:minmax(0,1fr) minmax(0,1.45fr);align-items:center;gap:26px}
+  #artscreen .art .two.rev>:first-child{order:2}
+  #artscreen .art .two.rev>:last-child{order:1}
   #artscreen #instrument .opscol{align-content:center}
   #artscreen #definitions .three{align-items:center}
   #artscreen .artbody{padding-bottom:0}
@@ -69,7 +73,7 @@ a{color:var(--white)}
   #artscreen #definitions .artbody{align-content:center}
   #artscreen #definitions{align-self:center}
   #artscreen .three{gap:26px}
-  #artscreen #geom svg{max-height:30vh}
+  #artscreen #geom svg{max-height:34vh}
   #artscreen #geometry .cluex{grid-template-columns:96px minmax(0,1fr);min-height:0;gap:10px}
   #artscreen #geometry .cluex img{width:96px;height:96px}
   #artscreen #geometry .cluex p{font-size:11.5px}
@@ -78,36 +82,24 @@ a{color:var(--white)}
   #artscreen #why svg{max-height:62vh}
   #artscreen .opscol{gap:10px}
   #artscreen #opsmap canvas{max-height:44vh;width:100%;height:auto}
-  #artscreen #ops svg{max-height:16vh}
   #artscreen #opsmapcap{font-size:13px}
   #artscreen .cluex{margin:6px 0 0}
 }
 #artscreen .cluex{grid-template-columns:130px minmax(0,1fr);min-height:0}
 #artscreen .cluex img{width:130px;height:130px}
-#mapscreen{position:fixed;inset:0;z-index:60;background:var(--black);display:grid;grid-template-rows:1fr auto;padding:4px 2px}
-#mapscreen[hidden]{display:none}
-#mapscreen .rotwrap{display:grid;place-items:center;overflow:hidden;min-height:0}
-@media (max-width:860px){#mapscreen canvas{transform:rotate(-90deg);transform-origin:center}}
 #panelscreen{position:fixed;left:0;right:0;top:0;z-index:45;background:rgba(3,4,23,.93);display:grid;place-items:start center;padding:14px;opacity:0;transition:opacity .18s ease}
 #panelscreen[hidden]{display:none}
 #panelscreen.shown{opacity:1}
 #panelscreen .psbox{background:var(--beige-l);border-radius:3px;padding:8px;width:100%;max-width:min(96vw,640px);transform:scale(.94);transition:transform .22s cubic-bezier(.2,.7,.3,1)}
 #panelscreen.shown .psbox{transform:scale(1)}
 #panelscreen .psbox svg{width:100%;height:auto}
-#mapscreen .msctl{display:grid;gap:8px;padding:8px 4px 4px}
-#mapscreen .msctl .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-#mapscreen .msctl{max-width:1120px;margin:0 auto;width:100%}
-#mapscreen .msctl .name{font-size:13px;color:var(--beige-d);min-width:9em}
-#mapscreen .msctl .row{gap:14px}
-@media (min-width:861px){#mapscreen{padding:18px}#mapscreen .msctl{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 30px}#mapscreen .msctl .close{grid-column:2;justify-self:end}}
-
 /* map: canvas with a vertical colour bar at its right, controls in one row below */
 .maprow{display:grid;grid-template-columns:minmax(0,1fr) 66px;gap:8px;align-items:stretch}
 .vbar{position:relative;font-size:12px;color:var(--beige-d)}
 .vbar .vg{position:absolute;top:8px;bottom:36px;left:0;width:10px;background:linear-gradient(to top,#440154,#414487,#2a788e,#22a884,#7ad151,#fde725)}
 .vbar .vt{position:absolute;left:14px;transform:translateY(-50%)}
 .vbar .vt-hi{top:8px}.vbar .vt-mid{top:calc(50% - 14px)}.vbar .vt-lo{bottom:36px;transform:translateY(50%)}
-.vbar .vlab{position:absolute;left:50px;bottom:36px;transform-origin:left bottom;transform:rotate(-90deg) translate(0,0);white-space:nowrap;width:0}
+.vbar .vlab{position:absolute;left:46px;top:calc(50% - 14px);transform-origin:center;transform:translate(-50%,-50%) rotate(-90deg);white-space:nowrap}
 .mapfoot2{display:grid;grid-template-columns:230px minmax(0,1fr);gap:10px 22px;align-items:start;margin:10px 4px 0}
 @media (max-width:760px){.mapfoot2{grid-template-columns:1fr;gap:6px}}
 .mapctl2{display:flex;flex-direction:column;gap:10px;align-items:start}
@@ -127,7 +119,7 @@ a{color:var(--white)}
   .maprow{grid-template-columns:1fr;gap:4px}
   .vbar{height:48px}
   .vbar .vg{top:22px;bottom:auto;left:0;right:0;width:auto;height:10px;background:linear-gradient(90deg,#440154,#414487,#2a788e,#22a884,#7ad151,#fde725)}
-  .vbar .vlab{position:static;transform:none;width:auto;display:block}
+  .vbar .vlab{position:static;transform:none;width:auto;display:block;text-align:center}
   .vbar .vt{top:auto;bottom:0;transform:none}
   .vbar .vt-lo{left:0}.vbar .vt-mid{left:50%;transform:translateX(-50%)}.vbar .vt-hi{left:auto;right:0}
   .mapctl2{flex-direction:row;gap:14px;flex-wrap:wrap;align-items:flex-end}
@@ -496,7 +488,6 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
     </div>
     <div class="opscol">
       <div class="panel"><p class="small" id="opsmapcap" style="color:#4a4f55;margin:2px 4px 6px"></p><div id="opsmap"></div><div class="mapctl" style="margin:6px 4px 2px;grid-template-columns:auto auto;justify-content:start"><span class="name" style="color:#6a7075">Phase</span><div class="seg" id="seg-ops" role="group" aria-label="Exposure map phase"><button type="button" data-v="I" aria-pressed="true">I</button><button type="button" data-v="II" aria-pressed="false">II</button></div></div></div>
-      <div class="panel" id="ops"></div>
     </div>
   </div>
   </div>
@@ -576,7 +567,6 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
 </div>
 <div id="artscreen" hidden><button type="button" class="xclose" id="artclose" aria-label="Close">×</button><div class="asbody"></div></div>
 <div id="panelscreen" hidden><div class="psbox"></div></div>
-<div id="mapscreen" hidden><button type="button" class="xclose" id="mapscreenclose" aria-label="Close">×</button><div class="rotwrap" id="mapscreenbox"></div><div class="msctl"><div class="row"><span class="name">Phase</span><div class="seg" id="seg-ms" role="group" aria-label="Phase"><button type="button" data-v="I" aria-pressed="false">I</button><button type="button" data-v="II" aria-pressed="false">II</button><button type="button" data-v="both" aria-pressed="true">both</button></div></div><div class="row"><span class="name">Population</span><div class="seg" id="seg-pop2" role="group" aria-label="Population"><button type="button" data-v="all" aria-pressed="true">all protons</button><button type="button" data-v="fid" aria-pressed="false">fiducial</button></div><div class="seg tiny" id="seg-layers2" role="group" aria-label="Layers"><button type="button" data-v="iso" aria-pressed="true">|I| isolines</button></div></div><div class="row"><span class="name">Guard band <output class="o-b"></output></span><input type="range" class="sl-b" min="0" max="9" step="1" style="flex:1" aria-label="Guard band"></div><div class="row"><span class="name">Cluster width <output class="o-w2d"></output></span><input type="range" class="sl-w2d" min="0" max="25" step="1" style="flex:1" aria-label="Cluster width"></div><div class="row"><span class="name">Occupancy <output class="o-occ"></output></span><input type="range" class="sl-occ" min="0" max="8" step="1" style="flex:1" aria-label="Occupancy"></div></div></div>
 <div id="lightbox" class="lightbox" hidden><div class="lbin"><img alt=""><div class="lbtext"><h3></h3><p class="small"></p></div></div></div>
 <script src="data/core.js"></script>
 <script>
@@ -718,11 +708,12 @@ function currentLayer(m){
   if(L.w2d&&L.w2d[wk])return {lay:L.w2d[wk],key:'w2d|'+wk+'|nominalocc',n:L.w2d[wk].n_total,desc:'protons at '+wTxt+' and occupancy below '+DEF.occ_max};
   return {lay:L.all,key:'all',n:L.all.n_total,desc:'all protons with at least two pixels, while the remaining selections are still loading',pending:true};
 }
-const MW=760,MH=400;
+let MW=760,MH=400;
+function setCanvasSize(){const compact=(window.innerWidth||1000)<640;MW=compact?728:760;MH=compact?368:400;}
 const EE={A1:1.340264,A2:-0.081106,A3:0.000893,A4:0.003796,M:Math.sqrt(3)/2,K:133.0};
 function eeXY(lon,lat){const lam=lon*Math.PI/180,phi=lat*Math.PI/180,th=Math.asin(EE.M*Math.sin(phi)),t2=th*th,t6=t2*t2*t2;return [lam*Math.cos(th)/(EE.M*(EE.A1+3*EE.A2*t2+t6*(7*EE.A3+9*EE.A4*t2))),th*(EE.A1+EE.A2*t2+t6*(EE.A3+EE.A4*t2))];}
 function makeGeom(proj){
-  const compact=(window.innerWidth||1000)<640,ML=compact?8:34,MT=compact?8:8,cx=ML+360,cy=MT+180;
+  const compact=(window.innerWidth||1000)<640,ML=compact?4:34,MT=compact?4:8,cx=ML+360,cy=MT+180;
   const P=proj==='ee'?((lon,lat)=>{const xy=eeXY(lon,lat);return [cx+xy[0]*EE.K,cy-xy[1]*EE.K];}):((lon,lat)=>[ML+(lon+180)*2,MT+(90-lat)*2]);
   const cell=(ctx,lon,lat,s)=>{if(proj==='ee'){const a=P(lon-s/2,lat+s/2),b=P(lon+s/2,lat+s/2),c=P(lon+s/2,lat-s/2),d=P(lon-s/2,lat-s/2);ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0]+0.3,b[1]);ctx.lineTo(c[0]+0.3,c[1]+0.3);ctx.lineTo(d[0],d[1]+0.3);ctx.closePath();}else{const p=P(lon-s/2,lat+s/2);ctx.rect(p[0],p[1],s*2,s*2);}};
   const outline=ctx=>{ctx.beginPath();if(proj==='ee'){let first=true;const pts=[];for(let la=-90;la<=90;la+=3)pts.push([-180,la]);for(let lo=-180;lo<=180;lo+=3)pts.push([lo,90]);for(let la=90;la>=-90;la-=3)pts.push([180,la]);for(let lo=180;lo>=-180;lo-=3)pts.push([lo,-90]);pts.forEach(pt=>{const p=P(pt[0],pt[1]);if(first){ctx.moveTo(p[0],p[1]);first=false;}else ctx.lineTo(p[0],p[1]);});ctx.closePath();}else ctx.rect(ML,MT,720,360);};
@@ -753,10 +744,11 @@ function renderMapBase(g){
   baseCache[cacheKey]=c;return c;
 }
 function renderMap(){
+  setCanvasSize();
   const p=mapState.phase,m=D['map_phase_'+p],box=q('map'),g=makeGeom(mapState.proj),b=AX.b[st.bi];
   let cv=box.querySelector('canvas');const dpr=Math.min(2,window.devicePixelRatio||1);
   if(!cv){cv=document.createElement('canvas');cv.setAttribute('role','img');box.appendChild(cv);}
-  if(cv.width!==MW*dpr){cv.width=MW*dpr;cv.height=MH*dpr;}
+  if(cv.width!==MW*dpr||cv.height!==MH*dpr){cv.width=MW*dpr;cv.height=MH*dpr;baseCache={};}
   cv.setAttribute('aria-label','Map of the median proton elevation angle with the anomaly contour and the guard band of '+b+' degrees, phase '+p);
   const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,MW,MH);
   ctx.drawImage(renderMapBase(g),0,0,MW,MH);
@@ -773,34 +765,7 @@ function renderMap(){
   const cur=currentLayer(m),A=m.layers.all;
   const nMed=cur.lay.median_5deg.reduce((a,row)=>a+row.filter(v=>v!==A.missing&&v!==null).length,0);
   const single=D.site_numbers.table_I&&D.site_numbers.table_I[p]&&D.site_numbers.table_I[p].protons?(D.site_numbers.table_I[p].protons-A.n_total):null;
-  syncMapScreen();
   q('mapcap').textContent=(cur.pending?'The selection layers are still loading; the map shows all protons until they arrive. ':'')+'Phase '+p+', '+ALT[p]+'. White line: the contour of the anomaly, a fixed level of the AP9 proton flux above 10 MeV; hatched: the guard band excluded on both sides of it, inside lies the core, outside the reference. Colour: median elevation angle of '+cur.desc+', '+fmtN(cur.n)+' clusters, per 5\u00b0 cell holding at least '+A.min_cell_n+' of them ('+fmtN(nMed)+' cells coloured); cells with fewer are left dark.'+(mapState.pop==='all'&&single!==null?' Single-pixel clusters ('+single+' here) have no axis and are left out, which is why the total falls short of the classification count by that number.':'')+' Thin lines: |I| at 24\u00b0, 36\u00b0, 48\u00b0 and 60\u00b0; the same inclination occurs inside the anomaly and far from it, which is what makes the two regions comparable. Projection: '+(g.proj==='ee'?'Equal Earth':'equirectangular')+'; coastline data: Natural Earth.';
-}
-
-function fitMapScreen(){
-  const box=q('mapscreenbox');if(!box)return;
-  const cv=box.querySelector('canvas');if(!cv)return;
-  const bw=box.clientWidth,bh=box.clientHeight,rot=window.innerWidth<=860;
-  let Wp,Hp;
-  if(rot){Wp=Math.min(bh,bw*MW/MH)*0.995;Hp=Wp*MH/MW;}
-  else{Wp=Math.min(bw,bh*MW/MH)*0.995;Hp=Wp*MH/MW;}
-  cv.style.width=Wp+'px';cv.style.height=Hp+'px';
-}
-function openMapScreen(){
-  const ms=q('mapscreen'),box=q('mapscreenbox');if(!ms)return;
-  ms.hidden=false;lockScroll(true);
-  const src=document.querySelector('#map canvas');
-  let cv=box.querySelector('canvas');
-  if(!cv){cv=document.createElement('canvas');box.appendChild(cv);}
-  const dpr=Math.min(2,window.devicePixelRatio||1);
-  cv.width=MW*dpr;cv.height=MH*dpr;
-  requestAnimationFrame(()=>{fitMapScreen();syncMapScreen();});
-  pressSeg('seg-ms',st.phase);pressSeg('seg-pop2',mapState.pop);
-}
-function syncMapScreen(){
-  const ms=q('mapscreen');if(!ms||ms.hidden)return;
-  const src=document.querySelector('#map canvas'),cv=q('mapscreenbox').querySelector('canvas');
-  if(src&&cv){const ctx=cv.getContext('2d');const dpr=Math.min(2,window.devicePixelRatio||1);ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,MW,MH);ctx.drawImage(src,0,0,MW,MH);}
 }
 
 /* ---------- geometry explainer: slider on the projected length ---------- */
@@ -879,22 +844,10 @@ function renderWhy(){
 }
 
 /* ---------- exposure by region and the exposure map ---------- */
-function renderOps(){
-  const box=q('ops');box.innerHTML='';
-  const W=760,H=196,L=152,R=74,T=42,B=38,ex=D.site_numbers.exposure;
-  const svg=el('svg',{viewBox:'0 0 '+W+' '+H,role:'img','aria-label':'Median exposure per frame by region'});
-  txt(svg,12,16,'Median exposure per frame [s]',{fill:COL.ink,'font-weight':700,'font-size':13});
-  txt(svg,12,29,'logarithmic scale',{fill:'#6a7075','font-size':10.5});
-  const X=v=>L+(Math.log10(v)-Math.log10(0.04))/(Math.log10(40)-Math.log10(0.04))*(W-L-R);
-  [0.1,1,10].forEach(v=>{el('line',{x1:X(v),x2:X(v),y1:T-5,y2:H-B,stroke:COL.grid},svg);txt(svg,X(v),H-B+14,v,{'text-anchor':'middle','font-size':10});});
-  const rows=[['outside the anomaly',ex.nominal_tacq_s,'#8a857c'],['inside, '+ALT.I,1.35,COL.I],['inside, '+ALT.II,0.075,COL.II]];
-  rows.forEach((r,i)=>{const y=T+i*32;el('rect',{x:X(0.04),y:y,width:Math.max(2,X(r[1])-X(0.04)),height:21,fill:r[2]},svg);txt(svg,L-8,y+15,r[0],{'text-anchor':'end',fill:COL.ink,'font-size':11});txt(svg,X(r[1])+6,y+15,r[1]+' s',{fill:COL.ink,'font-weight':600,'font-size':11});});
-  txt(svg,12,H-6,'cadence '+ex.cadence_s+' s, nominal exposure '+ex.nominal_tacq_s+' s, duty cycle '+Math.round(ex.duty_cycle_pct.I)+' % and '+Math.round(ex.duty_cycle_pct.II)+' %',{'font-size':10});
-  box.appendChild(svg);
-}
 const opsState={phase:'I'};
 const tacqRamp=rampFn(['#081d58','#225ea8','#1d91c0','#7fcdbb','#c7e9b4','#ffffd9'],Math.log10(0.05),Math.log10(25));
 function renderOpsMap(){
+  setCanvasSize();
   const box=q('opsmap'),p=opsState.phase,t=D.ops.tacq_median[p],g=makeGeom(mapState.proj),W=MW,H=MH;
   let cv=box.querySelector('canvas');const dpr=Math.min(2,window.devicePixelRatio||1);
   if(!cv){cv=document.createElement('canvas');cv.width=W*dpr;cv.height=H*dpr;cv.setAttribute('role','img');box.appendChild(cv);}
@@ -1012,13 +965,7 @@ function setPhase(v){st.phase=v;if(v!=='both')mapState.phase=v;pressSeg('seg-pha
 function seg(id,fn){const sg=q(id);if(!sg)return;sg.addEventListener('click',e=>{const bt=e.target.closest('button');if(!bt)return;sg.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===bt?'true':'false'));fn(bt.dataset.v);});}
 seg('seg-phase',setPhase);seg('seg-dock',setPhase);
 seg('seg-ops',v=>{opsState.phase=v;renderOpsMap();});
-seg('seg-pop',v=>{mapState.pop=v;pressSeg('seg-pop2',v);renderMap();});
-seg('seg-pop2',v=>{mapState.pop=v;pressSeg('seg-pop',v);renderMap();});
-seg('seg-ms',setPhase);
-q('seg-layers2').addEventListener('click',e=>{const bt=e.target.closest('button');if(!bt)return;const on=bt.getAttribute('aria-pressed')!=='true';bt.setAttribute('aria-pressed',on?'true':'false');const m=q('seg-layers').querySelector('[data-v=iso]');if(m)m.setAttribute('aria-pressed',on?'true':'false');mapState.iso=on;renderMap();});
-document.getElementById('map').addEventListener('click',e=>{if(window.innerWidth<=860)return;if(e.target.closest('.maphint'))return;openMapScreen();});
 q('panelscreen').addEventListener('click',closePanelScreen);
-q('mapscreenclose').addEventListener('click',()=>{q('mapscreen').hidden=true;lockScroll(false);});
 q('dockback').addEventListener('click',()=>{const t=q('readouts')||q('explorer');const y=t.getBoundingClientRect().top+window.scrollY-190;window.scrollTo({top:Math.max(0,y),behavior:'smooth'});});
 q('seg-layers').addEventListener('click',e=>{const bt=e.target.closest('button');if(!bt)return;const on=bt.getAttribute('aria-pressed')!=='true';bt.setAttribute('aria-pressed',on?'true':'false');mapState[bt.dataset.v]=on;renderMap();});
 const doReset=()=>{st.wi=NOMINAL.w2d;st.bi=NOMINAL.b;st.oi=NOMINAL.occ;render();};
@@ -1028,7 +975,6 @@ let rt=null;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout
 /* a canvas can be dropped by the browser when the tab is backgrounded; redraw whenever the page or the map comes back */
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){renderMap();renderOpsMap();}});
 window.addEventListener('pageshow',()=>{renderMap();renderOpsMap();});
-window.addEventListener('orientationchange',()=>{setTimeout(()=>{baseCache={};renderMap();renderOpsMap();fitMapScreen();syncMapScreen();},250);});
 if('IntersectionObserver' in window){
   const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)renderMap();})},{threshold:0.05});io.observe(document.querySelector('.map'));
   const io2=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)renderOpsMap();})},{threshold:0.05});io2.observe(q('opsmap'));
@@ -1047,7 +993,7 @@ if('IntersectionObserver' in window){
     if(home&&home.parentNode)home.remove();
     a.classList.remove('open');const hd=a.querySelector('.arthead');if(hd)hd.setAttribute('aria-expanded','false');
     as.classList.remove('shown');lockScroll(false);setTimeout(()=>{as.hidden=true;},170);
-    renderGeom();renderWhy();renderOps();renderOpsMap();
+    renderGeom();renderWhy();renderOpsMap();
   };
   const openArt=a=>{
     if(artOpen===a)return;
@@ -1056,7 +1002,7 @@ if('IntersectionObserver' in window){
     asBody.appendChild(a);a.classList.add('open');
     const hd=a.querySelector('.arthead');if(hd)hd.setAttribute('aria-expanded','true');
     artOpen=a;as.hidden=false;lockScroll(true);requestAnimationFrame(()=>as.classList.add('shown'));
-    renderGeom();renderWhy();renderOps();renderOpsMap();
+    renderGeom();renderWhy();renderOpsMap();
   };
   document.querySelectorAll('.art').forEach(a=>{
     const head=a.querySelector('.arthead');if(!head)return;
@@ -1079,7 +1025,7 @@ function updateDock(){
 }
 q('docktoggle').addEventListener('click',()=>{const open=!dock.classList.contains('open');if(!open)closePanelScreen();dock.classList.toggle('open',open);dock.setAttribute('aria-expanded',open?'true':'false');q('docktoggle').setAttribute('aria-expanded',open?'true':'false');});
 let dt=null;window.addEventListener('scroll',()=>{if(dt)return;dt=requestAnimationFrame(()=>{dt=null;updateDock();});},{passive:true});
-render();renderLegend();renderGeom();renderWhy();renderOps();renderOpsMap();renderGallery();updateDock();
+render();renderLegend();renderGeom();renderWhy();renderOpsMap();renderGallery();updateDock();
 /* the map selection layers are large; fetch them after the first paint, the shown phase first */
 window.__joeyLayers=function(ph){
   const src=window['JOEYSAT_LAYERS_'+ph];if(!src)return;
