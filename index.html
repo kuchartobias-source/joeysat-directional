@@ -118,6 +118,19 @@ a{color:var(--white)}
   #artscreen .geopanel .control{margin-top:2px}
 }
 @media (min-width:861px){#artscreen .cluex img{width:130px;height:130px}}
+#chartscreen{position:fixed;inset:0;z-index:55;background:rgba(3,4,23,.95);display:grid;grid-template-rows:auto minmax(0,1fr);gap:18px;padding:18px 22px 26px;opacity:0;transition:opacity .16s ease}
+#chartscreen[hidden]{display:none}
+#chartscreen.shown{opacity:1}
+#chartscreen .csbar{max-width:1120px;width:100%;margin:0 auto}
+#chartscreen .csbar .hub{position:static;margin:0}
+#chartscreen .csbox{max-width:1120px;width:100%;margin:0 auto;display:grid;place-items:center;min-height:0;transform:scale(.97);transition:transform .18s ease}
+#chartscreen.shown .csbox{transform:scale(1)}
+#chartscreen .csinner{background:var(--beige-l);border-radius:3px;padding:16px 20px;width:min(1100px,92vw);max-height:100%;overflow:hidden;display:grid;align-content:center}
+#chartscreen .csinner h3{margin:0 0 6px;color:var(--ink);font-size:18px}
+#chartscreen .csinner svg{width:100%;height:auto;max-height:66vh}
+#chartscreen .csinner .binrow{font-size:13px;margin-top:8px;color:var(--ink)}
+#chartscreen .csinner .binlab{display:block;margin:4px 0 0;text-align:center;font-size:12px;color:#6a7075}
+@media (max-width:860px){#chartscreen{display:none}}
 #panelscreen{position:fixed;left:0;right:0;top:0;z-index:45;background:rgba(3,4,23,.93);display:grid;place-items:center;padding:12px 14px;opacity:0;transition:opacity .18s ease}
 #panelscreen[hidden]{display:none}
 #panelscreen.shown{opacity:1}
@@ -247,6 +260,11 @@ svg{width:100%;height:auto;display:block}
 .control output{color:var(--beige-d);font-size:14px;text-align:right;min-width:11em;display:inline-block}
 .ticks{display:flex;justify-content:space-between;font-size:12px;color:var(--grey);margin-top:-2px}
 .mini{margin-top:6px}
+@media (min-width:861px){
+  .panel.mini,.panels .panel{cursor:zoom-in;position:relative}
+  .panel.mini::after,.panels .panel::after{content:"\2922";position:absolute;right:8px;top:6px;font-size:17px;line-height:1;color:#9a9186;transform:rotate(90deg)}
+  .panel.mini:hover::after,.panels .panel:hover::after{color:#b4712a}
+}
 .control .mini+input[type=range]{margin-top:8px}
 .btn{margin:14px 0 6px;width:100%;padding:9px;font:inherit;font-weight:600;font-size:16px;background:var(--orange);border:0;border-radius:2px;color:var(--ink);cursor:pointer;position:relative;z-index:1;box-shadow:0 0 0 3px rgba(254,177,97,.18),0 0 26px 4px rgba(255,157,0,.32)}
 .btn:hover{filter:brightness(1.04)}
@@ -341,8 +359,9 @@ svg{width:100%;height:auto;display:block}
 @media (max-width:620px){.tile .tlabel{display:block;font-size:10px;line-height:1.15;min-height:2.3em;color:#4a4f55;text-align:center;margin:2px 2px 0}.tile img{height:84px}}
 .tile a{display:block}
 .tile img{margin-top:4px}
-ul.plain{margin:0;padding-left:1.1em}
-ul.plain li{margin:0 0 6px}
+ul.plain{margin:0;padding:0;list-style:none}
+ul.plain li{margin:0 0 8px;position:relative;padding-left:22px}
+ul.plain li::before{content:"";position:absolute;left:0;top:.5em;width:12px;height:8px;background:var(--orange);-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='460 295 624 402'><path d='M581.973 295.338 759.208 615.524C761.752 618.357 764.296 624.024 771.929 624.024 779.561 624.024 782.105 618.357 784.649 615.524L961.884 295.338 1083.15 295.338 867.754 653.493C855.882 672.194 832.986 696.562 771.929 696.562 745.64 696.562 698.999 692.595 676.103 653.493L460.707 295.338 581.973 295.338Z' fill='black'/></svg>") no-repeat center/contain;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='460 295 624 402'><path d='M581.973 295.338 759.208 615.524C761.752 618.357 764.296 624.024 771.929 624.024 779.561 624.024 782.105 618.357 784.649 615.524L961.884 295.338 1083.15 295.338 867.754 653.493C855.882 672.194 832.986 696.562 771.929 696.562 745.64 696.562 698.999 692.595 676.103 653.493L460.707 295.338 581.973 295.338Z' fill='black'/></svg>") no-repeat center/contain;transform:rotate(-90deg)}
 .geopanel{padding:6px 10px 10px;margin:0 0 10px}
 @media (max-width:760px){.geopanel .val{min-height:3.6em}.geopanel .val .k{min-height:1.4em}}
 .geopanel .control{margin-top:4px}
@@ -366,13 +385,13 @@ ul.plain li{margin:0 0 6px}
 .lightbox.shown .lbin{transform:scale(1)}
 @media (prefers-reduced-motion:reduce){.lightbox,.lightbox .lbin{transition:none}}
 .lightbox[hidden]{display:none}
-.lightbox .lbin{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:24px;align-items:center;max-width:min(96vw,1500px)}
+.lightbox .lbin{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:24px;align-items:center;max-width:min(96vw,1500px)}
 .lightbox .lbsvg{background:var(--beige-l);padding:8px;border-radius:3px}
 .lightbox .lbsvg svg{width:100%;height:auto}
 .lightbox img{max-width:100%;max-height:86vh;width:auto;height:auto;background:var(--beige-l);padding:10px;border-radius:3px;display:block}
 .lightbox img[hidden],.lightbox .lbsvg[hidden]{display:none}
 .lightbox h3{color:var(--orange);font-family:Magistral,Figtree,sans-serif;font-size:20px;margin:0 0 8px}
-.lightbox p{color:var(--beige-d);margin:0;text-align:left;font-size:14px}
+.lightbox p{color:var(--beige-d);margin:0;text-align:left;font-size:16.5px;line-height:1.5}
 @media (max-width:860px){.lightbox{place-items:center;padding:16px}.lightbox .lbin{grid-template-columns:1fr;gap:12px;align-items:center}.lightbox .lbtext{order:-1}.lightbox img{max-height:46vh}}
 .tile img{cursor:zoom-in}
 .dock{position:fixed;left:0;right:0;z-index:40;background:#080a1c;border-radius:0;padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -558,7 +577,11 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
 
 <section>
   <h2>Robustness</h2>
-  <p class="lead">Each figure is one control applied to the dependence, drawn by the same pipeline and at the same selection as the paper's figures. Tap a figure to enlarge it.</p>
+  <ul class="plain lead">
+    <li>Each figure is one control applied to the dependence.</li>
+    <li>All are drawn by the same pipeline and at the same selection as the paper's figures.</li>
+    <li>Click a figure to enlarge it, with its full description.</li>
+  </ul>
   <div class="gallery" id="gallery"></div>
 </section>
 
@@ -605,6 +628,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
   </div>
 </div>
 <div id="artscreen" hidden><button type="button" class="xclose" id="artclose" aria-label="Close">×</button><div class="asbody"></div></div>
+<div id="chartscreen" hidden><button type="button" class="xclose" id="chartclose" aria-label="Close">×</button><div class="csbar"></div><div class="csbox"></div></div>
 <div id="panelscreen" hidden><button type="button" class="xclose" id="panelclose" aria-label="Close">×</button><div class="psbox"></div></div>
 <div id="lightbox" class="lightbox" hidden><div class="lbin"><img alt=""><div class="lbtext"><h3></h3><p class="small"></p></div></div></div>
 <script src="data/core.js"></script>
@@ -939,6 +963,37 @@ function pushOverlay(){try{history.pushState({ov:1},'');}catch(e){}}
 function popOverlay(){try{if(history.state&&history.state.ov)history.back();}catch(e){}}
 function openDock(){const dk=q('dock');if(!dk||dk.classList.contains('open'))return;dk.classList.remove('away');dk.classList.add('open');const tg=q('docktoggle');if(tg)tg.setAttribute('aria-expanded','true');try{history.pushState({dock:1},'');}catch(e){}}
 function closeDock(fromBack){const dk=q('dock');if(!dk||!dk.classList.contains('open'))return;dk.classList.remove('open');const tg=q('docktoggle');if(tg)tg.setAttribute('aria-expanded','false');if(!fromBack){try{if(history.state&&history.state.dock)history.back();}catch(e){}}updateDock();}
+let csState=null,csHubHome=null;
+function syncChartScreen(){
+  const cs=q('chartscreen');if(!cs||cs.hidden||!csState)return;
+  const src=csState.kind==='scan'?q(csState.id):q('panels').children[csState.idx];
+  if(!src)return;
+  const box=cs.querySelector('.csbox');box.innerHTML='';
+  const inner=document.createElement('div');inner.className='csinner';
+  const h=src.querySelector('h3');
+  if(h){const t=document.createElement('h3');t.textContent=h.textContent;inner.appendChild(t);}
+  const svg=src.querySelector('svg');if(svg)inner.appendChild(svg.cloneNode(true));
+  const br=src.querySelector('.binrow');
+  if(br){const c=br.cloneNode(true);const lab=c.querySelector('.lab');if(lab)lab.style.display='none';
+    c.style.cssText='display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:0 4px;text-align:center;align-items:end;color:#0B0C1B';
+    c.querySelectorAll('.c').forEach(e=>{e.style.display='block';e.style.fontSize='12px';});
+    inner.appendChild(c);
+    const cap=document.createElement('p');cap.className='binlab';cap.textContent='core clusters per bin';inner.appendChild(cap);}
+  box.appendChild(inner);
+}
+function openChartScreen(state){
+  const cs=q('chartscreen'),hub=q('hub');if(!cs||window.innerWidth<=860)return;
+  csState=state;
+  if(hub&&!csHubHome){csHubHome=document.createElement('div');hub.parentNode.insertBefore(csHubHome,hub);cs.querySelector('.csbar').appendChild(hub);}
+  cs.hidden=false;syncChartScreen();lockScroll(true);pushOverlay();
+  requestAnimationFrame(()=>cs.classList.add('shown'));
+}
+function closeChartScreen(fromBack){
+  const cs=q('chartscreen'),hub=q('hub');if(!cs||cs.hidden)return;
+  cs.classList.remove('shown');lockScroll(false);if(!fromBack)popOverlay();
+  if(hub&&csHubHome){csHubHome.parentNode.insertBefore(hub,csHubHome);csHubHome.remove();csHubHome=null;}
+  csState=null;setTimeout(()=>{cs.hidden=true;cs.querySelector('.csbox').innerHTML='';},170);
+}
 function lockScroll(on){document.documentElement.style.overflow=on?'hidden':'';document.body.style.overflow=on?'hidden':'';}
 let panelOpenIdx=null;
 let dockOpenedByPanel=false,psRO=null;
@@ -993,8 +1048,8 @@ function render(){
     const h=document.createElement('h3');h.textContent='Phase '+p+', '+ALT[p];box.appendChild(h);
     drawProfile(box,rec);binRow(box,rec.core);pa.appendChild(box);
   });
-  pa.querySelectorAll('.panel').forEach(p=>p.addEventListener('click',()=>{if(window.innerWidth<=860)openPanel(p);}));
-  syncPanelScreen();
+  pa.querySelectorAll('.panel').forEach((p,i)=>p.addEventListener('click',()=>{if(window.innerWidth<=860)openPanel(p);else openChartScreen({kind:'panel',idx:i});}));
+  syncPanelScreen();syncChartScreen();
   tried.add(fmtW(w)+'|'+b+'|'+o);
   const nsel=AX.w2d.length*AX.b.length*AX.occ.length;const tt='Selections tried: '+tried.size+' of '+fmtN(nsel)+'. The grid holds '+fmtN(nsel)+' selections for each phase, '+fmtN(2*nsel)+' fits in all, of which '+fmtN(GSTAT.fits)+' met the fitting rule; the core slope is positive in '+GSTAT.pos+' of those and significantly positive in '+GSTAT.sig+', the '+GSTAT.pos+' positive values all sitting at the limit of fittability with intervals that include zero.';
   q('tried').textContent=tt;
@@ -1017,6 +1072,9 @@ seg('seg-phase',setPhase);seg('seg-dock',setPhase);
 seg('seg-ops',v=>{opsState.phase=v;renderOpsMap();});
 q('panelscreen').addEventListener('click',()=>closePanelScreen());
 q('panelclose').addEventListener('click',e=>{e.stopPropagation();closePanelScreen();});
+['st-w2d','st-b','st-occ'].forEach(id=>{const el=q(id);if(el)el.addEventListener('click',()=>{if(window.innerWidth>860)openChartScreen({kind:'scan',id:id});});});
+q('chartclose').addEventListener('click',e=>{e.stopPropagation();closeChartScreen();});
+q('chartscreen').addEventListener('click',e=>{if(e.target.closest('.csinner,.hub'))return;closeChartScreen();});
 document.getElementById('map').addEventListener('click',e=>{if(window.innerWidth<=860&&!e.target.closest('button,input,.seg'))openDock();});
 q('dockback').addEventListener('click',()=>{
   const t=q('readouts')||q('explorer');const y=Math.max(0,t.getBoundingClientRect().top+window.scrollY-190);const dk=q('dock');
@@ -1046,6 +1104,7 @@ window.addEventListener('popstate',()=>{
   const lb=q('lightbox'),ps=q('panelscreen'),as=q('artscreen');
   if(ps&&!ps.hidden){closePanelScreen(true);return;}
   if(lb&&!lb.hidden){lb.classList.remove('shown');lockScroll(false);setTimeout(()=>{lb.hidden=true;},180);return;}
+  const cs=q('chartscreen');if(cs&&!cs.hidden){closeChartScreen(true);return;}
   if(as&&!as.hidden){const btn=q('artclose');if(btn)btn.click();return;}
   const dk=q('dock');if(dk&&dk.classList.contains('open')){closeDock(true);}
 });
@@ -1093,7 +1152,7 @@ window.addEventListener('popstate',()=>{
   });
   q('artclose').addEventListener('click',e=>{e.stopPropagation();closeArt();});
   as.addEventListener('click',e=>{if(e.target.closest('.arthead')){closeArt();return;}if(e.target.closest('input,button,select,textarea,label,.seg,a,.panel,svg,canvas,img'))return;closeArt();});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!as.hidden)closeArt();});
+  document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;const cs=q('chartscreen');if(cs&&!cs.hidden){closeChartScreen();return;}if(!as.hidden)closeArt();});
 })();
 /* control dock: visible while the map or the explorer is on screen and their own controls are not */
 const dock=q('dock');
