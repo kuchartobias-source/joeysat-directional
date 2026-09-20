@@ -127,7 +127,7 @@ a{color:var(--white)}
 #chartscreen.shown .csbox{transform:scale(1)}
 #chartscreen .csinner{background:var(--beige-l);border-radius:3px;padding:16px 20px;width:min(1100px,92vw);max-height:100%;overflow:hidden;display:grid;align-content:center}
 #chartscreen .csinner h3{margin:0 0 6px;color:var(--ink);font-size:18px}
-#chartscreen .csinner svg{width:100%;height:auto;max-height:66vh}
+#chartscreen .csinner svg{width:100%;height:auto;max-height:72vh}
 #chartscreen .csinner .binrow{font-size:13px;margin-top:8px;color:var(--ink)}
 #chartscreen .csinner .binlab{display:block;margin:4px 0 0;text-align:center;font-size:12px;color:#6a7075}
 @media (max-width:860px){#chartscreen{display:none}}
@@ -385,13 +385,13 @@ ul.plain li::before{content:"";position:absolute;left:0;top:.5em;width:12px;heig
 .lightbox.shown .lbin{transform:scale(1)}
 @media (prefers-reduced-motion:reduce){.lightbox,.lightbox .lbin{transition:none}}
 .lightbox[hidden]{display:none}
-.lightbox .lbin{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:24px;align-items:center;max-width:min(96vw,1500px)}
+.lightbox .lbin{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:26px;align-items:center;max-width:min(96vw,1500px)}
 .lightbox .lbsvg{background:var(--beige-l);padding:8px;border-radius:3px}
 .lightbox .lbsvg svg{width:100%;height:auto}
 .lightbox img{max-width:100%;max-height:86vh;width:auto;height:auto;background:var(--beige-l);padding:10px;border-radius:3px;display:block}
 .lightbox img[hidden],.lightbox .lbsvg[hidden]{display:none}
-.lightbox h3{color:var(--orange);font-family:Magistral,Figtree,sans-serif;font-size:20px;margin:0 0 8px}
-.lightbox p{color:var(--beige-d);margin:0;text-align:left;font-size:16.5px;line-height:1.5}
+.lightbox h3{color:var(--orange);font-family:Magistral,Figtree,sans-serif;font-size:23px;margin:0 0 10px}
+.lightbox p{color:var(--beige-d);margin:0;text-align:left;font-size:18px;line-height:1.55}
 @media (max-width:860px){.lightbox{place-items:center;padding:16px}.lightbox .lbin{grid-template-columns:1fr;gap:12px;align-items:center}.lightbox .lbtext{order:-1}.lightbox img{max-height:46vh}}
 .tile img{cursor:zoom-in}
 .dock{position:fixed;left:0;right:0;z-index:40;background:#080a1c;border-radius:0;padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -972,7 +972,14 @@ function syncChartScreen(){
   const inner=document.createElement('div');inner.className='csinner';
   const h=src.querySelector('h3');
   if(h){const t=document.createElement('h3');t.textContent=h.textContent;inner.appendChild(t);}
-  const svg=src.querySelector('svg');if(svg)inner.appendChild(svg.cloneNode(true));
+  const svg=src.querySelector('svg');
+  if(svg){const cl=svg.cloneNode(true);
+    try{const bb=svg.getBBox();const pad=4;
+      cl.setAttribute('viewBox',(bb.x-pad)+' '+(bb.y-pad)+' '+(bb.width+2*pad)+' '+(bb.height+2*pad));
+      cl.removeAttribute('width');cl.removeAttribute('height');
+      cl.setAttribute('preserveAspectRatio','xMidYMid meet');
+    }catch(e){}
+    inner.appendChild(cl);}
   const br=src.querySelector('.binrow');
   if(br){const c=br.cloneNode(true);const lab=c.querySelector('.lab');if(lab)lab.style.display='none';
     c.style.cssText='display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:0 4px;text-align:center;align-items:end;color:#0B0C1B';
@@ -1074,7 +1081,7 @@ q('panelscreen').addEventListener('click',()=>closePanelScreen());
 q('panelclose').addEventListener('click',e=>{e.stopPropagation();closePanelScreen();});
 ['st-w2d','st-b','st-occ'].forEach(id=>{const el=q(id);if(el)el.addEventListener('click',()=>{if(window.innerWidth>860)openChartScreen({kind:'scan',id:id});});});
 q('chartclose').addEventListener('click',e=>{e.stopPropagation();closeChartScreen();});
-q('chartscreen').addEventListener('click',e=>{if(e.target.closest('.csinner,.hub'))return;closeChartScreen();});
+q('chartscreen').addEventListener('click',e=>{if(e.target.closest('.hub'))return;closeChartScreen();});
 document.getElementById('map').addEventListener('click',e=>{if(window.innerWidth<=860&&!e.target.closest('button,input,.seg'))openDock();});
 q('dockback').addEventListener('click',()=>{
   const t=q('readouts')||q('explorer');const y=Math.max(0,t.getBoundingClientRect().top+window.scrollY-190);const dk=q('dock');
