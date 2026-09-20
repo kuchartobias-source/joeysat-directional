@@ -77,6 +77,7 @@ a{color:var(--white)}
   #artscreen #geom svg{width:100%;max-height:46vh}
   #artscreen #geometry .cluex{grid-template-columns:96px minmax(0,1fr);min-height:0;gap:10px}
   #artscreen #geometry .cluex img{width:96px;height:96px}
+  #artscreen #geometry .cluex p{min-height:54px}
   #artscreen #geometry .cluex p{font-size:11.5px}
   #artscreen #geometry .val .k{font-size:18px}
   #artscreen #geometry .geopanel{padding:8px 12px 10px}
@@ -105,8 +106,9 @@ a{color:var(--white)}
   #artscreen #inclination .artbody p:nth-child(2){display:none}
   #artscreen #opsmap canvas{max-height:24vh}
   #artscreen #geometry .artbody p:first-child{display:none}
-  #artscreen .cluex{grid-template-columns:52px minmax(0,1fr);gap:10px;align-items:center;min-height:0}
-  #artscreen .cluex img{width:52px;height:52px;min-width:52px;max-width:52px}
+  #artscreen .cluex{grid-template-columns:68px minmax(0,1fr);gap:10px;align-items:start;min-height:0}
+  #artscreen .cluex img{width:68px;height:68px;min-width:68px;max-width:68px}
+  #artscreen .cluex p{min-height:88px}
   #artscreen .cluex p{min-width:0}
   #artscreen .cluex p{font-size:10.5px}
   #artscreen .geopanel .val .k{font-size:16px}
@@ -354,7 +356,7 @@ ul.plain li{margin:0 0 6px}
 .cluex{display:none;grid-template-columns:150px minmax(0,1fr);gap:12px;align-items:center;margin:8px 0 2px;min-height:150px}
 .art.open .cluex,#artscreen .cluex{display:grid}
 .cluex img{width:150px;height:150px;object-fit:contain;background:#fff;border:1px solid #c4bfb6;border-radius:2px}
-.cluex p{color:#4a4f55;margin:0;font-size:12.5px}
+.cluex p{color:#4a4f55;margin:0;font-size:12.5px;min-height:66px}
 .geopanel .val{margin-top:4px}
 .small{font-size:14px;color:var(--beige-d)}
 .lightbox{position:fixed;inset:0;z-index:50;background:rgba(3,4,23,.93);display:grid;place-items:center;padding:24px;cursor:zoom-out;overflow:auto;opacity:0;transition:opacity .18s ease}
@@ -931,10 +933,11 @@ function renderGallery(){
 
 /* ---------- legend ---------- */
 function glyph(col,dash,shape){let m='';if(shape==='circle')m='<circle cx="22" cy="7" r="4" fill="'+col+'"/>';else if(shape==='square')m='<rect x="18.5" y="3.5" width="7" height="7" fill="'+col+'"/>';else m='<polygon points="22,2.5 17.8,10.2 26.2,10.2" fill="'+col+'"/>';return '<svg class="gl" viewBox="0 0 44 14" width="44" height="14" aria-hidden="true"><line x1="2" y1="7" x2="42" y2="7" stroke="'+col+'" stroke-width="2"'+(dash?' stroke-dasharray="'+dash+'"':'')+'/>'+m+'</svg>';}
+try{if('scrollRestoration' in history)history.scrollRestoration='manual';}catch(e){}
 function pushOverlay(){try{history.pushState({ov:1},'');}catch(e){}}
 function popOverlay(){try{if(history.state&&history.state.ov)history.back();}catch(e){}}
 function openDock(){const dk=q('dock');if(!dk||dk.classList.contains('open'))return;dk.classList.remove('away');dk.classList.add('open');const tg=q('docktoggle');if(tg)tg.setAttribute('aria-expanded','true');try{history.pushState({dock:1},'');}catch(e){}}
-function closeDock(fromBack){const dk=q('dock');if(!dk||!dk.classList.contains('open'))return;dk.classList.remove('open');const tg=q('docktoggle');if(tg)tg.setAttribute('aria-expanded','false');if(!fromBack){try{if(history.state&&history.state.dock)history.back();}catch(e){}}}
+function closeDock(fromBack){const dk=q('dock');if(!dk||!dk.classList.contains('open'))return;dk.classList.remove('open');const tg=q('docktoggle');if(tg)tg.setAttribute('aria-expanded','false');if(!fromBack){try{if(history.state&&history.state.dock)history.back();}catch(e){}}updateDock();}
 function lockScroll(on){document.documentElement.style.overflow=on?'hidden':'';document.body.style.overflow=on?'hidden':'';}
 let panelOpenIdx=null;
 let dockOpenedByPanel=false;
