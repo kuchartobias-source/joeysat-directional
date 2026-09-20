@@ -39,6 +39,7 @@ a{color:var(--white)}
 .sub{color:var(--beige-d);font-size:17px;margin:0 0 14px;max-width:62em}
 .map{background:#0B0C1B;border:1px solid rgba(255,252,250,.12);border-radius:3px;padding:6px 6px 8px}
 #map{position:relative;min-height:60px}
+@media (max-width:860px){#map{cursor:pointer}}
 #map canvas{position:relative;z-index:1}
 .maphint{position:absolute;inset:0;display:grid;place-items:center;margin:0;color:var(--beige-d);font-size:14px;text-align:center;z-index:0}
 .mapfull{margin:6px 0 0;width:100%;padding:7px;background:rgba(201,189,178,.14);border:1px solid rgba(255,252,250,.18);border-radius:2px;color:var(--beige-l);font:inherit;font-size:13px;cursor:pointer}
@@ -117,7 +118,7 @@ a{color:var(--white)}
   #artscreen .geopanel .control{margin-top:2px}
 }
 @media (min-width:861px){#artscreen .cluex img{width:130px;height:130px}}
-#panelscreen{position:fixed;left:0;right:0;top:0;z-index:45;background:rgba(3,4,23,.93);display:grid;place-items:start center;padding:12px 14px;opacity:0;transition:opacity .18s ease}
+#panelscreen{position:fixed;left:0;right:0;top:0;z-index:45;background:rgba(3,4,23,.93);display:grid;place-items:center;padding:12px 14px;opacity:0;transition:opacity .18s ease}
 #panelscreen[hidden]{display:none}
 #panelscreen.shown{opacity:1}
 #panelscreen .psbox{background:var(--beige-l);border-radius:3px;padding:8px;width:100%;max-width:min(96vw,640px);transform:scale(.94);transition:transform .22s cubic-bezier(.2,.7,.3,1)}
@@ -1016,6 +1017,7 @@ seg('seg-phase',setPhase);seg('seg-dock',setPhase);
 seg('seg-ops',v=>{opsState.phase=v;renderOpsMap();});
 q('panelscreen').addEventListener('click',()=>closePanelScreen());
 q('panelclose').addEventListener('click',e=>{e.stopPropagation();closePanelScreen();});
+document.getElementById('map').addEventListener('click',e=>{if(window.innerWidth<=860&&!e.target.closest('button,input,.seg'))openDock();});
 q('dockback').addEventListener('click',()=>{
   const t=q('readouts')||q('explorer');const y=Math.max(0,t.getBoundingClientRect().top+window.scrollY-190);const dk=q('dock');
   dk.classList.remove('away');
@@ -1090,7 +1092,7 @@ window.addEventListener('popstate',()=>{
     head.addEventListener('click',()=>{if(as.hidden)openArt(a);});
   });
   q('artclose').addEventListener('click',e=>{e.stopPropagation();closeArt();});
-  as.addEventListener('click',e=>{if(e.target.closest('input,button,select,textarea,label,.seg,a,.panel,svg,canvas,img'))return;closeArt();});
+  as.addEventListener('click',e=>{if(e.target.closest('.arthead')){closeArt();return;}if(e.target.closest('input,button,select,textarea,label,.seg,a,.panel,svg,canvas,img'))return;closeArt();});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!as.hidden)closeArt();});
 })();
 /* control dock: visible while the map or the explorer is on screen and their own controls are not */
