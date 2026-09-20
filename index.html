@@ -53,9 +53,10 @@ a{color:var(--white)}
 .xclose:hover{color:var(--orange);border-color:var(--orange)}
 #artscreen .chev{display:none}
 @media (min-width:861px){
-  #artscreen #geometry{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.45fr);gap:26px;align-items:center}
-  #artscreen #geometry .geopanel{order:2}
-  #artscreen #geometry .artbody{order:1}
+  #artscreen #geometry{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.45fr);grid-template-rows:auto auto;gap:6px 26px;align-items:center;align-content:center}
+  #artscreen #geometry .arthead{grid-column:1;grid-row:1;align-self:end;padding:0 0 4px}
+  #artscreen #geometry .artbody{grid-column:1;grid-row:2;align-self:start}
+  #artscreen #geometry .geopanel{grid-column:2;grid-row:1/3;align-self:center}
   #artscreen #geometry .artbody{font-size:14.5px;align-self:center}
   #artscreen #geometry .artbody .two,#artscreen #geometry .artbody .two.eq{grid-template-columns:minmax(0,1fr);gap:0}
   #artscreen #geometry .artbody p{margin-bottom:8px}
@@ -88,17 +89,17 @@ a{color:var(--white)}
 #artscreen .cluex{grid-template-columns:130px minmax(0,1fr);min-height:0}
 @media (max-width:860px){
   #artscreen{padding:14px 12px}
-  #artscreen .asbody{max-height:calc(100vh - 28px)}
+  #artscreen .asbody{height:calc(100vh - 28px);max-height:none;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
   #artscreen .arthead{padding:8px 0 6px}
-  #artscreen .arthead h2{font-size:18px}
-  #artscreen .artsum{font-size:12.5px}
-  #artscreen .def h3,#artscreen .item h3{font-size:13.5px;margin-bottom:2px}
-  #artscreen .def p{font-size:12.5px;line-height:1.35}
-  #artscreen .three{gap:10px}
-  #artscreen .artbody p{font-size:12px;line-height:1.35;margin-bottom:5px}
+  #artscreen .arthead h2{font-size:clamp(16px,2.6vh,22px)}
+  #artscreen .artsum{font-size:clamp(11px,1.7vh,14px)}
+  #artscreen .def h3,#artscreen .item h3{font-size:clamp(12px,1.9vh,15px);margin-bottom:3px}
+  #artscreen .def p{font-size:clamp(11px,1.72vh,14.5px);line-height:1.4}
+  #artscreen .three{gap:clamp(6px,1.4vh,14px)}
+  #artscreen .artbody p{font-size:clamp(11px,1.66vh,14px);line-height:1.4;margin-bottom:clamp(4px,0.9vh,9px)}
   #artscreen .artbody .num{font-size:16px}
   #artscreen .artbody .small{font-size:11px}
-  #artscreen #geom svg{max-height:20vh}
+  #artscreen #geom svg{max-height:26vh}
   #artscreen #why svg{max-height:30vh}
   #artscreen #inclination .artbody p:nth-child(2){display:none}
   #artscreen #opsmap canvas{max-height:24vh}
@@ -236,6 +237,8 @@ svg{width:100%;height:auto;display:block}
 .livebar .num small{font-family:Figtree,sans-serif;font-weight:600;font-size:12px;color:var(--beige-d);margin-right:4px}
 .control{margin:12px 0 0}
 .control .row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.control .row .name,.control .row output{white-space:nowrap}
+@media (max-width:860px){.control output{min-width:0}}
 .control .name{font-weight:600;color:var(--white)}
 .control output{color:var(--beige-d);font-size:14px;text-align:right;min-width:11em;display:inline-block}
 .ticks{display:flex;justify-content:space-between;font-size:12px;color:var(--grey);margin-top:-2px}
@@ -799,7 +802,7 @@ const SEN=D.site_numbers.sensor,GEO={d:SEN.d_um,p:SEN.p_um,floor:D.site_numbers.
 function renderGeom(){
   const L=+q('s-l2d').value,box=q('geom');box.innerHTML='';
   const rad=Math.atan(GEO.p*L/GEO.d),beta=rad*180/Math.PI,L3D=GEO.d/Math.cos(rad),trunc=L>SEN.pixels;
-  q('o-l2d').textContent=L+' pixel'+(L===1?'':'s')+' along the matrix';
+  q('o-l2d').innerHTML='<span class="verbose">'+L+' pixel'+(L===1?'':'s')+' along the matrix</span><span class="terse">'+L+' px</span>';
   q('v-beta').textContent=(trunc?GEO.ceil.toFixed(1)+'\u00b0 ceiling':beta.toFixed(1)+'\u00b0');
   q('v-l3d').textContent=Math.round(L3D).toLocaleString('en-GB');
   q('v-reg').textContent=beta<GEO.floor?'at the floor':trunc?'truncated':'well reconstructed';
@@ -909,7 +912,8 @@ function renderGallery(){
     CAPTIONS.w2d_limit_study=['Cluster width','Fraction of clusters containing a pixel hit more than once, the signature of an overlap, and median linear energy transfer in bands of the projected cluster width, all protons with at least two pixels, no width or occupancy cut; the fiducial limit of '+wb.fiducial_limit+' pixels is marked. Below two pixels the overlap fraction stays under '+Math.ceil(below2)+' %; it crosses 50 % between '+cross.I.replace('[','').replace(')','').replace(',',' and ')+' pixels in both phases, while the median LET rises monotonically from '+Math.min(letI[0],letII[0]).toFixed(1)+' to over '+Math.floor(Math.min(letI[letI.length-1],letII[letII.length-1]))+' keV per \u00b5m. A wider limit therefore admits merged clusters and lower-energy protons together, which is why the width still measures a single proton track only near the limit adopted.'];}
   const PREVIEW={w2d_limit_study:'the overlap fraction; the panel with the ionization density follows in the enlarged figure',time_stability:'the halves of each phase; quarters and half-years follow in the enlarged figure',response_matrix:'protons; electrons and heavy ions follow in the enlarged figure'};
   D.figures.figures.filter(f=>f.shown!==false).forEach(f=>{const c=CAPTIONS[f.id]||[f.title,f.caption_draft];const d=document.createElement('div');d.className='panel tile';
-    const prev='figures/preview/'+f.file,prevM='figures/preview/m/'+f.file;
+    const pv=f.file.replace(/\.png$/,'_v3.png');
+    const prev='figures/preview/'+pv,prevM='figures/preview/m/'+pv;
     const cap=(PREVIEW[f.id]?'Shown here: '+PREVIEW[f.id]+'. ':'')+c[1];
     d.innerHTML='<picture><source media="(max-width:620px)" srcset="'+prevM+'"><img src="'+prev+'" alt="'+c[0]+'" loading="lazy" data-full="figures/'+f.file+'" data-title="'+c[0]+'" data-cap="'+cap.replace(/"/g,'&quot;')+'"></picture><span class="tlabel">'+c[0]+'</span>';g.appendChild(d);});
   const lb=q('lightbox');g.addEventListener('click',e=>{const tile=e.target.closest('.tile');const im=tile?tile.querySelector('img'):null;if(!im)return;lb.querySelector('img').src=im.dataset.full||im.src;lb.querySelector('img').alt=im.alt;lb.querySelector('h3').textContent=im.dataset.title||'';lb.querySelector('p').textContent=im.dataset.cap||'';lb.hidden=false;lockScroll(true);requestAnimationFrame(()=>lb.classList.add('shown'));});
@@ -1017,9 +1021,19 @@ if('IntersectionObserver' in window){
     const a=artOpen,home=artHome;artOpen=null;artHome=null;
     if(home&&home.parentNode)home.parentNode.insertBefore(a,home);
     if(home&&home.parentNode)home.remove();
+    a.style.zoom='';
     a.classList.remove('open');const hd=a.querySelector('.arthead');if(hd)hd.setAttribute('aria-expanded','false');
     as.classList.remove('shown');lockScroll(false);setTimeout(()=>{as.hidden=true;},170);
     renderGeom();renderWhy();renderOpsMap();
+  };
+  const fitArt=()=>{
+    const art=asBody.firstElementChild;if(!art)return;
+    art.style.zoom='';
+    if(window.innerWidth>860)return;
+    const box=asBody.clientHeight-2;
+    let lo=0.7,hi=2.2;
+    for(let i=0;i<10;i++){const mid=(lo+hi)/2;art.style.zoom=mid;if(art.scrollHeight*mid<=box)lo=mid;else hi=mid;}
+    art.style.zoom=lo;
   };
   const openArt=a=>{
     if(artOpen===a)return;
@@ -1027,8 +1041,7 @@ if('IntersectionObserver' in window){
     artHome=document.createElement('div');a.parentNode.insertBefore(artHome,a);
     asBody.appendChild(a);a.classList.add('open');
     const hd=a.querySelector('.arthead');if(hd)hd.setAttribute('aria-expanded','true');
-    artOpen=a;as.hidden=false;lockScroll(true);requestAnimationFrame(()=>as.classList.add('shown'));
-    renderGeom();renderWhy();renderOpsMap();
+    artOpen=a;as.hidden=false;lockScroll(true);requestAnimationFrame(()=>{as.classList.add('shown');renderGeom();renderWhy();renderOpsMap();requestAnimationFrame(fitArt);});
   };
   document.querySelectorAll('.art').forEach(a=>{
     const head=a.querySelector('.arthead');if(!head)return;
