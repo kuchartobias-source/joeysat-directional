@@ -86,7 +86,7 @@ a{color:var(--white)}
   #artscreen #opsmapcap{font-size:13px}
   #artscreen .cluex{margin:6px 0 0}
 }
-#artscreen .cluex{grid-template-columns:130px minmax(0,1fr);min-height:0}
+@media (min-width:861px){#artscreen .cluex{grid-template-columns:130px minmax(0,1fr);min-height:0}}
 @media (max-width:860px){
   #artscreen{padding:14px 12px}
   #artscreen .asbody{height:calc(100vh - 28px);max-height:none;display:flex;flex-direction:column;justify-content:flex-start;overflow:hidden}
@@ -105,15 +105,16 @@ a{color:var(--white)}
   #artscreen #inclination .artbody p:nth-child(2){display:none}
   #artscreen #opsmap canvas{max-height:24vh}
   #artscreen #geometry .artbody p:first-child{display:none}
-  #artscreen .cluex{grid-template-columns:72px minmax(0,1fr);gap:9px;align-items:center}
-  #artscreen .cluex img{width:72px;height:72px}
+  #artscreen .cluex{grid-template-columns:52px minmax(0,1fr);gap:10px;align-items:center;min-height:0}
+  #artscreen .cluex img{width:52px;height:52px;min-width:52px;max-width:52px}
+  #artscreen .cluex p{min-width:0}
   #artscreen .cluex p{font-size:10.5px}
   #artscreen .geopanel .val .k{font-size:16px}
   #artscreen .geopanel{padding:4px 8px 6px}
   #artscreen .geopanel .val{min-height:0}
   #artscreen .geopanel .control{margin-top:2px}
 }
-#artscreen .cluex img{width:130px;height:130px}
+@media (min-width:861px){#artscreen .cluex img{width:130px;height:130px}}
 #panelscreen{position:fixed;left:0;right:0;top:0;z-index:45;background:rgba(3,4,23,.93);display:grid;place-items:center;padding:16px 14px;opacity:0;transition:opacity .18s ease}
 #panelscreen[hidden]{display:none}
 #panelscreen.shown{opacity:1}
@@ -346,7 +347,7 @@ ul.plain li{margin:0 0 6px}
 .geopanel .val .lab{font-size:12px}
 .geopanel .control .name,.geopanel .control output{color:var(--ink)}
 .geopanel .val{display:grid;grid-template-columns:7.5em 6em minmax(0,1fr);gap:10px;margin-top:8px}
-@media (max-width:760px){.geopanel .val{grid-template-columns:auto auto minmax(0,1fr);gap:10px}.geopanel .val>div:last-child{grid-column:auto}.geopanel .val .k{white-space:nowrap;font-size:16px}.geopanel .val .lab{font-size:11px}}
+@media (max-width:760px){.geopanel .val{grid-template-columns:100px 56px minmax(0,150px);gap:10px}.geopanel .val>div:last-child{grid-column:auto}.geopanel .val .k{white-space:nowrap;font-size:16px}.geopanel .val .lab{font-size:11px}}
 .geopanel .val .k{font-size:20px;display:block;color:var(--ink);min-height:1.25em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .geopanel .val .lab{font-size:13px;color:#6a7075;display:block;line-height:1.3;white-space:nowrap}
 .geopanel .control{margin-top:6px}
@@ -407,7 +408,7 @@ ul.plain li{margin:0 0 6px}
   .dockbtn{display:block;width:100%;padding:9px;font:inherit;font-weight:600;background:transparent;border:0;color:var(--orange);cursor:pointer}
   .dockbtn::after{content:" \25B4";}
   .dock[aria-expanded=true] .dockbtn::after{content:" \25BE";}
-  .dockbody{display:grid;grid-template-columns:1fr;gap:10px;padding:0 16px;max-height:0;overflow:hidden;opacity:0;transition:max-height .22s ease,opacity .18s ease,padding-bottom .22s ease}
+  .dockbody{display:grid;grid-template-columns:1fr;gap:10px;padding:0 16px;max-height:0;overflow:hidden;opacity:0;transition:max-height .13s ease-out,opacity .1s ease-out,padding-bottom .13s ease-out}
   .dock.open .dockbody{max-height:320px;opacity:1;padding-bottom:14px}
   @media (prefers-reduced-motion:reduce){.dockbody{transition:none}}
   .dock .btn{width:100%}
@@ -932,20 +933,22 @@ function renderGallery(){
 function glyph(col,dash,shape){let m='';if(shape==='circle')m='<circle cx="22" cy="7" r="4" fill="'+col+'"/>';else if(shape==='square')m='<rect x="18.5" y="3.5" width="7" height="7" fill="'+col+'"/>';else m='<polygon points="22,2.5 17.8,10.2 26.2,10.2" fill="'+col+'"/>';return '<svg class="gl" viewBox="0 0 44 14" width="44" height="14" aria-hidden="true"><line x1="2" y1="7" x2="42" y2="7" stroke="'+col+'" stroke-width="2"'+(dash?' stroke-dasharray="'+dash+'"':'')+'/>'+m+'</svg>';}
 function pushOverlay(){try{history.pushState({ov:1},'');}catch(e){}}
 function popOverlay(){try{if(history.state&&history.state.ov)history.back();}catch(e){}}
+function openDock(){const dk=q('dock');if(!dk||dk.classList.contains('open'))return;dk.classList.remove('away');dk.classList.add('open');const tg=q('docktoggle');if(tg)tg.setAttribute('aria-expanded','true');try{history.pushState({dock:1},'');}catch(e){}}
+function closeDock(fromBack){const dk=q('dock');if(!dk||!dk.classList.contains('open'))return;dk.classList.remove('open');const tg=q('docktoggle');if(tg)tg.setAttribute('aria-expanded','false');if(!fromBack){try{if(history.state&&history.state.dock)history.back();}catch(e){}}}
 function lockScroll(on){document.documentElement.style.overflow=on?'hidden':'';document.body.style.overflow=on?'hidden':'';}
 let panelOpenIdx=null;
 let dockOpenedByPanel=false;
 function openPanel(panel){
   const ps=q('panelscreen'),dock=q('dock');if(!ps)return;
   panelOpenIdx=Array.prototype.indexOf.call(panel.parentNode.children,panel);
-  if(dock){dockOpenedByPanel=!dock.classList.contains('open');dock.classList.remove('away');dock.classList.add('open');dock.hidden=false;const tg=q('docktoggle');if(tg)tg.setAttribute('aria-expanded','true');}
+  if(dock){dockOpenedByPanel=!dock.classList.contains('open');dock.hidden=false;openDock();}
   ps.hidden=false;syncPanelScreen();lockScroll(true);pushOverlay();
   requestAnimationFrame(()=>{ps.style.bottom=(dock?dock.getBoundingClientRect().height:0)+'px';ps.classList.add('shown');});
 }
 function closePanelScreen(fromBack){
   const ps=q('panelscreen'),dock=q('dock');if(!ps||ps.hidden)return;
   ps.classList.remove('shown');lockScroll(false);if(!fromBack)popOverlay();panelOpenIdx=null;
-  if(dockOpenedByPanel&&dock){dock.classList.remove('open');const tg=q('docktoggle');if(tg)tg.setAttribute('aria-expanded','false');}
+  if(dockOpenedByPanel&&dock){closeDock(!!fromBack);}
   dockOpenedByPanel=false;
   setTimeout(()=>{ps.hidden=true;},180);
 }
@@ -1010,12 +1013,12 @@ q('dockback').addEventListener('click',()=>{
   const t=q('readouts')||q('explorer');const y=Math.max(0,t.getBoundingClientRect().top+window.scrollY-190);const dk=q('dock');
   dk.classList.remove('away');
   window.scrollTo({top:y,behavior:'smooth'});
-  const open=()=>{dk.classList.add('open');const tg=q('docktoggle');if(tg)tg.setAttribute('aria-expanded','true');};
-  let last=-1,still=0;
+  const open=()=>{openDock();};
+  let last=-1;
   const tick=()=>{const now=Math.round(window.scrollY);
-    if(now===last){if(++still>2){open();return;}}else{still=0;}
-    last=now;setTimeout(tick,80);};
-  setTimeout(tick,120);
+    if(Math.abs(now-y)<=2||now===last){open();return;}
+    last=now;requestAnimationFrame(tick);};
+  requestAnimationFrame(tick);
 });
 seg('seg-pop',v=>{mapState.pop=v;renderMap();});
 q('seg-layers').addEventListener('click',e=>{const bt=e.target.closest('button');if(!bt)return;const on=bt.getAttribute('aria-pressed')!=='true';bt.setAttribute('aria-pressed',on?'true':'false');mapState[bt.dataset.v]=on;renderMap();});
@@ -1034,7 +1037,8 @@ window.addEventListener('popstate',()=>{
   const lb=q('lightbox'),ps=q('panelscreen'),as=q('artscreen');
   if(ps&&!ps.hidden){closePanelScreen(true);return;}
   if(lb&&!lb.hidden){lb.classList.remove('shown');lockScroll(false);setTimeout(()=>{lb.hidden=true;},180);return;}
-  if(as&&!as.hidden){const btn=q('artclose');if(btn)btn.click();}
+  if(as&&!as.hidden){const btn=q('artclose');if(btn)btn.click();return;}
+  const dk=q('dock');if(dk&&dk.classList.contains('open')){closeDock(true);}
 });
 (function collapsibles(){
   document.querySelectorAll('.fadewrap').forEach(w=>{
@@ -1056,8 +1060,10 @@ window.addEventListener('popstate',()=>{
   const fitArt=()=>{
     const art=asBody.firstElementChild;if(!art)return;
     art.style.zoom='';
+    art.querySelectorAll('svg,canvas').forEach(e=>{e.style.maxHeight='';});
     if(window.innerWidth>860)return;
     const box=asBody.clientHeight-18;
+    art.querySelectorAll('#geom svg,#why svg,#opsmap canvas').forEach(e=>{e.style.maxHeight=Math.round(box*0.42)+'px';e.style.width='auto';e.style.maxWidth='100%';});
     let lo=0.7,hi=2.2;
     for(let i=0;i<10;i++){const mid=(lo+hi)/2;art.style.zoom=mid;if(art.scrollHeight*mid<=box)lo=mid;else hi=mid;}
     art.style.zoom=lo;
@@ -1087,10 +1093,10 @@ function updateDock(){
   if(!hubzone)return;
   const y=window.scrollY,vh=window.innerHeight,mobile=window.innerWidth<=860;
   const r=hubzone.getBoundingClientRect(),top=r.top+y,bottom=r.bottom+y;
-  if(mobile){dock.hidden=false;const near=y<bottom-vh*0.15;dock.classList.toggle('away',!near);}
+  if(mobile){dock.hidden=false;const near=y<bottom-vh*0.15;dock.classList.toggle('away',!near&&!dock.classList.contains('open'));}
   else{dock.hidden=true;if(hub)hub.classList.toggle('stuck',hub.getBoundingClientRect().top<=0.5);}
 }
-q('docktoggle').addEventListener('click',()=>{const open=!dock.classList.contains('open');if(!open)closePanelScreen();dock.classList.toggle('open',open);dock.setAttribute('aria-expanded',open?'true':'false');q('docktoggle').setAttribute('aria-expanded',open?'true':'false');});
+q('docktoggle').addEventListener('click',()=>{if(dock.classList.contains('open')){closePanelScreen();closeDock();}else{openDock();}});
 let dt=null;window.addEventListener('scroll',()=>{if(dt)return;dt=requestAnimationFrame(()=>{dt=null;updateDock();});},{passive:true});
 render();renderLegend();renderGeom();renderWhy();renderOpsMap();renderGallery();updateDock();
 /* the map selection layers are large; fetch them after the first paint, the shown phase first */
