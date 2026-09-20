@@ -117,7 +117,7 @@ a{color:var(--white)}
   #artscreen .geopanel .control{margin-top:2px}
 }
 @media (min-width:861px){#artscreen .cluex img{width:130px;height:130px}}
-#panelscreen{position:fixed;left:0;right:0;top:0;z-index:45;background:rgba(3,4,23,.93);display:grid;place-items:center;padding:16px 14px;opacity:0;transition:opacity .18s ease}
+#panelscreen{position:fixed;left:0;right:0;top:0;z-index:45;background:rgba(3,4,23,.93);display:grid;place-items:start center;padding:12px 14px;opacity:0;transition:opacity .18s ease}
 #panelscreen[hidden]{display:none}
 #panelscreen.shown{opacity:1}
 #panelscreen .psbox{background:var(--beige-l);border-radius:3px;padding:8px;width:100%;max-width:min(96vw,640px);transform:scale(.94);transition:transform .22s cubic-bezier(.2,.7,.3,1)}
@@ -387,8 +387,8 @@ ul.plain li{margin:0 0 6px}
 .dockhead .livebar .num{font-size:20px}
 .dockhead .livebar .num span{min-width:4.2em}
 .dock .seg{align-self:start}
-.dock .dockrow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px 16px;align-items:center}
-.dock .dockrow .livebar{justify-self:end;text-align:right;background:none;padding:0;margin:0;border:0}
+.dock .dockrow{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%}
+.dock .dockrow .livebar{margin-left:auto;text-align:right;background:none;padding:0;border:0}
 .dock .dockrow .livebar .lab{font-size:11px;white-space:nowrap}
 .dock .dockrow .livebar .num{font-size:19px;white-space:nowrap}
 .dock .dockrow .livebar .num span{min-width:0;margin-left:10px}
@@ -940,16 +940,20 @@ function openDock(){const dk=q('dock');if(!dk||dk.classList.contains('open'))ret
 function closeDock(fromBack){const dk=q('dock');if(!dk||!dk.classList.contains('open'))return;dk.classList.remove('open');const tg=q('docktoggle');if(tg)tg.setAttribute('aria-expanded','false');if(!fromBack){try{if(history.state&&history.state.dock)history.back();}catch(e){}}updateDock();}
 function lockScroll(on){document.documentElement.style.overflow=on?'hidden':'';document.body.style.overflow=on?'hidden':'';}
 let panelOpenIdx=null;
-let dockOpenedByPanel=false;
+let dockOpenedByPanel=false,psRO=null;
 function openPanel(panel){
   const ps=q('panelscreen'),dock=q('dock');if(!ps)return;
   panelOpenIdx=Array.prototype.indexOf.call(panel.parentNode.children,panel);
   if(dock){dockOpenedByPanel=!dock.classList.contains('open');dock.hidden=false;openDock();}
   ps.hidden=false;syncPanelScreen();lockScroll(true);pushOverlay();
-  requestAnimationFrame(()=>{ps.style.bottom=(dock?dock.getBoundingClientRect().height:0)+'px';ps.classList.add('shown');});
+  const fitBottom=()=>{ps.style.bottom=(dock?Math.round(dock.getBoundingClientRect().height):0)+'px';};
+  fitBottom();requestAnimationFrame(()=>{fitBottom();ps.classList.add('shown');});
+  [60,140,200,300].forEach(t=>setTimeout(fitBottom,t));
+  if('ResizeObserver' in window&&dock){if(psRO)psRO.disconnect();psRO=new ResizeObserver(fitBottom);psRO.observe(dock);}
 }
 function closePanelScreen(fromBack){
   const ps=q('panelscreen'),dock=q('dock');if(!ps||ps.hidden)return;
+  if(psRO){psRO.disconnect();psRO=null;}
   ps.classList.remove('shown');lockScroll(false);if(!fromBack)popOverlay();panelOpenIdx=null;
   if(dockOpenedByPanel&&dock){closeDock(!!fromBack);}
   dockOpenedByPanel=false;
