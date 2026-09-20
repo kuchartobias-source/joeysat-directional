@@ -392,6 +392,8 @@ ul.plain li::before{content:"";position:absolute;left:0;top:.5em;width:12px;heig
 .lightbox img[hidden],.lightbox .lbsvg[hidden]{display:none}
 .lightbox h3{color:var(--orange);font-family:Magistral,Figtree,sans-serif;font-size:23px;margin:0 0 10px}
 .lightbox p{color:var(--beige-d);margin:0;text-align:left;font-size:18px;line-height:1.55}
+.lightbox ul.plain li{color:var(--beige-d);font-size:18px;line-height:1.5;margin:0 0 10px;padding-left:26px}
+.lightbox ul.plain li::before{top:.45em;width:14px;height:10px}
 @media (max-width:860px){.lightbox{place-items:center;padding:16px}.lightbox .lbin{grid-template-columns:1fr;gap:12px;align-items:center}.lightbox .lbtext{order:-1}.lightbox img{max-height:46vh}}
 .tile img{cursor:zoom-in}
 .dock{position:fixed;left:0;right:0;z-index:40;background:#080a1c;border-radius:0;padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -577,11 +579,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
 
 <section>
   <h2>Robustness</h2>
-  <ul class="plain lead">
-    <li>Each figure is one control applied to the dependence.</li>
-    <li>All are drawn by the same pipeline and at the same selection as the paper's figures.</li>
-    <li>Click a figure to enlarge it, with its full description.</li>
-  </ul>
+  <p class="lead">Each figure is one control applied to the dependence, drawn by the same pipeline and at the same selection as the paper's figures. Click a figure to enlarge it, with its full description.</p>
   <div class="gallery" id="gallery"></div>
 </section>
 
@@ -951,7 +949,12 @@ function renderGallery(){
     const prev='figures/preview/'+pv,prevM='figures/preview/m/'+pv;
     const cap=(PREVIEW[f.id]?'Shown here: '+PREVIEW[f.id]+'. ':'')+c[1];
     d.innerHTML='<picture><source media="(max-width:620px)" srcset="'+prevM+'"><img src="'+prev+'" alt="'+c[0]+'" loading="lazy" data-full="figures/'+f.file+'" data-title="'+c[0]+'" data-cap="'+cap.replace(/"/g,'&quot;')+'"></picture><span class="tlabel">'+c[0]+'</span>';g.appendChild(d);});
-  const lb=q('lightbox');g.addEventListener('click',e=>{const tile=e.target.closest('.tile');const im=tile?tile.querySelector('img'):null;if(!im)return;lb.querySelector('img').src=im.dataset.full||im.src;lb.querySelector('img').alt=im.alt;lb.querySelector('h3').textContent=im.dataset.title||'';lb.querySelector('p').textContent=im.dataset.cap||'';lb.hidden=false;lockScroll(true);pushOverlay();requestAnimationFrame(()=>lb.classList.add('shown'));});
+  const lb=q('lightbox');g.addEventListener('click',e=>{const tile=e.target.closest('.tile');const im=tile?tile.querySelector('img'):null;if(!im)return;lb.querySelector('img').src=im.dataset.full||im.src;lb.querySelector('img').alt=im.alt;lb.querySelector('h3').textContent=im.dataset.title||'';(function(){const p=lb.querySelector('p');const raw=im.dataset.cap||'';
+    const parts=raw.split(/(?<=[a-z%\u00b0\)])\.\s+(?=[A-Z])/).map(x=>x.trim()).filter(Boolean);
+    if(parts.length>1){const ul=document.createElement('ul');ul.className='plain';
+      parts.forEach((t,i)=>{const li=document.createElement('li');li.textContent=t+(/[.;:]$/.test(t)?'':'.');ul.appendChild(li);});
+      p.replaceChildren(ul);}
+    else{p.textContent=raw;}})();lb.hidden=false;lockScroll(true);pushOverlay();requestAnimationFrame(()=>lb.classList.add('shown'));});
   const closeLb=()=>{lb.classList.remove('shown');lockScroll(false);popOverlay();setTimeout(()=>{lb.hidden=true;},180);};
   lb.addEventListener('click',closeLb);document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!lb.hidden)closeLb();});
 }
