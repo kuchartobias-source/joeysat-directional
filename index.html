@@ -104,10 +104,9 @@ a{color:var(--white)}
   #artscreen #why svg{max-height:30vh}
   #artscreen #inclination .artbody p:nth-child(2){display:none}
   #artscreen #opsmap canvas{max-height:24vh}
-  #artscreen .geopanel .cluex{display:none}
   #artscreen #geometry .artbody p:first-child{display:none}
-  #artscreen .cluex{grid-template-columns:76px minmax(0,1fr);gap:8px}
-  #artscreen .cluex img{width:76px;height:76px}
+  #artscreen .cluex{grid-template-columns:96px minmax(0,1fr);gap:10px;align-items:center}
+  #artscreen .cluex img{width:96px;height:96px}
   #artscreen .cluex p{font-size:10.5px}
   #artscreen .geopanel .val .k{font-size:16px}
   #artscreen .geopanel{padding:4px 8px 6px}
@@ -268,6 +267,7 @@ svg{width:100%;height:auto;display:block}
 .binrow .lab{text-align:left;color:#6a7075;padding-right:6px}
 .binrow .c{display:block;color:#6a7075}
 .binrow .off{color:#b0b5b2}
+.binlab{display:none}
 .legend{font-size:13px;color:var(--beige-d);margin:0}
 .legend .gl{width:44px;height:14px;display:inline-block;vertical-align:middle;margin:0 4px 0 10px}
 .legend .gl:first-child{margin-left:0}
@@ -281,12 +281,13 @@ svg{width:100%;height:auto;display:block}
   .binrow .lab{display:none}
   .binrow span{padding:0}
   .binrow .c{font-size:7px}
+  .binlab{display:block;margin:1px 0 0;font-size:7.5px;line-height:1.2;color:#6a7075;text-align:center}
   .readout{min-height:0;padding:8px 9px}
   .readout h3{font-size:13px}
   .rv{column-gap:6px}.rv .lab{font-size:10px}.rv .num{font-size:17px;min-width:0}.rv .num.small{font-size:13px}.rv .ci{font-size:9.5px;min-height:0;line-height:1.25}
   .counts{font-size:9.5px;min-height:0;line-height:1.3}
   .panels .panel{padding:4px 4px 2px;cursor:zoom-in;position:relative;height:178px;background:linear-gradient(150deg,#F7F4EE 0%,#EDE5D9 100%);border-color:#C9BDB2;box-shadow:0 0 0 1px rgba(254,177,97,.4)}
-  .panels .panel::after{content:"\2922";position:absolute;right:4px;top:4px;width:17px;height:17px;display:grid;place-items:center;border-radius:50%;background:rgba(254,177,97,.92);font-size:10px;line-height:1;color:#0B0C1B;transform:rotate(90deg)}
+  .panels .panel::after{content:"\2922";position:absolute;right:5px;top:3px;font-size:19px;line-height:1;color:#b4712a;transform:rotate(90deg)}
   .readout{height:158px;overflow:hidden}
   .rv .ci{min-height:1.3em}
   .counts{min-height:2.6em}
@@ -599,7 +600,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline
   </div>
 </div>
 <div id="artscreen" hidden><button type="button" class="xclose" id="artclose" aria-label="Close">×</button><div class="asbody"></div></div>
-<div id="panelscreen" hidden><div class="psbox"></div></div>
+<div id="panelscreen" hidden><button type="button" class="xclose" id="panelclose" aria-label="Close">×</button><div class="psbox"></div></div>
 <div id="lightbox" class="lightbox" hidden><div class="lbin"><img alt=""><div class="lbtext"><h3></h3><p class="small"></p></div></div></div>
 <script src="data/core.js"></script>
 <script>
@@ -1002,8 +1003,9 @@ function setPhase(v){st.phase=v;if(v!=='both')mapState.phase=v;pressSeg('seg-pha
 function seg(id,fn){const sg=q(id);if(!sg)return;sg.addEventListener('click',e=>{const bt=e.target.closest('button');if(!bt)return;sg.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===bt?'true':'false'));fn(bt.dataset.v);});}
 seg('seg-phase',setPhase);seg('seg-dock',setPhase);
 seg('seg-ops',v=>{opsState.phase=v;renderOpsMap();});
-q('panelscreen').addEventListener('click',closePanelScreen);
-q('dockback').addEventListener('click',()=>{const t=q('readouts')||q('explorer');const y=t.getBoundingClientRect().top+window.scrollY-190;window.scrollTo({top:Math.max(0,y),behavior:'smooth'});});
+q('panelscreen').addEventListener('click',()=>closePanelScreen());
+q('panelclose').addEventListener('click',e=>{e.stopPropagation();closePanelScreen();});
+q('dockback').addEventListener('click',()=>{const t=q('readouts')||q('explorer');const y=t.getBoundingClientRect().top+window.scrollY-190;const dk=q('dock');dk.classList.remove('away');dk.classList.add('open');const tg=q('docktoggle');if(tg)tg.setAttribute('aria-expanded','true');window.scrollTo({top:Math.max(0,y),behavior:'smooth'});});
 seg('seg-pop',v=>{mapState.pop=v;renderMap();});
 q('seg-layers').addEventListener('click',e=>{const bt=e.target.closest('button');if(!bt)return;const on=bt.getAttribute('aria-pressed')!=='true';bt.setAttribute('aria-pressed',on?'true':'false');mapState[bt.dataset.v]=on;renderMap();});
 const doReset=()=>{st.wi=NOMINAL.w2d;st.bi=NOMINAL.b;st.oi=NOMINAL.occ;render();};
@@ -1074,7 +1076,7 @@ function updateDock(){
   if(!hubzone)return;
   const y=window.scrollY,vh=window.innerHeight,mobile=window.innerWidth<=860;
   const r=hubzone.getBoundingClientRect(),top=r.top+y,bottom=r.bottom+y;
-  if(mobile){dock.hidden=false;const near=y<bottom-vh*0.15;dock.classList.toggle('away',!near);if(!near)dock.classList.remove('open');}
+  if(mobile){dock.hidden=false;const near=y<bottom-vh*0.15;dock.classList.toggle('away',!near);}
   else{dock.hidden=true;if(hub)hub.classList.toggle('stuck',hub.getBoundingClientRect().top<=0.5);}
 }
 q('docktoggle').addEventListener('click',()=>{const open=!dock.classList.contains('open');if(!open)closePanelScreen();dock.classList.toggle('open',open);dock.setAttribute('aria-expanded',open?'true':'false');q('docktoggle').setAttribute('aria-expanded',open?'true':'false');});
