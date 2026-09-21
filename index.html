@@ -1059,7 +1059,6 @@ function render(){
     drawProfile(box,rec);binRow(box,rec.core);pa.appendChild(box);
   });
   pa.querySelectorAll('.panel').forEach((p,i)=>p.addEventListener('click',()=>{if(window.innerWidth<=860)openPanel(p);else openChartScreen({kind:'panel',idx:i});}));
-  syncPanelScreen();syncChartScreen();
   tried.add(fmtW(w)+'|'+b+'|'+o);
   const nsel=AX.w2d.length*AX.b.length*AX.occ.length;const tt='Selections tried: '+tried.size+' of '+fmtN(nsel)+'. The grid holds '+fmtN(nsel)+' selections for each phase, '+fmtN(2*nsel)+' fits in all, of which '+fmtN(GSTAT.fits)+' met the fitting rule; the core slope is positive in '+GSTAT.pos+' of those and significantly positive in '+GSTAT.sig+', the '+GSTAT.pos+' positive values all sitting at the limit of fittability with intervals that include zero.';
   q('tried').textContent=tt;
@@ -1068,6 +1067,7 @@ function render(){
   drawStrip(q('st-w2d'),{title:'core slope against the width limit [px]',xmin:1.05,xmax:6.15,minor:num,xticks:[1.2,2,3,4,5,6],series:coreSeries(num,(v,p)=>key(v,b,o,p)),none:phases.map(p=>{const f=G[key('none',b,o,p)].core.fit;return f?{phase:p,val:f.slope}:null;}).filter(Boolean),cur:w==='none'?{none:true}:{x:w}});
   drawStrip(q('st-b'),{title:'core slope against the guard band [deg]',xmin:-1,xmax:31,minor:AX.b,xticks:[0,5,10,15,20,25,30],series:coreSeries(AX.b,(v,p)=>key(w,v,o,p)),none:[],cur:{x:b}});
   drawStrip(q('st-occ'),{title:'core slope against the occupancy threshold',log:true,xmin:10.5,xmax:146,minor:numO,xticks:numO,series:coreSeries(numO,(v,p)=>key(w,b,v,p)),none:phases.map(p=>{const f=G[key(w,b,'none',p)].core.fit;return f?{phase:p,val:f.slope}:null;}).filter(Boolean),cur:o==='none'?{none:true}:{x:o}});
+  syncPanelScreen();syncChartScreen();
   renderMap();
 }
 
