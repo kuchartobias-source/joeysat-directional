@@ -801,7 +801,12 @@ function renderMapBase(g){
   cur.lay.median_5deg.forEach((row,i)=>{const lat=A.median_lat0+i*ms;row.forEach((v,j)=>{if(v===miss||v===null)return;ctx.fillStyle=betaRamp(v/10);ctx.beginPath();g.cell(ctx,A.median_lon0+j*ms,lat,ms);ctx.fill();});});
   drawGraticule(ctx,g.P,'rgba(255,252,250,0.10)');
   drawPolylines(ctx,D.map_common.coastlines,g.P,'rgba(255,252,250,0.42)',0.8);
-  if(mapState.iso){ctx.font='bold 11px Figtree, sans-serif';ctx.fillStyle='rgba(255,252,250,0.95)';ctx.textAlign='left';
+  if(mapState.iso){
+    ctx.textAlign='left';
+    ['30','42','54','66'].forEach(k=>{const lines=m.inclination_isolines[k]||[];drawPolylines(ctx,lines,g.P,'rgba(255,252,250,0.42)',0.8);
+      let best=null,bd=1e9;lines.forEach(pl=>pl.forEach(pt=>{const d=Math.abs(pt[0]-158);if(d<bd){bd=d;best=pt;}}));
+      if(best){const q2=g.P(best[0],best[1]);ctx.font='9px Figtree, sans-serif';ctx.fillStyle='rgba(255,252,250,0.55)';ctx.fillText(k+'\u00b0',q2[0]+3,q2[1]-2);}});
+    ctx.font='bold 11px Figtree, sans-serif';ctx.fillStyle='rgba(255,252,250,0.95)';
     ['24','36','48','60'].forEach(k=>{const lines=m.inclination_isolines[k]||[];drawPolylines(ctx,lines,g.P,'rgba(3,4,23,0.55)',3.2);drawPolylines(ctx,lines,g.P,'rgba(255,252,250,0.9)',1.6);
       let best=null,bd=1e9;lines.forEach(pl=>pl.forEach(pt=>{const d=Math.abs(pt[0]-120);if(d<bd){bd=d;best=pt;}}));if(best){const q2=g.P(best[0],best[1]);ctx.fillText(k+'\u00b0',q2[0]+3,q2[1]-3);}});}
   drawGratLabels(ctx,g,'#C9BDB2');
@@ -949,7 +954,7 @@ function renderGallery(){
   D.figures.figures.filter(f=>f.shown!==false).forEach(f=>{const c=CAPTIONS[f.id]||[f.title,f.caption_draft];const d=document.createElement('div');d.className='panel tile';
     const pv=f.file.replace(/\.png$/,'_v5.png');
     const prev='figures/preview/'+pv,prevM='figures/preview/m/'+pv;
-    const cap=(PREVIEW[f.id]?'Shown here: '+PREVIEW[f.id]+'. ':'')+c[1];
+    const cap=c[1];   /* the enlarged view shows every panel, so no note about the preview */
     d.innerHTML='<picture><source media="(max-width:620px)" srcset="'+prevM+'"><img src="'+prev+'" alt="'+c[0]+'" loading="lazy" data-full="figures/'+f.file+'" data-title="'+c[0]+'" data-cap="'+cap.replace(/"/g,'&quot;')+'"></picture><span class="tlabel">'+c[0]+'</span>';g.appendChild(d);});
   const lb=q('lightbox');g.addEventListener('click',e=>{const tile=e.target.closest('.tile');const im=tile?tile.querySelector('img'):null;if(!im)return;lb.querySelector('img').src=im.dataset.full||im.src;lb.querySelector('img').alt=im.alt;lb.querySelector('h3').textContent=im.dataset.title||'';(function(){const p=lb.querySelector('p');const raw=im.dataset.cap||'';
     const parts=raw.split(/(?<=[a-z%\u00b0\)])\.\s+(?=[A-Z])/).map(x=>x.trim()).filter(Boolean);
