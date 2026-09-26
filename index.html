@@ -1147,6 +1147,17 @@ window.addEventListener('popstate',()=>{
 (function analytics(){
   const id=window.UMAMI_WEBSITE_ID||'';
   if(!id||/^REPLACE/.test(id))return;
+  /* ?notrack stops counting this browser for good, ?track counts it again */
+  try{
+    const qs=location.search;let msg='';
+    if(/[?&]notrack\b/.test(qs)){localStorage.setItem('umami.disabled','1');msg='Visits from this browser are no longer counted.';}
+    else if(/[?&]track\b/.test(qs)){localStorage.removeItem('umami.disabled');msg='Visits from this browser are counted again.';}
+    if(msg){history.replaceState(history.state,'',location.pathname+location.hash);
+      const t=document.createElement('div');t.textContent=msg;
+      t.style.cssText='position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:99;background:#12142b;color:#FFFDFB;border:1px solid #FEB161;border-radius:3px;padding:8px 14px;font:14px Figtree,sans-serif';
+      document.body.appendChild(t);setTimeout(()=>t.remove(),3500);}
+    if(localStorage.getItem('umami.disabled'))return;
+  }catch(e){}
   if(!/github\.io$/.test(location.hostname))return;
   const sc=document.createElement('script');sc.defer=true;sc.src='https://cloud.umami.is/script.js';
   sc.setAttribute('data-website-id',id);sc.setAttribute('data-exclude-hash','true');sc.setAttribute('data-domains','kuchartobias-source.github.io');
